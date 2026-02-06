@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - COMPLETE VERSION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #3b82f6; --primary-dark: #2563eb; --secondary: #10b981;
+            --accent: #f59e0b; --danger: #ef4444; --bg-dark: #0f172a;
+            --bg-dark-2: #1e293b; --text-light: #e2e8f0; --text-muted: #94a3b8;
+            --border: rgba(148, 163, 184, 0.2);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-2) 50%, var(--bg-dark) 100%);
+            color: var(--text-light); line-height: 1.6; min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 1rem 2rem;
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-size: 1.5rem; font-weight: 700; color: var(--primary);
+        }
+        
+        .nav-links { display: flex; list-style: none; gap: 1rem; }
+        
+        .nav-links button {
+            background: none; border: none; color: var(--text-muted);
+            font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem;
+            cursor: pointer; transition: all 0.3s; font-size: 1rem;
+        }
+        
+        .nav-links button:hover, .nav-links button.active {
+            color: var(--primary); background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .mobile-toggle {
+            display: none; background: none; border: none;
+            color: var(--text-light); font-size: 1.5rem; cursor: pointer;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 3rem 2rem; }
+        
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero { text-align: center; margin-bottom: 4rem; }
+        
+        .hero h1 {
+            font-size: 4rem; font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 3rem; }
+        
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin-bottom: 4rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        
+        .stat-card.primary { border-left: 4px solid var(--primary); }
+        .stat-card.secondary { border-left: 4px solid var(--secondary); }
+        .stat-card.tertiary { border-left: 4px solid var(--accent); }
+        .stat-card.quaternary { border-left: 4px solid #ec4899; }
+        
+        .stat-icon { font-size: 3rem; }
+        .stat-value { font-size: 2.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; color: var(--text-light); }
+        
+        .action-grid, .grid-3 {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem; margin-bottom: 4rem;
+        }
+        
+        .action-card, .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;
+            cursor: pointer; transition: all 0.3s;
+        }
+        
+        .action-card { display: flex; align-items: center; gap: 1.5rem; }
+        
+        .action-card:hover, .card:hover {
+            transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .action-icon { font-size: 3rem; }
+        .action-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .action-content p { color: var(--text-muted); font-size: 0.95rem; }
+        .action-arrow {
+            font-size: 2rem; color: var(--primary); opacity: 0;
+            transition: all 0.3s; margin-left: auto;
+        }
+        .action-card:hover .action-arrow { opacity: 1; transform: translateX(8px); }
+        
+        .badge {
+            display: inline-block; padding: 0.375rem 0.75rem; border-radius: 0.5rem;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-right: 0.5rem;
+        }
+        
+        .badge-beginner { background: rgba(34, 197, 94, 0.2); color: #34d399; }
+        .badge-intermediate { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; border-radius: 0.75rem;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3); }
+        
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1); border-color: var(--primary);
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border); border-radius: 0.75rem;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+            margin-bottom: 2rem; font-size: 1rem;
+        }
+        
+        .back-btn:hover {
+            background: rgba(59, 130, 246, 0.1); border-color: var(--primary); color: var(--primary);
+        }
+        
+        /* Flashcard Styles */
+        .flashcard-viewer { max-width: 800px; margin: 0 auto; }
+        
+        .flashcard-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+        }
+        
+        .flashcard-progress {
+            padding: 0.875rem 1.5rem; background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border); border-radius: 0.75rem;
+            font-weight: 600; color: var(--primary);
+        }
+        
+        .flashcard { width: 100%; height: 450px; perspective: 1000px; cursor: pointer; margin-bottom: 2rem; }
+        
+        .flashcard-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            border: 3px solid var(--primary); border-radius: 1.5rem;
+            padding: 3rem; text-align: center;
+        }
+        
+        .flashcard-back { transform: rotateY(180deg); }
+        
+        .card-category {
+            font-size: 0.875rem; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem;
+        }
+        
+        .card-term {
+            font-size: 3rem; font-weight: 900; color: var(--text-light);
+            margin-bottom: 2rem; line-height: 1.2;
+        }
+        
+        .card-definition {
+            font-size: 1.5rem; font-weight: 600; color: var(--text-light); line-height: 1.6;
+        }
+        
+        .flip-hint { font-size: 0.875rem; color: var(--text-muted); margin-top: 2rem; }
+        
+        .flashcard-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        
+        .flashcard-nav-btn {
+            padding: 1rem 2rem; background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border); color: var(--text-muted);
+            border-radius: 0.75rem; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s;
+        }
+        
+        .flashcard-nav-btn:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.1); border-color: var(--primary); color: var(--primary);
+        }
+        
+        .flashcard-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        
+        /* Lesson Content */
+        .lesson-content { max-width: 900px; }
+        
+        .lesson-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+            border: 1px solid var(--border); border-radius: 1rem;
+            padding: 2.5rem; margin-bottom: 2rem;
+        }
+        
+        .lesson-section h3 { color: var(--primary); font-size: 1.75rem; margin-bottom: 1.5rem; }
+        .lesson-section p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
+        
+        .example-box {
+            background: rgba(15, 23, 42, 0.8); border-left: 4px solid var(--secondary);
+            border-radius: 0.5rem; padding: 1.5rem; margin: 1.5rem 0;
+        }
+        
+        .dead-corl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
+        
+        .dead-side, .corl-side {
+            background: rgba(15, 23, 42, 0.8); border-radius: 1rem; padding: 2rem;
+        }
+        
+        .dead-side { border: 2px solid #ef4444; }
+        .corl-side { border: 2px solid #10b981; }
+        .dead-side h4 { color: #ef4444; margin-bottom: 1rem; }
+        .corl-side h4 { color: #10b981; margin-bottom: 1rem; }
+        
+        /* Quiz */
+        .quiz-question {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+            border: 1px solid var(--border); border-radius: 1rem;
+            padding: 2rem; margin-bottom: 2rem;
+        }
+        
+        .question-number {
+            font-size: 0.875rem; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; margin-bottom: 1rem;
+        }
+        
+        .question-text {
+            font-size: 1.25rem; font-weight: 600; color: var(--text-light); margin-bottom: 1.5rem;
+        }
+        
+        .answer-options { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .answer-option {
+            display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;
+            background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(148, 163, 184, 0.2);
+            border-radius: 0.75rem; cursor: pointer; transition: all 0.2s;
+        }
+        
+        .answer-option:hover {
+            background: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.4);
+        }
+        
+        .answer-option.selected {
+            background: rgba(96, 165, 250, 0.15); border-color: var(--primary);
+        }
+        
+        .answer-option.correct {
+            background: rgba(16, 185, 129, 0.15); border-color: var(--secondary);
+        }
+        
+        .answer-option.incorrect {
+            background: rgba(239, 68, 68, 0.15); border-color: var(--danger);
+        }
+        
+        .option-letter {
+            min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+            background: rgba(96, 165, 250, 0.2); border-radius: 0.5rem;
+            font-weight: 700; color: var(--primary);
+        }
+        
+        .answer-option.selected .option-letter { background: var(--primary); color: white; }
+        
+        .quiz-explanation {
+            margin-top: 1rem; padding: 1rem; background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary); border-radius: 0.5rem; display: none;
+        }
+        
+        .quiz-explanation.show { display: block; }
+        
+        .quiz-results {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 2px solid var(--primary); border-radius: 1rem;
+            padding: 3rem; text-align: center; margin: 2rem 0;
+        }
+        
+        .result-score {
+            font-size: 4rem; font-weight: 900; color: var(--primary); margin: 1rem 0;
+        }
+        
+        ul.feature-list { list-style: none; margin-top: 1rem; }
+        
+        ul.feature-list li {
+            padding: 0.5rem 0; padding-left: 2rem; position: relative;
+        }
+        
+        ul.feature-list li:before {
+            content: "✓"; position: absolute; left: 0;
+            color: var(--secondary); font-weight: bold;
+        }
+        
+        .notification {
+            position: fixed; top: 2rem; right: 2rem; padding: 1rem 2rem;
+            background: var(--secondary); color: white; border-radius: 0.5rem;
+            font-weight: 600; z-index: 1000; animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.error { background: var(--danger); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .footer {
+            background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border);
+            padding: 2rem; text-align: center; color: var(--text-muted); margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; position: absolute; top: 100%; left: 0; right: 0;
+                background: rgba(15, 23, 42, 0.98); flex-direction: column; padding: 1rem; gap: 0;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .stats-grid, .action-grid, .grid-3 { grid-template-columns: 1fr; }
+            .flashcard { height: 350px; }
+            .card-term { font-size: 2rem; }
+            .card-definition { font-size: 1.25rem; }
+            .dead-corl-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span style="font-size: 2rem;">🏆</span>
+            <span>UIL Accounting Trainer</span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><button class="nav-btn active" onclick="showSection('home')">Home</button></li>
+            <li><button class="nav-btn" onclick="showSection('lessons')">Lessons</button></li>
+            <li><button class="nav-btn" onclick="showSection('flashcards')">Flashcards</button></li>
+            <li><button class="nav-btn" onclick="showSection('truefalse')">True/False</button></li>
+            <li><button class="nav-btn" onclick="showSection('tests')">Tests</button></li>
+            <li><button class="nav-btn" onclick="showSection('about')">About</button></li>
+        </ul>
+        <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <main class="container">
+        <!-- HOME SECTION -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>UIL Accounting Trainer</h1>
+                <p class="hero-subtitle">Everything works! Master concepts. Ace tests.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">🏆</div>
+                    <div>
+                        <div class="stat-value" id="userPoints">0</div>
+                        <div class="stat-label">Points Earned</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="userAccuracy">0%</div>
+                        <div class="stat-label">Quiz Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-value" id="lessonsCompleted">0/3</div>
+                        <div class="stat-label">Lessons Done</div>
+                    </div>
+                </div>
+                <div class="stat-card quaternary">
+                    <div class="stat-icon">🧠</div>
+                    <div>
+                        <div class="stat-value" id="cardsStudied">0</div>
+                        <div class="stat-label">Cards Studied</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Quick Start</h2>
+            <div class="action-grid">
+                <div class="action-card" onclick="showSection('lessons')">
+                    <div class="action-icon">📖</div>
+                    <div class="action-content">
+                        <h3>Learn Account Classification</h3>
+                        <p>Master DEAD CORL with real content</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+                <div class="action-card" onclick="showFlashcards('acronyms')">
+                    <div class="action-icon">🧠</div>
+                    <div class="action-content">
+                        <h3>Study 21 Flashcards</h3>
+                        <p>Click to flip and memorize!</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+                <div class="action-card" onclick="startQuiz()">
+                    <div class="action-icon">🎯</div>
+                    <div class="action-content">
+                        <h3>Take 10-Question Quiz</h3>
+                        <p>Instant grading and feedback</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+                <div class="action-card" onclick="showSection('truefalse')">
+                    <div class="action-icon">✓</div>
+                    <div class="action-content">
+                    <h3>True/False Quiz (25 Questions)</h3>
+                    <p>Real UIL test questions with explanations</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LESSONS SECTION -->
+        <section id="lessons" class="section">
+            <div class="hero">
+                <h1>Interactive Lessons</h1>
+                <p class="hero-subtitle">Real content you can learn from</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card" onclick="showLesson('account-classification')">
+                    <span class="badge badge-beginner">Beginner</span>
+                    <span style="color: var(--text-muted);">⏱️ 20 min</span>
+                    <h3>Account Classification & DR/CR</h3>
+                    <p>Master DEAD CORL. Classify accounts. Learn normal balances.</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Lesson →</button>
+                </div>
+                <div class="card" onclick="showLesson('journal-entries')">
+    <span class="badge badge-beginner">Beginner</span>
+    <span style="color: var(--text-muted);">⏱️ 25 min</span>
+    <h3>Lesson 2: Journal Entries</h3>
+    <p>Record transactions, BOAP, SOAR, compound entries</p>
+    <button class="btn" style="margin-top:1rem;">Start →</button>
+</div>
+
+<div class="card" onclick="showLesson('closing-entries')">
+    <span class="badge badge-intermediate">Intermediate</span>
+    <span style="color: var(--text-muted);">⏱️ 20 min</span>
+    <h3>Lesson 3: Closing Entries (C-DID)</h3>
+    <p>Close temporary accounts, Income Summary</p>
+    <button class="btn" style="margin-top:1rem;">Start →</button>
+</div>
+            </div>
+        </section>
+
+        <!-- FLASHCARDS SECTION -->
+        <section id="flashcards" class="section">
+            <div class="hero">
+                <h1>Study Flashcards</h1>
+                <p class="hero-subtitle">Click to flip and memorize!</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card" onclick="showFlashcards('acronyms')">
+                    <span class="badge badge-beginner">Beginner</span>
+                    <span style="color: var(--text-muted);">🧠 21 cards</span>
+                    <h3>Accounting Acronyms</h3>
+                    <p>DEAD CORL, C-DID, CARPET-W-FACTR, and all essential mnemonics</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Studying →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ttrue/False Section -->
+
+<!-- TRUE/FALSE QUIZ SECTION -->
+<section id="truefalse" class="section">
+    <div class="hero">
+        <h1>True/False Quiz</h1>
+        <p class="hero-subtitle">25 Questions from Real UIL Tests</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="stat-icon">✓</div>
+            <div>
+                <div class="stat-value" id="tfCompleted">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="stat-card secondary">
+            <div class="stat-icon">🎯</div>
+            <div>
+                <div class="stat-value" id="tfAccuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+        <button class="btn" onclick="startTrueFalse()">Start Quiz →</button>
+        <button class="btn btn-secondary" onclick="resetTrueFalse()">Reset Progress</button>
+    </div>
+</section>
+
+<section id="truefalse-viewer" class="section">
+    <button class="back-btn" onclick="showSection('truefalse')">← Back</button>
+    <div id="tfContent"></div>
+</section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="section">
+            <div class="hero">
+                <h1>About This Trainer</h1>
+                <p class="hero-subtitle">Built for student success</p>
+            </div>
+
+            <div class="card">
+                <h3>✅ What's Working Now</h3>
+                <ul class="feature-list">
+                    <li><strong>1 Complete Lesson:</strong> Account Classification with DEAD CORL examples</li>
+                    <li><strong>21 Interactive Flashcards:</strong> Click to flip and study acronyms</li>
+                    <li><strong>10-Question Quiz:</strong> Instant grading with explanations</li>
+                    <li><strong>Progress Tracking:</strong> Points, accuracy, and stats that update!</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>💡 How to Use</h3>
+                <p><strong>Step 1:</strong> Read the Account Classification lesson</p>
+                <p><strong>Step 2:</strong> Study the 21 flashcards (click to flip!)</p>
+                <p><strong>Step 3:</strong> Take the quiz to test yourself</p>
+                <p><strong>Step 4:</strong> Watch your stats improve!</p>
+            </div>
+        </section>
+
+        <!-- LESSON VIEWER -->
+        <section id="lesson-viewer" class="section">
+            <button class="back-btn" onclick="showSection('lessons')">← Back to Lessons</button>
+            <div class="lesson-content" id="lessonContent"></div>
+        </section>
+
+        <!-- FLASHCARD VIEWER -->
+        <section id="flashcard-viewer" class="section">
+            <button class="back-btn" onclick="showSection('flashcards')">← Back</button>
+            <div class="flashcard-viewer">
+                <div class="flashcard-header">
+                    <h2>Accounting Acronyms</h2>
+                    <div class="flashcard-progress">
+                        Card <span id="currentCard">1</span> of <span id="totalCards">21</span>
+                    </div>
+                </div>
+
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-category" id="frontCategory"></div>
+                            <div class="card-term" id="term"></div>
+                            <div class="flip-hint">Click to reveal answer</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-category" id="backCategory"></div>
+                            <div class="card-definition" id="definition"></div>
+                            <div class="flip-hint">Click to see question</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-controls">
+                    <button class="flashcard-nav-btn" id="prevBtn" onclick="previousCard()">← Previous</button>
+                    <button class="btn" onclick="flipCard()">🔄 Flip</button>
+                    <button class="flashcard-nav-btn" id="nextBtn" onclick="nextCard()">Next →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ VIEWER -->
+        <section id="quiz-viewer" class="section">
+            <button class="back-btn" onclick="showSection('tests')">← Back</button>
+            <div id="quizContent"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script>
+        // TRUE/FALSE QUIZ
+let currentTFQuestion = 0;
+let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
+    completed: [], correct: [], answers: {}
+};
+
+function startTrueFalse() {
+    currentTFQuestion = 0;
+    renderTFQuestion();
+    showSection('truefalse-viewer');
+}
+
+function renderTFQuestion() {
+    const q = trueFalseQuestions[currentTFQuestion];
+    const userAnswer = tfProgress.answers[q.id];
+    const isAnswered = userAnswer !== undefined;
+    
+    let html = `
+        <div class="hero">
+            <h1>Question ${currentTFQuestion + 1} of ${trueFalseQuestions.length}</h1>
+            <p class="hero-subtitle">${q.category}</p>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">${q.question}</div>
+            
+            <div class="answer-options">
+                <div class="answer-option ${isAnswered && userAnswer === true ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, true)">
+                    <div class="option-letter">T</div>
+                    <div>TRUE</div>
+                </div>
+                <div class="answer-option ${isAnswered && userAnswer === false ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, false)">
+                    <div class="option-letter">F</div>
+                    <div>FALSE</div>
+                </div>
+            </div>
+            
+            ${isAnswered ? `
+                <div class="quiz-explanation show">
+                    <strong>${userAnswer === q.answer ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
+                    ${q.explanation}
+                </div>
+            ` : ''}
+        </div>
+        
+        <div style="display:flex; gap:1rem; margin-top:2rem;">
+            ${currentTFQuestion > 0 ? '<button class="btn btn-secondary" onclick="prevTF()">← Previous</button>' : ''}
+            ${currentTFQuestion < trueFalseQuestions.length - 1 ? 
+                '<button class="btn" onclick="nextTF()">Next →</button>' : 
+                '<button class="btn" onclick="finishTF()">Finish Quiz</button>'}
+        </div>
+    `;
+    
+    document.getElementById('tfContent').innerHTML = html;
+}
+
+function answerTF(id, answer) {
+    const q = trueFalseQuestions.find(q => q.id === id);
+    tfProgress.answers[id] = answer;
+    
+    if (!tfProgress.completed.includes(id)) {
+        tfProgress.completed.push(id);
+    }
+    
+    if (answer === q.answer && !tfProgress.correct.includes(id)) {
+        tfProgress.correct.push(id);
+        Progress.points += 5;
+        Progress.save(Progress.get());
+    }
+    
+    localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+    updateTFStats();
+    renderTFQuestion();
+}
+
+function nextTF() {
+    if (currentTFQuestion < trueFalseQuestions.length - 1) {
+        currentTFQuestion++;
+        renderTFQuestion();
+    }
+}
+
+function prevTF() {
+    if (currentTFQuestion > 0) {
+        currentTFQuestion--;
+        renderTFQuestion();
+    }
+}
+
+function finishTF() {
+    const score = Math.round((tfProgress.correct.length / trueFalseQuestions.length) * 100);
+    alert(`Quiz Complete!\n\nScore: ${tfProgress.correct.length}/${trueFalseQuestions.length} (${score}%)`);
+    showSection('truefalse');
+}
+
+function resetTrueFalse() {
+    if (confirm('Reset all True/False progress?')) {
+        tfProgress = {completed: [], correct: [], answers: {}};
+        localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+        updateTFStats();
+        showSection('truefalse');
+    }
+}
+
+function updateTFStats() {
+    document.getElementById('tfCompleted').textContent = tfProgress.completed.length;
+    const accuracy = tfProgress.completed.length > 0
+        ? Math.round((tfProgress.correct.length / tfProgress.completed.length) * 100)
+        : 0;
+    document.getElementById('tfAccuracy').textContent = accuracy + '%';
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('tfCompleted')) {
+        updateTFStats();
+    }
+});
+        
+        // DATA
+        const flashcardData = {acronyms: [{term:'DEAD',definition:'Debits increase: Drawing, Expenses, Assets, Drawing',category:'DR/CR'},{term:'CORL',definition:'Credits increase: Credits, Owner\'s Equity, Revenue, Liabilities',category:'DR/CR'},{term:'A=L+OE',definition:'Assets = Liabilities + Owner\'s Equity',category:'Equation'},{term:'RICED',definition:'Capital changes: Revenue ↑, Investments ↑, Cost of Goods ↓, Expenses ↓, Drawing ↓',category:'Capital'},{term:'RED-C',definition:'Temporary accounts: Revenue, Expense, Drawing, Cost of Goods Sold',category:'Accounts'},{term:'C-DID',definition:'Closing order: Credits (Rev), Debits (Exp), Income, Drawing',category:'Closing'},{term:'REN',definition:'Revenue - Expenses = Net Income',category:'Income'},{term:'BOAP',definition:'Buy On Accounts Payable',category:'Purchases'},{term:'SOAR',definition:'Sell On Accounts Receivable',category:'Sales'},{term:'CARPET-W-FACTR',definition:'Accounting Cycle: Collect, Analyze, Record, Post, Trial Balance, Worksheet, Financials, Adjusting, Closing, Trial Balance, Reversing',category:'Cycle'},{term:'SE-E',definition:'Salary Expense for employeE',category:'Payroll'},{term:'PTE-R',definition:'Payroll Tax Expense for employeR',category:'Payroll'},{term:'LIFO',definition:'Last In, First Out',category:'Inventory'},{term:'FIFO',definition:'First In, First Out',category:'Inventory'},{term:'PAUL',definition:'Prepaid = Asset, Unearned = Liability',category:'Adjustments'},{term:'COW',definition:'Capital on Worksheet',category:'Abbrev'},{term:'SOT',definition:'Supplies on Trial Balance',category:'Abbrev'},{term:'POT',definition:'Prepaid insurance on Trial Balance',category:'Abbrev'},{term:'SOCIOE',definition:'Statement of Changes in Owner\'s Equity',category:'Financial'},{term:'AUA',definition:'Allowance for Uncollectible Accounts',category:'A/R'},{term:'PICEPAR',definition:'Paid-In Capital in Excess of Par',category:'Corps'}]};
+        const quizQuestions = [{question:'Accounts Payable is what type of account?',answers:['Asset','Liability','Capital','Revenue','Expense'],correct:1,explanation:'Accounts Payable is a Liability. Liabilities are in CORL with CREDIT balances.'},{question:'Normal balance for Sales (Revenue)?',answers:['Debit','Credit'],correct:1,explanation:'Revenue = CREDIT (CORL).'},{question:'Rent Expense is classified as:',answers:['Asset','Liability','Expense','Revenue'],correct:2,explanation:'Rent Expense is an Expense (DEAD = Debit).'},{question:'Supplies has what normal balance?',answers:['Debit','Credit'],correct:0,explanation:'Supplies is an Asset (DEAD = Debit).'},{question:'Owner, Drawing normal balance:',answers:['Debit','Credit'],correct:0,explanation:'Drawing = DEBIT (reduces equity).'},{question:'Which accounts close at year-end?',answers:['Assets only','Revenue, Expenses, Drawing','Assets & Liabilities','Only Capital'],correct:1,explanation:'Temporary accounts (RED-C) close.'},{question:'Cash is classified as:',answers:['Permanent Asset; DR','Temporary Asset; CR','Liability; CR','Revenue; CR'],correct:0,explanation:'Cash is a permanent Asset with DR balance.'},{question:'D in DEAD stands for?',answers:['Dividends','Drawing','Deferred','Discounts'],correct:1,explanation:'DEAD = Drawing, Expenses, Assets, Drawing.'},{question:'Capital account is:',answers:['Temporary; DR','Permanent; CR','Temporary; CR','Permanent; DR'],correct:1,explanation:'Capital is permanent OE with CR balance.'},{question:'Notes Payable normal balance?',answers:['Debit','Credit'],correct:1,explanation:'Notes Payable is a Liability (CR).'}];
+        
+        let currentFlashcardIndex=0,isFlipped=false,currentQuizAnswers=[],quizSubmitted=false;
+        
+        // PROGRESS
+        const Progress = {
+            init(){if(!localStorage.getItem('uilProgress'))localStorage.setItem('uilProgress',JSON.stringify({points:0,lessonsCompleted:[],cardsStudied:0,quizStats:{total:0,correct:0}}));this.update()},
+            get(){return JSON.parse(localStorage.getItem('uilProgress'))},
+            save(d){localStorage.setItem('uilProgress',JSON.stringify(d));this.update()},
+            update(){const p=this.get();document.getElementById('userPoints').textContent=p.points;document.getElementById('lessonsCompleted').textContent=p.lessonsCompleted.length+'/3';document.getElementById('cardsStudied').textContent=p.cardsStudied;const a=p.quizStats.total>0?Math.round((p.quizStats.correct/p.quizStats.total)*100):0;document.getElementById('userAccuracy').textContent=a+'%'},
+            completeLesson(id){const p=this.get();if(!p.lessonsCompleted.includes(id)){p.lessonsCompleted.push(id);p.points+=50;this.save(p);showNotification('Lesson completed! +50 points')}},
+            studyCard(){const p=this.get();p.cardsStudied++;p.points+=1;this.save(p)},
+            submitQuiz(c,t){const p=this.get();p.quizStats.correct+=c;p.quizStats.total+=t;p.points+=c*5;this.save(p)}
+        };
+        
+        // NAVIGATION
+        function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');event?.target?.classList.add('active');window.scrollTo(0,0);if(window.innerWidth<=768)document.getElementById('navLinks').classList.remove('active')}
+        function toggleMobileMenu(){document.getElementById('navLinks').classList.toggle('active')}
+        function showNotification(m,e=false){const n=document.createElement('div');n.className='notification'+(e?' error':'');n.textContent=m;document.body.appendChild(n);setTimeout(()=>{n.style.animation='slideIn 0.3s ease reverse';setTimeout(()=>n.remove(),300)},3000)}
+        
+        // FLASHCARDS
+        function showFlashcards(s){currentFlashcardIndex=0;isFlipped=false;displayCard();showSection('flashcard-viewer')}
+        function displayCard(){const c=flashcardData.acronyms[currentFlashcardIndex];document.getElementById('term').textContent=c.term;document.getElementById('definition').textContent=c.definition;document.getElementById('frontCategory').textContent=c.category;document.getElementById('backCategory').textContent=c.category;document.getElementById('currentCard').textContent=currentFlashcardIndex+1;document.getElementById('totalCards').textContent=flashcardData.acronyms.length;document.getElementById('prevBtn').disabled=currentFlashcardIndex===0;document.getElementById('nextBtn').textContent=currentFlashcardIndex===flashcardData.acronyms.length-1?'Finish':'Next →';if(isFlipped){document.getElementById('flashcard').classList.remove('flipped');isFlipped=false}}
+        function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');isFlipped=!isFlipped;if(isFlipped)Progress.studyCard()}
+        function nextCard(){if(currentFlashcardIndex<flashcardData.acronyms.length-1){currentFlashcardIndex++;displayCard()}else{showNotification('Flashcard set complete!');setTimeout(()=>showSection('flashcards'),1500)}}
+        function previousCard(){if(currentFlashcardIndex>0){currentFlashcardIndex--;displayCard()}}
+        
+        // LESSON
+        function showLesson(id){
+    const lesson = lessons[id];
+    if (!lesson) {
+        // Fallback to old lesson content
+        document.getElementById('lessonContent').innerHTML = `[your existing lesson 1 HTML]`;
+    } else {
+        document.getElementById('lessonContent').innerHTML = `
+            <div class="hero">
+                <h1>${lesson.title}</h1>
+                <p class="hero-subtitle"><span class="badge badge-beginner">Beginner</span> ${lesson.subtitle}</p>
+            </div>
+            ${lesson.content}
+            <button class="btn" onclick="completeLesson('${id}')">✓ Mark Complete</button>
+        `;
+    }
+    showSection('lesson-viewer');
+}
+
+function completeLesson(id){
+    Progress.completeLesson(id);
+    setTimeout(()=>showSection('lessons'),1500);
+}
+        
+        // QUIZ
+        function startQuiz(){currentQuizAnswers=new Array(quizQuestions.length).fill(null);quizSubmitted=false;renderQuiz();showSection('quiz-viewer')}
+        function renderQuiz(){let h=`<div class="hero"><h1>Account Classification Quiz</h1><p class="hero-subtitle">10 questions</p></div>`;quizQuestions.forEach((q,qi)=>{h+=`<div class="quiz-question"><div class="question-number">Question ${qi+1}</div><div class="question-text">${q.question}</div><div class="answer-options">`;q.answers.forEach((a,ai)=>{const sel=currentQuizAnswers[qi]===ai;const cor=quizSubmitted&&ai===q.correct;const inc=quizSubmitted&&sel&&ai!==q.correct;let c='answer-option';if(sel&&!quizSubmitted)c+=' selected';if(cor)c+=' correct';if(inc)c+=' incorrect';h+=`<div class="${c}" onclick="${!quizSubmitted?`selectAnswer(${qi},${ai})`:''}"><div class="option-letter">${String.fromCharCode(65+ai)}</div><div>${a}</div>${cor?'<div style="margin-left:auto;">✓</div>':''}${inc?'<div style="margin-left:auto;">✗</div>':''}</div>`});h+=`</div><div class="quiz-explanation ${quizSubmitted?'show':''}"><strong>Explanation:</strong> ${q.explanation}</div></div>`});if(!quizSubmitted){h+=`<button class="btn" onclick="submitQuiz()">Submit</button>`}else{const c=currentQuizAnswers.filter((a,i)=>a===quizQuestions[i].correct).length;const s=Math.round((c/quizQuestions.length)*100);h+=`<div class="quiz-results"><h2>Quiz Complete!</h2><div class="result-score">${s}%</div><p>${c} of ${quizQuestions.length} correct!</p><p>+${c*5} points</p><button class="btn" onclick="startQuiz()">Retake</button></div>`}document.getElementById('quizContent').innerHTML=h}
+        function selectAnswer(q,a){if(quizSubmitted)return;currentQuizAnswers[q]=a;renderQuiz()}
+        function submitQuiz(){if(currentQuizAnswers.includes(null)){showNotification('Answer all questions!',true);return}quizSubmitted=true;const c=currentQuizAnswers.filter((a,i)=>a===quizQuestions[i].correct).length;Progress.submitQuiz(c,quizQuestions.length);renderQuiz();window.scrollTo(0,0)}
+        
+        // INIT
+        document.addEventListener('DOMContentLoaded',()=>{Progress.init();document.addEventListener('keydown',e=>{const s=document.getElementById('flashcard-viewer');if(!s.classList.contains('active'))return;if(e.key==='ArrowLeft')previousCard();if(e.key==='ArrowRight')nextCard();if(e.key===' '){e.preventDefault();flipCard()}})});
+
+        // LESSON DATA - Add lessons 2 and 3
+const lessons = {
+    'account-classification': {
+        title: 'Account Classification & DR/CR',
+        subtitle: 'Beginner • 20 minutes',
+        content: `[Your existing lesson 1 content]`
+    },
+    'journal-entries': {
+        title: 'Journal Entries & T-Accounts',
+        subtitle: 'Beginner • 25 minutes',
+        content: `
+            <div class="lesson-section">
+                <h3>🎯 What You'll Learn</h3>
+                <ul class="feature-list">
+                    <li>How to record transactions in the General Journal</li>
+                    <li>8 common transaction types</li>
+                    <li>Compound journal entries</li>
+                    <li>T-Account visualization</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>1️⃣ What is a Journal Entry?</h3>
+                <p>A journal entry is a record of a business transaction. Every entry affects at least 2 accounts (double-entry accounting).</p>
+                <p><strong>Format:</strong></p>
+                <div class="example-box">
+                    <strong>Date | Account Name | Debit | Credit</strong><br>
+                    Jan 5 | Cash in Bank | 500 |<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Owner, Capital | | 500
+                </div>
+                <p>💡 <strong>Rule:</strong> Debit account(s) listed first, Credit account(s) indented.</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>2️⃣ DEAD CORL Review</h3>
+                <p>Remember which accounts increase with debits vs credits:</p>
+                <div class="dead-corl-grid">
+                    <div class="dead-side">
+                        <h4>DEAD = Debits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>D</strong>rawing</li>
+                            <li><strong>E</strong>xpenses</li>
+                            <li><strong>A</strong>ssets</li>
+                        </ul>
+                    </div>
+                    <div class="corl-side">
+                        <h4>CORL = Credits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>C</strong>redits</li>
+                            <li><strong>O</strong>wner's Equity</li>
+                            <li><strong>R</strong>evenue</li>
+                            <li><strong>L</strong>iabilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>3️⃣ Eight Common Transactions</h3>
+                
+                <div class="example-box">
+                    <h4>1. Paid cash for supplies</h4>
+                    <strong>DR</strong> Supplies<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Asset ↑, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>2. Owner invested cash</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Capital<br>
+                    <em>(Asset ↑, OE ↑)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>3. Received cash from customer</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Revenue<br>
+                    <em>(Asset ↑, Revenue ↑)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>4. Paid cash for expense</h4>
+                    <strong>DR</strong> Rent Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Expense ↑, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>5. Purchased on account (BOAP!)</h4>
+                    <strong>DR</strong> Supplies<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Accounts Payable<br>
+                    <em>Buy On Accounts Payable</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>6. Sold on account (SOAR!)</h4>
+                    <strong>DR</strong> Accounts Receivable<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Sales<br>
+                    <em>Sell On Accounts Receivable</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>7. Paid cash on account</h4>
+                    <strong>DR</strong> Accounts Payable<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Liability ↓, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>8. Received cash on account</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Accounts Receivable<br>
+                    <em>(Asset ↑, Asset ↓)</em>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>4️⃣ Compound Entries</h3>
+                <p>Some transactions affect more than 2 accounts:</p>
+                <div class="example-box">
+                    <h4>Example: Paid salary and rent</h4>
+                    <strong>DR</strong> Salary Expense &nbsp;&nbsp;&nbsp; 1,000<br>
+                    <strong>DR</strong> Rent Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 500<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,500<br>
+                </div>
+                <p>💡 Total Debits ALWAYS = Total Credits!</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>📝 Summary</h3>
+                <ul class="feature-list">
+                    <li>Journal entries record transactions</li>
+                    <li>Use DEAD CORL to determine DR/CR</li>
+                    <li>Memorize BOAP and SOAR!</li>
+                    <li>Debits always = Credits</li>
+                    <li>Compound entries can have 3+ accounts</li>
+                </ul>
+            </div>
+        `
+    },
+    'closing-entries': {
+        title: 'Closing Entries (C-DID)',
+        subtitle: 'Intermediate • 20 minutes',
+        content: `
+            <div class="lesson-section">
+                <h3>🎯 What You'll Learn</h3>
+                <ul class="feature-list">
+                    <li>Why we close accounts at year-end</li>
+                    <li>C-DID closing order</li>
+                    <li>How to close temporary accounts</li>
+                    <li>Income Summary account</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>1️⃣ Why Close Accounts?</h3>
+                <p>At year-end, we close <strong>temporary accounts</strong> to zero them out for the new year.</p>
+                <p><strong>Temporary Accounts (RED-C):</strong></p>
+                <ul class="feature-list">
+                    <li><strong>R</strong>evenue</li>
+                    <li><strong>E</strong>xpenses</li>
+                    <li><strong>D</strong>rawing</li>
+                    <li><strong>C</strong>ost of Goods Sold</li>
+                </ul>
+                <p><strong>Permanent Accounts:</strong> Assets, Liabilities, Capital (never close!)</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>2️⃣ C-DID Closing Order</h3>
+                <p>Memorize this order!</p>
+                <div class="example-box">
+                    <h4>Step 1: Close CREDITS (Revenue)</h4>
+                    <strong>DR</strong> Sales<br>
+                    <strong>DR</strong> Fees Earned<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Income Summary<br>
+                    <em>(Close all revenue to Income Summary)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 2: Close DEBITS (Expenses)</h4>
+                    <strong>DR</strong> Income Summary<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Rent Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Salary Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Supplies Expense<br>
+                    <em>(Close all expenses to Income Summary)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 3: Close INCOME Summary</h4>
+                    <strong>DR</strong> Income Summary<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Capital<br>
+                    <em>(Transfer net income to capital)</em><br>
+                    <strong>OR if net loss:</strong><br>
+                    <strong>DR</strong> Owner, Capital<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Income Summary
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 4: Close DRAWING</h4>
+                    <strong>DR</strong> Owner, Capital<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Drawing<br>
+                    <em>(Close drawing to capital)</em>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>3️⃣ Income Summary Explained</h3>
+                <p><strong>Income Summary</strong> is a temporary account used ONLY during closing.</p>
+                <p><strong>What it does:</strong></p>
+                <ul class="feature-list">
+                    <li>Collects all revenue (credits)</li>
+                    <li>Collects all expenses (debits)</li>
+                    <li>Balance = Net Income or Net Loss</li>
+                    <li>Then closes to Capital</li>
+                </ul>
+                <div class="example-box">
+                    <strong>Example T-Account:</strong><br>
+                    Income Summary<br>
+                    Left (DR): Expenses 100<br>
+                    Right (CR): Revenue 400<br>
+                    Balance: 300 CR = Net Income!
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>4️⃣ After Closing</h3>
+                <p><strong>All temporary accounts = ZERO</strong></p>
+                <ul class="feature-list">
+                    <li>Revenue accounts = $0</li>
+                    <li>Expense accounts = $0</li>
+                    <li>Drawing account = $0</li>
+                    <li>Income Summary = $0</li>
+                </ul>
+                <p><strong>Permanent accounts keep their balances</strong></p>
+                <ul class="feature-list">
+                    <li>Assets stay</li>
+                    <li>Liabilities stay</li>
+                    <li>Capital updated with net income/loss and drawing</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>📝 Summary</h3>
+                <ul class="feature-list">
+                    <li>C-DID = Closing order</li>
+                    <li>RED-C = Temporary accounts to close</li>
+                    <li>Income Summary collects revenue & expenses</li>
+                    <li>All temporary accounts → $0 after closing</li>
+                    <li>Permanent accounts remain open</li>
+                </ul>
+            </div>
+        `
+    }
+};
+
+// TRUE/FALSE QUIZ DATA (25 questions)
+const trueFalseQuestions = [
+    {id:1, question:'The standards and rules that accountants follow are called GAAP (Generally Accepted Accounting Principles).', answer:true, explanation:'TRUE! GAAP = Generally Accepted Accounting Principles (not GAP).', category:'Principles'},
+    {id:2, question:'An account\'s normal balance is always on the side used to record increases.', answer:true, explanation:'TRUE! Assets/Expenses increase with debits. Liabilities/OE/Revenue increase with credits.', category:'Normal Balances'},
+    {id:3, question:'Accounting is called the "language of business."', answer:true, explanation:'TRUE! Accounting communicates financial information.', category:'Basics'},
+    {id:4, question:'Financial accounting is for external users; managerial accounting is for internal users.', answer:true, explanation:'TRUE! Financial = external (investors, banks). Managerial = internal (managers).', category:'Types'},
+    {id:5, question:'Permanent accounts carry balances forward to the next period.', answer:true, explanation:'TRUE! Permanent accounts (A, L, OE) continue. Temporary close to zero.', category:'Account Types'},
+    {id:6, question:'Posting transfers information from the general ledger to the trial balance.', answer:false, explanation:'FALSE! Posting is from JOURNAL to LEDGER. Trial balance is prepared FROM ledger.', category:'Cycle'},
+    {id:7, question:'The balance sheet is sometimes called a statement of financial position.', answer:true, explanation:'TRUE! Both names refer to the same financial statement.', category:'Financial Statements'},
+    {id:8, question:'Going Concern assumes a business will operate indefinitely.', answer:true, explanation:'TRUE! Going Concern means business continues indefinitely (not to a fixed date).', category:'Concepts'},
+    {id:9, question:'Temporary accounts are also called nominal accounts.', answer:true, explanation:'TRUE! Temporary = Nominal = Revenue, Expenses, Drawing, COGS.', category:'Account Types'},
+    {id:10, question:'Report form balance sheet lists sections one under the other (vertical).', answer:true, explanation:'TRUE! Report form = vertical. Account form = horizontal.', category:'Financial Statements'},
+    {id:11, question:'After closing, only permanent accounts have balances.', answer:true, explanation:'TRUE! Permanent accounts remain. All temporary accounts close to zero.', category:'Closing'},
+    {id:12, question:'A contra account decreases its related account balance.', answer:true, explanation:'TRUE! Example: Accumulated Depreciation (contra) reduces Equipment.', category:'Contra Accounts'},
+    {id:13, question:'A slide error occurs when a decimal point is moved by mistake.', answer:true, explanation:'TRUE! Slide = decimal moved. Transposition = digits reversed.', category:'Errors'},
+    {id:14, question:'Double-entry accounting means each transaction affects at least two accounts.', answer:true, explanation:'TRUE! At least two accounts (could be more in compound entries).', category:'Double-Entry'},
+    {id:15, question:'In accounting, "ruling" means drawing a line in records.', answer:true, explanation:'TRUE! Ruling = drawing lines. (Not FASB interpretations!)', category:'Procedures'},
+    {id:16, question:'Accounts Receivable Ledger contains individual customer names.', answer:true, explanation:'TRUE! Subsidiary ledgers contain individual account details.', category:'Ledgers'},
+    {id:17, question:'DEAD = Drawing, Expenses, Assets (accounts increasing with debits).', answer:true, explanation:'TRUE! DEAD accounts increase with debits.', category:'DEAD CORL'},
+    {id:18, question:'CORL = Credits, Owner\'s Equity, Revenue, Liabilities (accounts increasing with credits).', answer:true, explanation:'TRUE! CORL accounts increase with credits.', category:'DEAD CORL'},
+    {id:19, question:'The accounting equation is: Assets = Liabilities + Owner\'s Equity.', answer:true, explanation:'TRUE! This equation must always balance.', category:'Equation'},
+    {id:20, question:'Revenue increases owner\'s equity; expenses decrease it.', answer:true, explanation:'TRUE! Revenue → OE ↑. Expenses → OE ↓.', category:'Owner\'s Equity'},
+    {id:21, question:'Insurance adjustment: DR Insurance Expense, CR Prepaid Insurance.', answer:true, explanation:'TRUE! Expired insurance moves from asset to expense.', category:'Adjustments'},
+    {id:22, question:'Supplies adjustment: DR Supplies Expense, CR Supplies.', answer:true, explanation:'TRUE! Used supplies move from asset to expense.', category:'Adjustments'},
+    {id:23, question:'RED-C = Revenue, Expenses, Drawing, COGS (temporary accounts).', answer:true, explanation:'TRUE! RED-C accounts close at year-end.', category:'Closing'},
+    {id:24, question:'C-DID = Closing order: Credits, Debits, Income, Drawing.', answer:true, explanation:'TRUE! Close revenue, then expenses, then Income Summary, then Drawing.', category:'Closing'},
+    {id:25, question:'PAUL = Prepaid = Asset, Unearned = Liability.', answer:true, explanation:'TRUE! Essential for remembering adjustment types.', category:'Adjustments'}
+];
+    // TRUE/FALSE QUIZ
+let currentTFQuestion = 0;
+let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
+    completed: [], correct: [], answers: {}
+};
+
+function startTrueFalse() {
+    currentTFQuestion = 0;
+    renderTFQuestion();
+    showSection('truefalse-viewer');
+}
+
+function renderTFQuestion() {
+    const q = trueFalseQuestions[currentTFQuestion];
+    const userAnswer = tfProgress.answers[q.id];
+    const isAnswered = userAnswer !== undefined;
+    
+    let html = `
+        <div class="hero">
+            <h1>Question ${currentTFQuestion + 1} of ${trueFalseQuestions.length}</h1>
+            <p class="hero-subtitle">${q.category}</p>
+        </div>
+        <div class="quiz-question">
+            <div class="question-text">${q.question}</div>
+            <div class="answer-options">
+                <div class="answer-option ${isAnswered && userAnswer === true ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, true)">
+                    <div class="option-letter">T</div>
+                    <div>TRUE</div>
+                </div>
+                <div class="answer-option ${isAnswered && userAnswer === false ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, false)">
+                    <div class="option-letter">F</div>
+                    <div>FALSE</div>
+                </div>
+            </div>
+            ${isAnswered ? `
+                <div class="quiz-explanation show">
+                    <strong>${userAnswer === q.answer ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
+                    ${q.explanation}
+                </div>
+            ` : ''}
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:2rem;">
+            ${currentTFQuestion > 0 ? '<button class="btn btn-secondary" onclick="prevTF()">← Previous</button>' : ''}
+            ${currentTFQuestion < trueFalseQuestions.length - 1 ? 
+                '<button class="btn" onclick="nextTF()">Next →</button>' : 
+                '<button class="btn" onclick="finishTF()">Finish Quiz</button>'}
+        </div>
+    `;
+    document.getElementById('tfContent').innerHTML = html;
+}
+
+function answerTF(id, answer) {
+    const q = trueFalseQuestions.find(q => q.id === id);
+    tfProgress.answers[id] = answer;
+    if (!tfProgress.completed.includes(id)) {
+        tfProgress.completed.push(id);
+    }
+    if (answer === q.answer && !tfProgress.correct.includes(id)) {
+        tfProgress.correct.push(id);
+        Progress.points += 5;
+        Progress.save(Progress.get());
+    }
+    localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+    updateTFStats();
+    renderTFQuestion();
+}
+
+function nextTF() {
+    if (currentTFQuestion < trueFalseQuestions.length - 1) {
+        currentTFQuestion++;
+        renderTFQuestion();
+    }
+}
+
+function prevTF() {
+    if (currentTFQuestion > 0) {
+        currentTFQuestion--;
+        renderTFQuestion();
+    }
+}
+
+function finishTF() {
+    const score = Math.round((tfProgress.correct.length / trueFalseQuestions.length) * 100);
+    alert(`Quiz Complete!\n\nScore: ${tfProgress.correct.length}/${trueFalseQuestions.length} (${score}%)`);
+    showSection('truefalse');
+}
+
+function resetTrueFalse() {
+    if (confirm('Reset all True/False progress?')) {
+        tfProgress = {completed: [], correct: [], answers: {}};
+        localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+        updateTFStats();
+        showSection('truefalse');
+    }
+}
+
+function updateTFStats() {
+    const elem = document.getElementById('tfCompleted');
+    if (elem) {
+        elem.textContent = tfProgress.completed.length;
+        const accuracy = tfProgress.completed.length > 0
+            ? Math.round((tfProgress.correct.length / tfProgress.completed.length) * 100)
+            : 0;
+        document.getElementById('tfAccuracy').textContent = accuracy + '%';
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', updateTFStats);
+    </script>
+</body>
+</html>
