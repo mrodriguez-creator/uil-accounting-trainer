@@ -454,6 +454,14 @@
                     </div>
                     <div class="action-arrow">→</div>
                 </div>
+                <div class="action-card" onclick="window.open('math-practice-standalone.html', '_blank')">
+                    <div class="action-icon">🧮</div>
+                    <div class="action-content">
+                        <h3>Math Calculations (45 Problems)</h3>
+                        <p>Bank reconciliation, payroll, depreciation</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
             </div>
         </section>
 
@@ -510,7 +518,31 @@
 
         <!-- Ttrue/False Section -->
 
-<!-- TRUE/FALSE QUIZ SECTION -->
+        <!-- TESTS/QUIZZES SECTION -->
+        <section id="tests" class="section">
+            <div class="hero">
+                <h1>Practice Quizzes</h1>
+                <p class="hero-subtitle">Test your knowledge!</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card" onclick="startQuiz()">
+                    <span class="badge badge-intermediate">Intermediate</span>
+                    <span style="color: var(--text-muted);">📝 10 questions</span>
+                    <h3>Account Classification Quiz</h3>
+                    <p>Test your understanding of DEAD CORL and account types</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
+                </div>
+                
+                <div class="card" onclick="showSection('truefalse')">
+                    <span class="badge badge-beginner">Beginner</span>
+                    <span style="color: var(--text-muted);">✓ 25 questions</span>
+                    <h3>True/False Quiz</h3>
+                    <p>Real UIL test questions with instant feedback</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
+                </div>
+            </div>
+        </section>
 <section id="truefalse" class="section">
     <div class="hero">
         <h1>True/False Quiz</h1>
@@ -1091,117 +1123,6 @@ const trueFalseQuestions = [
     {id:24, question:'C-DID = Closing order: Credits, Debits, Income, Drawing.', answer:true, explanation:'TRUE! Close revenue, then expenses, then Income Summary, then Drawing.', category:'Closing'},
     {id:25, question:'PAUL = Prepaid = Asset, Unearned = Liability.', answer:true, explanation:'TRUE! Essential for remembering adjustment types.', category:'Adjustments'}
 ];
-    // TRUE/FALSE QUIZ
-let currentTFQuestion = 0;
-let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
-    completed: [], correct: [], answers: {}
-};
-
-function startTrueFalse() {
-    currentTFQuestion = 0;
-    renderTFQuestion();
-    showSection('truefalse-viewer');
-}
-
-function renderTFQuestion() {
-    const q = trueFalseQuestions[currentTFQuestion];
-    const userAnswer = tfProgress.answers[q.id];
-    const isAnswered = userAnswer !== undefined;
-    
-    let html = `
-        <div class="hero">
-            <h1>Question ${currentTFQuestion + 1} of ${trueFalseQuestions.length}</h1>
-            <p class="hero-subtitle">${q.category}</p>
-        </div>
-        <div class="quiz-question">
-            <div class="question-text">${q.question}</div>
-            <div class="answer-options">
-                <div class="answer-option ${isAnswered && userAnswer === true ? 'selected' : ''}" 
-                     onclick="answerTF(${q.id}, true)">
-                    <div class="option-letter">T</div>
-                    <div>TRUE</div>
-                </div>
-                <div class="answer-option ${isAnswered && userAnswer === false ? 'selected' : ''}" 
-                     onclick="answerTF(${q.id}, false)">
-                    <div class="option-letter">F</div>
-                    <div>FALSE</div>
-                </div>
-            </div>
-            ${isAnswered ? `
-                <div class="quiz-explanation show">
-                    <strong>${userAnswer === q.answer ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
-                    ${q.explanation}
-                </div>
-            ` : ''}
-        </div>
-        <div style="display:flex; gap:1rem; margin-top:2rem;">
-            ${currentTFQuestion > 0 ? '<button class="btn btn-secondary" onclick="prevTF()">← Previous</button>' : ''}
-            ${currentTFQuestion < trueFalseQuestions.length - 1 ? 
-                '<button class="btn" onclick="nextTF()">Next →</button>' : 
-                '<button class="btn" onclick="finishTF()">Finish Quiz</button>'}
-        </div>
-    `;
-    document.getElementById('tfContent').innerHTML = html;
-}
-
-function answerTF(id, answer) {
-    const q = trueFalseQuestions.find(q => q.id === id);
-    tfProgress.answers[id] = answer;
-    if (!tfProgress.completed.includes(id)) {
-        tfProgress.completed.push(id);
-    }
-    if (answer === q.answer && !tfProgress.correct.includes(id)) {
-        tfProgress.correct.push(id);
-        Progress.points += 5;
-        Progress.save(Progress.get());
-    }
-    localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
-    updateTFStats();
-    renderTFQuestion();
-}
-
-function nextTF() {
-    if (currentTFQuestion < trueFalseQuestions.length - 1) {
-        currentTFQuestion++;
-        renderTFQuestion();
-    }
-}
-
-function prevTF() {
-    if (currentTFQuestion > 0) {
-        currentTFQuestion--;
-        renderTFQuestion();
-    }
-}
-
-function finishTF() {
-    const score = Math.round((tfProgress.correct.length / trueFalseQuestions.length) * 100);
-    alert(`Quiz Complete!\n\nScore: ${tfProgress.correct.length}/${trueFalseQuestions.length} (${score}%)`);
-    showSection('truefalse');
-}
-
-function resetTrueFalse() {
-    if (confirm('Reset all True/False progress?')) {
-        tfProgress = {completed: [], correct: [], answers: {}};
-        localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
-        updateTFStats();
-        showSection('truefalse');
-    }
-}
-
-function updateTFStats() {
-    const elem = document.getElementById('tfCompleted');
-    if (elem) {
-        elem.textContent = tfProgress.completed.length;
-        const accuracy = tfProgress.completed.length > 0
-            ? Math.round((tfProgress.correct.length / tfProgress.completed.length) * 100)
-            : 0;
-        document.getElementById('tfAccuracy').textContent = accuracy + '%';
-    }
-}
-
-// Initialize on load
-document.addEventListener('DOMContentLoaded', updateTFStats);
     </script>
 </body>
 </html>
