@@ -374,6 +374,7 @@
             <li><button class="nav-btn active" onclick="showSection('home')">Home</button></li>
             <li><button class="nav-btn" onclick="showSection('lessons')">Lessons</button></li>
             <li><button class="nav-btn" onclick="showSection('flashcards')">Flashcards</button></li>
+            <li><button class="nav-btn" onclick="showSection('truefalse')">True/False</button></li>
             <li><button class="nav-btn" onclick="showSection('tests')">Tests</button></li>
             <li><button class="nav-btn" onclick="showSection('about')">About</button></li>
         </ul>
@@ -445,6 +446,14 @@
                     </div>
                     <div class="action-arrow">→</div>
                 </div>
+                <div class="action-card" onclick="showSection('truefalse')">
+                    <div class="action-icon">✓</div>
+                    <div class="action-content">
+                    <h3>True/False Quiz (25 Questions)</h3>
+                    <p>Real UIL test questions with explanations</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
             </div>
         </section>
 
@@ -483,7 +492,40 @@
                 </div>
             </div>
         </section>
+<section id="truefalse" class="section">
+    <div class="hero">
+        <h1>True/False Quiz</h1>
+        <p class="hero-subtitle">25 Questions from Real UIL Tests</p>
+    </div>
 
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="stat-icon">✓</div>
+            <div>
+                <div class="stat-value" id="tfCompleted">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="stat-card secondary">
+            <div class="stat-icon">🎯</div>
+            <div>
+                <div class="stat-value" id="tfAccuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+        <button class="btn" onclick="startTrueFalse()">Start Quiz →</button>
+        <button class="btn btn-secondary" onclick="resetTrueFalse()">Reset Progress</button>
+    </div>
+</section>
+
+<!-- TRUE/FALSE QUIZ VIEWER -->
+<section id="truefalse-viewer" class="section">
+    <button class="back-btn" onclick="showSection('truefalse')">← Back</button>
+    <div id="tfContent"></div>
+</section>
         <!-- TESTS SECTION -->
         <section id="tests" class="section">
             <div class="hero">
@@ -581,6 +623,127 @@
     </footer>
 
     <script>
+        // TRUE/FALSE QUIZ
+let currentTFQuestion = 0;
+let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
+    completed: [], correct: [], answers: {}
+};
+
+function startTrueFalse() {
+    currentTFQuestion = 0;
+    renderTFQuestion();
+    showSection('truefalse-viewer');
+}
+
+function renderTFQuestion() {
+    const q = trueFalseQuestions[currentTFQuestion];
+    const userAnswer = tfProgress.answers[q.id];
+    const isAnswered = userAnswer !== undefined;
+    
+    let html = `
+        <div class="hero">
+            <h1>Question ${currentTFQuestion + 1} of ${trueFalseQuestions.length}</h1>
+            <p class="hero-subtitle">${q.category}</p>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">${q.question}</div>
+            
+            <div class="answer-options">
+                <div class="answer-option ${isAnswered && userAnswer === true ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, true)">
+                    <div class="option-letter">T</div>
+                    <div>TRUE</div>
+                </div>
+                <div class="answer-option ${isAnswered && userAnswer === false ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, false)">
+                    <div class="option-letter">F</div>
+                    <div>FALSE</div>
+                </div>
+            </div>
+            
+            ${isAnswered ? `
+                <div class="quiz-explanation show">
+                    <strong>${userAnswer === q.answer ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
+                    ${q.explanation}
+                </div>
+            ` : ''}
+        </div>
+        
+        <div style="display:flex; gap:1rem; margin-top:2rem;">
+            ${currentTFQuestion > 0 ? '<button class="btn btn-secondary" onclick="prevTF()">← Previous</button>' : ''}
+            ${currentTFQuestion < trueFalseQuestions.length - 1 ? 
+                '<button class="btn" onclick="nextTF()">Next →</button>' : 
+                '<button class="btn" onclick="finishTF()">Finish Quiz</button>'}
+        </div>
+    `;
+    
+    document.getElementById('tfContent').innerHTML = html;
+}
+
+function answerTF(id, answer) {
+    const q = trueFalseQuestions.find(q => q.id === id);
+    tfProgress.answers[id] = answer;
+    
+    if (!tfProgress.completed.includes(id)) {
+        tfProgress.completed.push(id);
+    }
+    
+    if (answer === q.answer && !tfProgress.correct.includes(id)) {
+        tfProgress.correct.push(id);
+        Progress.points += 5;
+        Progress.save(Progress.get());
+    }
+    
+    localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+    updateTFStats();
+    renderTFQuestion();
+}
+
+function nextTF() {
+    if (currentTFQuestion < trueFalseQuestions.length - 1) {
+        currentTFQuestion++;
+        renderTFQuestion();
+    }
+}
+
+function prevTF() {
+    if (currentTFQuestion > 0) {
+        currentTFQuestion--;
+        renderTFQuestion();
+    }
+}
+
+function finishTF() {
+    const score = Math.round((tfProgress.correct.length / trueFalseQuestions.length) * 100);
+    alert(`Quiz Complete!\n\nScore: ${tfProgress.correct.length}/${trueFalseQuestions.length} (${score}%)`);
+    showSection('truefalse');
+}
+
+function resetTrueFalse() {
+    if (confirm('Reset all True/False progress?')) {
+        tfProgress = {completed: [], correct: [], answers: {}};
+        localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+        updateTFStats();
+        showSection('truefalse');
+    }
+}
+
+function updateTFStats() {
+    document.getElementById('tfCompleted').textContent = tfProgress.completed.length;
+    const accuracy = tfProgress.completed.length > 0
+        ? Math.round((tfProgress.correct.length / tfProgress.completed.length) * 100)
+        : 0;
+    document.getElementById('tfAccuracy').textContent = accuracy + '%';
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('tfCompleted')) {
+        updateTFStats();
+    }
+});
+        
         // DATA
         const flashcardData = {acronyms: [{term:'DEAD',definition:'Debits increase: Drawing, Expenses, Assets, Drawing',category:'DR/CR'},{term:'CORL',definition:'Credits increase: Credits, Owner\'s Equity, Revenue, Liabilities',category:'DR/CR'},{term:'A=L+OE',definition:'Assets = Liabilities + Owner\'s Equity',category:'Equation'},{term:'RICED',definition:'Capital changes: Revenue ↑, Investments ↑, Cost of Goods ↓, Expenses ↓, Drawing ↓',category:'Capital'},{term:'RED-C',definition:'Temporary accounts: Revenue, Expense, Drawing, Cost of Goods Sold',category:'Accounts'},{term:'C-DID',definition:'Closing order: Credits (Rev), Debits (Exp), Income, Drawing',category:'Closing'},{term:'REN',definition:'Revenue - Expenses = Net Income',category:'Income'},{term:'BOAP',definition:'Buy On Accounts Payable',category:'Purchases'},{term:'SOAR',definition:'Sell On Accounts Receivable',category:'Sales'},{term:'CARPET-W-FACTR',definition:'Accounting Cycle: Collect, Analyze, Record, Post, Trial Balance, Worksheet, Financials, Adjusting, Closing, Trial Balance, Reversing',category:'Cycle'},{term:'SE-E',definition:'Salary Expense for employeE',category:'Payroll'},{term:'PTE-R',definition:'Payroll Tax Expense for employeR',category:'Payroll'},{term:'LIFO',definition:'Last In, First Out',category:'Inventory'},{term:'FIFO',definition:'First In, First Out',category:'Inventory'},{term:'PAUL',definition:'Prepaid = Asset, Unearned = Liability',category:'Adjustments'},{term:'COW',definition:'Capital on Worksheet',category:'Abbrev'},{term:'SOT',definition:'Supplies on Trial Balance',category:'Abbrev'},{term:'POT',definition:'Prepaid insurance on Trial Balance',category:'Abbrev'},{term:'SOCIOE',definition:'Statement of Changes in Owner\'s Equity',category:'Financial'},{term:'AUA',definition:'Allowance for Uncollectible Accounts',category:'A/R'},{term:'PICEPAR',definition:'Paid-In Capital in Excess of Par',category:'Corps'}]};
         const quizQuestions = [{question:'Accounts Payable is what type of account?',answers:['Asset','Liability','Capital','Revenue','Expense'],correct:1,explanation:'Accounts Payable is a Liability. Liabilities are in CORL with CREDIT balances.'},{question:'Normal balance for Sales (Revenue)?',answers:['Debit','Credit'],correct:1,explanation:'Revenue = CREDIT (CORL).'},{question:'Rent Expense is classified as:',answers:['Asset','Liability','Expense','Revenue'],correct:2,explanation:'Rent Expense is an Expense (DEAD = Debit).'},{question:'Supplies has what normal balance?',answers:['Debit','Credit'],correct:0,explanation:'Supplies is an Asset (DEAD = Debit).'},{question:'Owner, Drawing normal balance:',answers:['Debit','Credit'],correct:0,explanation:'Drawing = DEBIT (reduces equity).'},{question:'Which accounts close at year-end?',answers:['Assets only','Revenue, Expenses, Drawing','Assets & Liabilities','Only Capital'],correct:1,explanation:'Temporary accounts (RED-C) close.'},{question:'Cash is classified as:',answers:['Permanent Asset; DR','Temporary Asset; CR','Liability; CR','Revenue; CR'],correct:0,explanation:'Cash is a permanent Asset with DR balance.'},{question:'D in DEAD stands for?',answers:['Dividends','Drawing','Deferred','Discounts'],correct:1,explanation:'DEAD = Drawing, Expenses, Assets, Drawing.'},{question:'Capital account is:',answers:['Temporary; DR','Permanent; CR','Temporary; CR','Permanent; DR'],correct:1,explanation:'Capital is permanent OE with CR balance.'},{question:'Notes Payable normal balance?',answers:['Debit','Credit'],correct:1,explanation:'Notes Payable is a Liability (CR).'}];
@@ -622,6 +785,36 @@
         
         // INIT
         document.addEventListener('DOMContentLoaded',()=>{Progress.init();document.addEventListener('keydown',e=>{const s=document.getElementById('flashcard-viewer');if(!s.classList.contains('active'))return;if(e.key==='ArrowLeft')previousCard();if(e.key==='ArrowRight')nextCard();if(e.key===' '){e.preventDefault();flipCard()}})});
+
+        // TRUE/FALSE QUIZ DATA (25 questions from real UIL tests)
+        const trueFalseQuestions = [
+    {id:1, question:'The standards and rules that accountants follow are called GAAP (Generally Accepted Accounting Principles).', answer:true, explanation:'TRUE! GAAP = Generally Accepted Accounting Principles (not GAP).', category:'Principles'},
+    {id:2, question:'An account\'s normal balance is always on the side used to record increases.', answer:true, explanation:'TRUE! Assets/Expenses increase with debits. Liabilities/OE/Revenue increase with credits.', category:'Normal Balances'},
+    {id:3, question:'Accounting is called the "language of business."', answer:true, explanation:'TRUE! Accounting communicates financial information.', category:'Basics'},
+    {id:4, question:'Financial accounting is for external users; managerial accounting is for internal users.', answer:true, explanation:'TRUE! Financial = external (investors, banks). Managerial = internal (managers).', category:'Types'},
+    {id:5, question:'Permanent accounts carry balances forward to the next period.', answer:true, explanation:'TRUE! Permanent accounts (A, L, OE) continue. Temporary close to zero.', category:'Account Types'},
+    {id:6, question:'Posting transfers information from the general ledger to the trial balance.', answer:false, explanation:'FALSE! Posting is from JOURNAL to LEDGER. Trial balance is prepared FROM ledger.', category:'Cycle'},
+    {id:7, question:'The balance sheet is sometimes called a statement of financial position.', answer:true, explanation:'TRUE! Both names refer to the same financial statement.', category:'Financial Statements'},
+    {id:8, question:'Going Concern assumes a business will operate indefinitely.', answer:true, explanation:'TRUE! Going Concern means business continues indefinitely (not to a fixed date).', category:'Concepts'},
+    {id:9, question:'Temporary accounts are also called nominal accounts.', answer:true, explanation:'TRUE! Temporary = Nominal = Revenue, Expenses, Drawing, COGS.', category:'Account Types'},
+    {id:10, question:'Report form balance sheet lists sections one under the other (vertical).', answer:true, explanation:'TRUE! Report form = vertical. Account form = horizontal.', category:'Financial Statements'},
+    {id:11, question:'After closing, only permanent accounts have balances.', answer:true, explanation:'TRUE! Permanent accounts remain. All temporary accounts close to zero.', category:'Closing'},
+    {id:12, question:'A contra account decreases its related account balance.', answer:true, explanation:'TRUE! Example: Accumulated Depreciation (contra) reduces Equipment.', category:'Contra Accounts'},
+    {id:13, question:'A slide error occurs when a decimal point is moved by mistake.', answer:true, explanation:'TRUE! Slide = decimal moved. Transposition = digits reversed.', category:'Errors'},
+    {id:14, question:'Double-entry accounting means each transaction affects at least two accounts.', answer:true, explanation:'TRUE! At least two accounts (could be more in compound entries).', category:'Double-Entry'},
+    {id:15, question:'In accounting, "ruling" means drawing a line in records.', answer:true, explanation:'TRUE! Ruling = drawing lines. (Not FASB interpretations!)', category:'Procedures'},
+    {id:16, question:'Accounts Receivable Ledger contains individual customer names.', answer:true, explanation:'TRUE! Subsidiary ledgers contain individual account details.', category:'Ledgers'},
+    {id:17, question:'DEAD = Drawing, Expenses, Assets, Drawing (accounts increasing with debits).', answer:true, explanation:'TRUE! DEAD accounts increase with debits.', category:'DEAD CORL'},
+    {id:18, question:'CORL = Credits, Owner\'s Equity, Revenue, Liabilities (accounts increasing with credits).', answer:true, explanation:'TRUE! CORL accounts increase with credits.', category:'DEAD CORL'},
+    {id:19, question:'The accounting equation is: Assets = Liabilities + Owner\'s Equity.', answer:true, explanation:'TRUE! This equation must always balance.', category:'Equation'},
+    {id:20, question:'Revenue increases owner\'s equity; expenses decrease it.', answer:true, explanation:'TRUE! Revenue → OE ↑. Expenses → OE ↓.', category:'Owner\'s Equity'},
+    {id:21, question:'Insurance adjustment: DR Insurance Expense, CR Prepaid Insurance.', answer:true, explanation:'TRUE! Expired insurance moves from asset to expense.', category:'Adjustments'},
+    {id:22, question:'Supplies adjustment: DR Supplies Expense, CR Supplies.', answer:true, explanation:'TRUE! Used supplies move from asset to expense.', category:'Adjustments'},
+    {id:23, question:'RED-C = Revenue, Expenses, Drawing, COGS (temporary accounts).', answer:true, explanation:'TRUE! RED-C accounts close at year-end.', category:'Closing'},
+    {id:24, question:'C-DID = Closing order: Credits, Debits, Income, Drawing.', answer:true, explanation:'TRUE! Close revenue, then expenses, then Income Summary, then Drawing.', category:'Closing'},
+    {id:25, question:'PAUL = Prepaid = Asset, Unearned = Liability.', answer:true, explanation:'TRUE! Essential for remembering adjustment types.', category:'Adjustments'}
+];
+    
     </script>
 </body>
 </html>
