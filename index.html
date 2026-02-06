@@ -584,7 +584,30 @@
         // DATA
         const flashcardData = {acronyms: [{term:'DEAD',definition:'Debits increase: Drawing, Expenses, Assets, Drawing',category:'DR/CR'},{term:'CORL',definition:'Credits increase: Credits, Owner\'s Equity, Revenue, Liabilities',category:'DR/CR'},{term:'A=L+OE',definition:'Assets = Liabilities + Owner\'s Equity',category:'Equation'},{term:'RICED',definition:'Capital changes: Revenue ↑, Investments ↑, Cost of Goods ↓, Expenses ↓, Drawing ↓',category:'Capital'},{term:'RED-C',definition:'Temporary accounts: Revenue, Expense, Drawing, Cost of Goods Sold',category:'Accounts'},{term:'C-DID',definition:'Closing order: Credits (Rev), Debits (Exp), Income, Drawing',category:'Closing'},{term:'REN',definition:'Revenue - Expenses = Net Income',category:'Income'},{term:'BOAP',definition:'Buy On Accounts Payable',category:'Purchases'},{term:'SOAR',definition:'Sell On Accounts Receivable',category:'Sales'},{term:'CARPET-W-FACTR',definition:'Accounting Cycle: Collect, Analyze, Record, Post, Trial Balance, Worksheet, Financials, Adjusting, Closing, Trial Balance, Reversing',category:'Cycle'},{term:'SE-E',definition:'Salary Expense for employeE',category:'Payroll'},{term:'PTE-R',definition:'Payroll Tax Expense for employeR',category:'Payroll'},{term:'LIFO',definition:'Last In, First Out',category:'Inventory'},{term:'FIFO',definition:'First In, First Out',category:'Inventory'},{term:'PAUL',definition:'Prepaid = Asset, Unearned = Liability',category:'Adjustments'},{term:'COW',definition:'Capital on Worksheet',category:'Abbrev'},{term:'SOT',definition:'Supplies on Trial Balance',category:'Abbrev'},{term:'POT',definition:'Prepaid insurance on Trial Balance',category:'Abbrev'},{term:'SOCIOE',definition:'Statement of Changes in Owner\'s Equity',category:'Financial'},{term:'AUA',definition:'Allowance for Uncollectible Accounts',category:'A/R'},{term:'PICEPAR',definition:'Paid-In Capital in Excess of Par',category:'Corps'}]};
         const quizQuestions = [{question:'Accounts Payable is what type of account?',answers:['Asset','Liability','Capital','Revenue','Expense'],correct:1,explanation:'Accounts Payable is a Liability. Liabilities are in CORL with CREDIT balances.'},{question:'Normal balance for Sales (Revenue)?',answers:['Debit','Credit'],correct:1,explanation:'Revenue = CREDIT (CORL).'},{question:'Rent Expense is classified as:',answers:['Asset','Liability','Expense','Revenue'],correct:2,explanation:'Rent Expense is an Expense (DEAD = Debit).'},{question:'Supplies has what normal balance?',answers:['Debit','Credit'],correct:0,explanation:'Supplies is an Asset (DEAD = Debit).'},{question:'Owner, Drawing normal balance:',answers:['Debit','Credit'],correct:0,explanation:'Drawing = DEBIT (reduces equity).'},{question:'Which accounts close at year-end?',answers:['Assets only','Revenue, Expenses, Drawing','Assets & Liabilities','Only Capital'],correct:1,explanation:'Temporary accounts (RED-C) close.'},{question:'Cash is classified as:',answers:['Permanent Asset; DR','Temporary Asset; CR','Liability; CR','Revenue; CR'],correct:0,explanation:'Cash is a permanent Asset with DR balance.'},{question:'D in DEAD stands for?',answers:['Dividends','Drawing','Deferred','Discounts'],correct:1,explanation:'DEAD = Drawing, Expenses, Assets, Drawing.'},{question:'Capital account is:',answers:['Temporary; DR','Permanent; CR','Temporary; CR','Permanent; DR'],correct:1,explanation:'Capital is permanent OE with CR balance.'},{question:'Notes Payable normal balance?',answers:['Debit','Credit'],correct:1,explanation:'Notes Payable is a Liability (CR).'}];
-        
+        // MATH PRACTICE PROBLEMS DATA
+const mathProblems = {
+    bank: [
+        {id:'bank-1',difficulty:'easy',title:'Find Adjusted Bank Balance',
+         problem:'Bank: $4,650 | DIT: $1,870 | O/S: $3,440',
+         answer:3080,solution:'$4,650 + $1,870 - $3,440 = $3,080'},
+        {id:'bank-2',difficulty:'medium',title:'Find Checkbook Balance',
+         problem:'Checkbook: $3,050 | SC: $15 | NSF: $200+$30 | Error: +$45',
+         answer:2850,solution:'$3,050 + $45 - $15 - $200 - $30 = $2,850'},
+        // ... (see MATH-PRACTICE-MODULE.js for all 45 problems)
+    ],
+    payroll: [
+        {id:'pay-1',difficulty:'easy',title:'Overtime Pay',
+         problem:'Rate: $18.40/hr | Hours: 45 | OT after 40 at 1.5×',
+         answer:874,solution:'40×$18.40 + 5×($18.40×1.5) = $874'},
+        // ... more payroll problems
+    ],
+    depreciation: [
+        {id:'depr-1',difficulty:'easy',title:'Straight-Line',
+         problem:'Cost: $50,000 | Salvage: $5,000 | Life: 10 years',
+         answer:4500,solution:'($50,000-$5,000)/10 = $4,500/year'},
+        // ... more depreciation problems
+    ]
+};
         let currentFlashcardIndex=0,isFlipped=false,currentQuizAnswers=[],quizSubmitted=false;
         
         // PROGRESS
