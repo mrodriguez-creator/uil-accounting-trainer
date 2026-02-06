@@ -50,16 +50,14 @@
             display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem; margin-bottom: 2rem;
         }
-.problem-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
-    border: 1px solid var(--border); border-radius: 1rem;
-    padding: 2rem; margin-bottom: 2rem; cursor: pointer;
-    transition: all 0.3s;
-}
-.problem-card:hover {
-    transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border-color: var(--primary);
-}
+        .problem-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid var(--border); border-radius: 1rem;
+            padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative;
+        }
+        .problem-card:hover {
+            transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
         }
         .problem-card.completed::after {
             content: "✓"; position: absolute; top: 1rem; right: 1rem;
@@ -158,167 +156,238 @@
     </style>
 </head>
 <body>
-<section id="practice" class="section">
-    <div class="hero">
-        <h1>Math Calculations Practice</h1>
-        <p class="hero-subtitle">45 Real UIL Problems with Solutions</p>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">🧮</div>
-            <div>
-                <div class="stat-value" id="mathCompleted">0</div>
-                <div class="stat-label">Problems Done</div>
-            </div>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Math Calculations Practice</h1>
+            <p style="color: var(--text-muted); font-size: 1.25rem;">45 Real UIL Problems</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon">🎯</div>
-            <div>
-                <div class="stat-value" id="mathAccuracy">0%</div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalProblems">45</div>
+                <div class="stat-label">Total Problems</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="completed">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="accuracy">0%</div>
                 <div class="stat-label">Accuracy</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-value" id="points">0</div>
+                <div class="stat-label">Points</div>
+            </div>
         </div>
+
+        <div class="filters">
+            <div>
+                <strong style="margin-right: 1rem;">Category:</strong>
+                <button class="filter-btn active" onclick="filterBy('category', 'all')">All</button>
+                <button class="filter-btn" onclick="filterBy('category', 'bank')">Bank (10)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'payroll')">Payroll (8)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'depreciation')">Depreciation (5)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'adjustments')">Adjustments (5)</button>
+            </div>
+            <div>
+                <strong style="margin-right: 1rem;">Difficulty:</strong>
+                <button class="filter-btn active" onclick="filterBy('difficulty', 'all')">All</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'easy')">Easy</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'medium')">Medium</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'hard')">Hard</button>
+            </div>
+        </div>
+
+        <div class="problems-grid" id="problemsGrid"></div>
     </div>
 
-    <h2>Choose Category</h2>
-    <div class="grid-3">
-        <div class="card" onclick="showMathCategory('bank')">
-            <span class="badge badge-beginner">10 Problems</span>
-            <h3>🏦 Bank Reconciliation</h3>
-            <p>Adjusted balances, NSF checks, outstanding checks</p>
-            <button class="btn" style="margin-top:1rem;">Start →</button>
-        </div>
-        <div class="card" onclick="showMathCategory('payroll')">
-            <span class="badge badge-intermediate">8 Problems</span>
-            <h3>💰 Payroll Calculations</h3>
-            <p>Overtime, commissions, taxes, net pay</p>
-            <button class="btn" style="margin-top:1rem;">Start →</button>
-        </div>
-        <div class="card" onclick="showMathCategory('depreciation')">
-            <span class="badge badge-intermediate">5 Problems</span>
-            <h3>📉 Depreciation</h3>
-            <p>Straight-line, DDB, partial year</p>
-            <button class="btn" style="margin-top:1rem;">Start →</button>
-        </div>
-        <div class="card" onclick="showMathCategory('adjustments')">
-            <span class="badge badge-beginner">5 Problems</span>
-            <h3>📝 Adjusting Entries</h3>
-            <p>Supplies, insurance, inventory adjustments</p>
-            <button class="btn" style="margin-top:1rem;">Start →</button>
+    <div class="modal" id="problemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="problem-content" id="problemContent"></div>
+            <div class="answer-section">
+                <h3>Your Answer:</h3>
+                <div class="answer-input">
+                    <input type="number" step="0.01" id="answerInput" placeholder="Enter answer (numbers only)">
+                    <button class="btn" onclick="checkAnswer()">Check Answer</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+            <div style="margin: 2rem 0;">
+                <button class="btn btn-secondary" onclick="toggleSolution()">Show Solution</button>
+                <button class="btn btn-secondary" onclick="toggleHint()">Show Hint</button>
+            </div>
+            <div class="solution" id="solution"></div>
+            <div class="hint-box" id="hint" style="display: none;"></div>
         </div>
     </div>
-</section>
-    <!-- MATH PROBLEM VIEWER -->
-<section id="math-viewer" class="section">
-    <button class="back-btn" onclick="showSection('practice')">← Back</button>
-    <div id="mathContent"></div>
-</section>
 
     <script src="MATH-PRACTICE-MODULE.js"></script>
     <script>
-let currentMathProblem = null;
-let mathProgress = JSON.parse(localStorage.getItem('mathProgress')) || {
-    completed: [], correct: [], points: 0
-};
+        let currentProblem = null;
+        let filters = { category: 'all', difficulty: 'all' };
+        let progress = JSON.parse(localStorage.getItem('mathProgress')) || {
+            completed: [],
+            correct: [],
+            attempts: {},
+            points: 0
+        };
 
-function showMathCategory(category) {
-    const problems = mathProblems[category] || [];
-    let html = `<div class="hero"><h1>Math Practice</h1></div>`;
-    
-    problems.forEach(p => {
-        const completed = mathProgress.completed.includes(p.id) ? '✓ ' : '';
-        html += `
-            <div class="problem-card" onclick="showMathProblem('${category}','${p.id}')">
-                <span class="badge badge-${p.difficulty}">${p.difficulty}</span>
-                <h3>${completed}${p.title}</h3>
-                <p>${p.problem}</p>
-            </div>
-        `;
-    });
-    
-    document.getElementById('mathContent').innerHTML = html;
-    showSection('math-viewer');
-}
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProblems();
+            updateStats();
+        });
 
-function showMathProblem(category, id) {
-    const problem = mathProblems[category].find(p => p.id === id);
-    currentMathProblem = problem;
-    
-    const html = `
-        <div class="hero"><h1>${problem.title}</h1></div>
-        <div class="lesson-section">
-            <h3>Problem:</h3>
-            <p style="font-size:1.125rem;">${problem.problem}</p>
-            
-            <div style="margin:2rem 0;">
-                <input type="number" id="mathAnswer" placeholder="Your answer" 
-                       style="padding:1rem;font-size:1.25rem;width:200px;
-                              background:rgba(15,23,42,0.8);border:2px solid var(--border);
-                              border-radius:0.5rem;color:var(--text-light);">
-                <button class="btn" onclick="checkMathAnswer()">Check Answer</button>
-            </div>
-            
-            <div id="mathFeedback" style="margin:1rem 0;"></div>
-            
-            <button class="btn btn-secondary" onclick="showMathSolution()">
-                Show Solution
-            </button>
-            
-            <div id="mathSolution" style="display:none;margin-top:2rem;
-                 background:rgba(59,130,246,0.1);padding:1.5rem;border-radius:0.5rem;">
-                <h3>Solution:</h3>
-                <p>${problem.solution}</p>
-                <p style="margin-top:1rem;"><strong>Answer: $${problem.answer.toFixed(2)}</strong></p>
-            </div>
-        </div>
-    `;
-    
-    document.getElementById('mathContent').innerHTML = html;
-}
+        function renderProblems() {
+            const grid = document.getElementById('problemsGrid');
+            grid.innerHTML = '';
+            let count = 0;
 
-function checkMathAnswer() {
-    if (!currentMathProblem) return;
-    
-    const input = parseFloat(document.getElementById('mathAnswer').value);
-    const isCorrect = Math.abs(input - currentMathProblem.answer) < 0.01;
-    const feedback = document.getElementById('mathFeedback');
-    
-    if (isCorrect) {
-        feedback.innerHTML = '<div style="color:var(--secondary);font-weight:600;">✓ Correct!</div>';
-        if (!mathProgress.correct.includes(currentMathProblem.id)) {
-            mathProgress.correct.push(currentMathProblem.id);
-            mathProgress.points += 10;
+            // Flatten all problems
+            const allProblems = [
+                ...mathPracticeProblems.bankReconciliation.map(p => ({ ...p, category: 'bank', categoryName: 'Bank Reconciliation' })),
+                ...mathPracticeProblems.payroll.map(p => ({ ...p, category: 'payroll', categoryName: 'Payroll' })),
+                ...mathPracticeProblems.depreciation.map(p => ({ ...p, category: 'depreciation', categoryName: 'Depreciation' })),
+                ...mathPracticeProblems.adjustments.map(p => ({ ...p, category: 'adjustments', categoryName: 'Adjustments' }))
+            ];
+
+            allProblems.forEach(problem => {
+                // Apply filters
+                if (filters.category !== 'all' && problem.category !== filters.category) return;
+                if (filters.difficulty !== 'all' && problem.difficulty !== filters.difficulty) return;
+
+                count++;
+                const isCompleted = progress.completed.includes(problem.id);
+                const card = document.createElement('div');
+                card.className = 'problem-card' + (isCompleted ? ' completed' : '');
+                card.onclick = () => openProblem(problem);
+                card.innerHTML = `
+                    <span class="badge badge-${problem.difficulty}">${problem.difficulty}</span>
+                    <span class="badge badge-category">${problem.categoryName}</span>
+                    <div class="problem-title">${problem.id.toUpperCase()}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            if (count === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:3rem;">No problems match your filters</p>';
+            }
         }
-        if (!mathProgress.completed.includes(currentMathProblem.id)) {
-            mathProgress.completed.push(currentMathProblem.id);
+
+        function filterBy(type, value) {
+            filters[type] = value;
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProblems();
         }
-        localStorage.setItem('mathProgress', JSON.stringify(mathProgress));
-        updateMathStats();
-    } else {
-        feedback.innerHTML = '<div style="color:var(--danger);font-weight:600;">✗ Try again</div>';
-    }
-}
 
-function showMathSolution() {
-    document.getElementById('mathSolution').style.display = 'block';
-    if (!mathProgress.completed.includes(currentMathProblem.id)) {
-        mathProgress.completed.push(currentMathProblem.id);
-        localStorage.setItem('mathProgress', JSON.stringify(mathProgress));
-        updateMathStats();
-    }
-}
+        function openProblem(problem) {
+            currentProblem = problem;
+            document.getElementById('modalTitle').textContent = problem.id.toUpperCase();
+            document.getElementById('problemContent').innerHTML = problem.problem;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('solution').className = 'solution';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('problemModal').classList.add('active');
+            
+            // Build solution HTML
+            const solutionHTML = `
+                <h3>Step-by-Step Solution:</h3>
+                <ol>${problem.steps.map(step => `<li>${step}</li>`).join('')}</ol>
+                <div class="formula-box">
+                    <strong>Formula:</strong> ${problem.formula}
+                </div>
+                <p style="margin-top: 1rem;"><strong>Correct Answer:</strong> $${problem.answer.toFixed(2)}</p>
+            `;
+            document.getElementById('solution').innerHTML = solutionHTML;
+            document.getElementById('hint').innerHTML = `<strong>💡 Hint:</strong> ${problem.hint}`;
+        }
 
-function updateMathStats() {
-    document.getElementById('mathCompleted').textContent = mathProgress.completed.length;
-    const accuracy = mathProgress.completed.length > 0
-        ? Math.round((mathProgress.correct.length / mathProgress.completed.length) * 100)
-        : 0;
-    document.getElementById('mathAccuracy').textContent = accuracy + '%';
-}
+        function closeModal() {
+            document.getElementById('problemModal').classList.remove('active');
+        }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', updateMathStats);
+        function checkAnswer() {
+            if (!currentProblem) return;
+            
+            const input = parseFloat(document.getElementById('answerInput').value);
+            const feedback = document.getElementById('feedback');
+            const isCorrect = Math.abs(input - currentProblem.answer) < 0.01;
+            
+            // Track attempt
+            if (!progress.attempts[currentProblem.id]) {
+                progress.attempts[currentProblem.id] = 0;
+            }
+            progress.attempts[currentProblem.id]++;
+            
+            if (isCorrect) {
+                feedback.className = 'feedback correct show';
+                feedback.textContent = `✓ Correct! The answer is $${currentProblem.answer.toFixed(2)}`;
+                
+                // Mark as completed
+                if (!progress.completed.includes(currentProblem.id)) {
+                    progress.completed.push(currentProblem.id);
+                }
+                if (!progress.correct.includes(currentProblem.id)) {
+                    progress.correct.push(currentProblem.id);
+                    progress.points += 10;
+                }
+                
+                saveProgress();
+                updateStats();
+                renderProblems();
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.textContent = `✗ Not quite. Try again or view the solution.`;
+            }
+        }
+
+        function toggleSolution() {
+            const solution = document.getElementById('solution');
+            solution.classList.toggle('show');
+            
+            // Mark as completed even if they viewed solution
+            if (!progress.completed.includes(currentProblem.id)) {
+                progress.completed.push(currentProblem.id);
+                saveProgress();
+                updateStats();
+                renderProblems();
+            }
+        }
+
+        function toggleHint() {
+            const hint = document.getElementById('hint');
+            hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveProgress() {
+            localStorage.setItem('mathProgress', JSON.stringify(progress));
+        }
+
+        function updateStats() {
+            document.getElementById('completed').textContent = progress.completed.length;
+            const accuracy = progress.completed.length > 0 
+                ? Math.round((progress.correct.length / progress.completed.length) * 100)
+                : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('points').textContent = progress.points;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Enter' && document.getElementById('problemModal').classList.contains('active')) {
+                checkAnswer();
+            }
+        });
     </script>
 </body>
 </html>
