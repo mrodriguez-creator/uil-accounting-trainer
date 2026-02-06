@@ -844,7 +844,178 @@ const lessons = {
     'account-classification': {
         title: 'Account Classification & DR/CR',
         subtitle: 'Beginner • 20 minutes',
-        content: `[Your existing lesson 1 content]`
+        content: `
+            <div class="lesson-section">
+                <h3>🎯 What You'll Learn</h3>
+                <ul class="feature-list">
+                    <li>The 5 types of accounts in accounting</li>
+                    <li>DEAD CORL - which accounts increase with debits vs credits</li>
+                    <li>Normal balance for each account type</li>
+                    <li>Real examples of each account type</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>1️⃣ The Five Account Types</h3>
+                <p>Every account in accounting falls into one of five categories:</p>
+                <div class="example-box">
+                    <h4>1. ASSETS</h4>
+                    <p>Things the business OWNS that have value</p>
+                    <p><strong>Examples:</strong> Cash in Bank, Supplies, Equipment, Accounts Receivable, Prepaid Insurance</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>2. LIABILITIES</h4>
+                    <p>Things the business OWES to others</p>
+                    <p><strong>Examples:</strong> Accounts Payable, Notes Payable, Salaries Payable, Unearned Revenue</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>3. OWNER'S EQUITY</h4>
+                    <p>The owner's claim to the assets (what's left after paying debts)</p>
+                    <p><strong>Examples:</strong> Owner, Capital | Owner, Drawing</p>
+                    <p><strong>Formula:</strong> Assets = Liabilities + Owner's Equity</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>4. REVENUE</h4>
+                    <p>Income earned from selling goods or services</p>
+                    <p><strong>Examples:</strong> Sales, Fees Earned, Service Revenue, Interest Income</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>5. EXPENSES</h4>
+                    <p>Costs of running the business</p>
+                    <p><strong>Examples:</strong> Rent Expense, Salary Expense, Supplies Expense, Utilities Expense</p>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>2️⃣ DEAD CORL - Master This!</h3>
+                <p>This acronym tells you which accounts INCREASE with debits vs credits:</p>
+                <div class="dead-corl-grid">
+                    <div class="dead-side">
+                        <h4>DEAD = Debits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>D</strong>rawing</li>
+                            <li><strong>E</strong>xpenses</li>
+                            <li><strong>A</strong>ssets</li>
+                            <li><strong>D</strong>rawing (repeated for emphasis!)</li>
+                        </ul>
+                        <p style="margin-top:1rem;">💡 These accounts INCREASE with DEBITS</p>
+                    </div>
+                    <div class="corl-side">
+                        <h4>CORL = Credits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>C</strong>redits</li>
+                            <li><strong>O</strong>wner's Equity</li>
+                            <li><strong>R</strong>evenue</li>
+                            <li><strong>L</strong>iabilities</li>
+                        </ul>
+                        <p style="margin-top:1rem;">💡 These accounts INCREASE with CREDITS</p>
+                    </div>
+                </div>
+                <p><strong>Memory Tip:</strong> If it's in DEAD, debit it to increase it. If it's in CORL, credit it to increase it!</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>3️⃣ Normal Balances</h3>
+                <p>Each account type has a "normal balance" - the side it usually has a balance on:</p>
+                <div class="example-box">
+                    <h4>DEBIT Normal Balances (DEAD)</h4>
+                    <ul class="feature-list">
+                        <li>Assets = Debit balance</li>
+                        <li>Expenses = Debit balance</li>
+                        <li>Drawing = Debit balance</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>CREDIT Normal Balances (CORL)</h4>
+                    <ul class="feature-list">
+                        <li>Liabilities = Credit balance</li>
+                        <li>Owner's Equity = Credit balance</li>
+                        <li>Revenue = Credit balance</li>
+                    </ul>
+                </div>
+                <p>💡 <strong>Rule:</strong> The normal balance is always on the INCREASE side!</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>4️⃣ Practice Examples</h3>
+                <p>Let's classify these accounts:</p>
+
+                <div class="example-box">
+                    <h4>Cash in Bank</h4>
+                    <p><strong>Type:</strong> Asset (we own it)</p>
+                    <p><strong>Normal Balance:</strong> Debit (DEAD)</p>
+                    <p><strong>Increases with:</strong> Debit</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Accounts Payable</h4>
+                    <p><strong>Type:</strong> Liability (we owe it)</p>
+                    <p><strong>Normal Balance:</strong> Credit (CORL)</p>
+                    <p><strong>Increases with:</strong> Credit</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Sales</h4>
+                    <p><strong>Type:</strong> Revenue (income earned)</p>
+                    <p><strong>Normal Balance:</strong> Credit (CORL)</p>
+                    <p><strong>Increases with:</strong> Credit</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Rent Expense</h4>
+                    <p><strong>Type:</strong> Expense (cost of business)</p>
+                    <p><strong>Normal Balance:</strong> Debit (DEAD)</p>
+                    <p><strong>Increases with:</strong> Debit</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Owner, Capital</h4>
+                    <p><strong>Type:</strong> Owner's Equity</p>
+                    <p><strong>Normal Balance:</strong> Credit (CORL)</p>
+                    <p><strong>Increases with:</strong> Credit</p>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>5️⃣ The Accounting Equation</h3>
+                <p style="font-size:1.5rem; text-align:center; font-weight:bold; margin:2rem 0;">
+                    Assets = Liabilities + Owner's Equity
+                </p>
+                <p>This equation MUST ALWAYS balance!</p>
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <p>If a business has:</p>
+                    <ul class="feature-list">
+                        <li>Assets = $50,000</li>
+                        <li>Liabilities = $20,000</li>
+                        <li>Then Owner's Equity = $30,000</li>
+                    </ul>
+                    <p><strong>Check:</strong> $50,000 = $20,000 + $30,000 ✓</p>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>📝 Summary - Key Points</h3>
+                <ul class="feature-list">
+                    <li><strong>5 Account Types:</strong> Assets, Liabilities, Owner's Equity, Revenue, Expenses</li>
+                    <li><strong>DEAD:</strong> Drawing, Expenses, Assets, Drawing - increase with DEBITS</li>
+                    <li><strong>CORL:</strong> Credits, Owner's Equity, Revenue, Liabilities - increase with CREDITS</li>
+                    <li><strong>Normal Balance:</strong> Always on the INCREASE side</li>
+                    <li><strong>Equation:</strong> Assets = Liabilities + Owner's Equity (must always balance)</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>✅ Test Your Knowledge</h3>
+                <p>Ready to practice? Take the <strong>Account Classification Quiz</strong> to test what you learned!</p>
+                <p>The quiz covers all 5 account types and DEAD CORL concepts.</p>
+            </div>
+        `
     },
     'journal-entries': {
         title: 'Journal Entries & T-Accounts',
