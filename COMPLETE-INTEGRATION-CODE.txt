@@ -1,0 +1,538 @@
+=================================================================
+COPY THIS CODE INTO YOUR INDEX.HTML
+Complete add-ons: 2 New Lessons + True/False Quiz + Math Link
+=================================================================
+
+PART 1: ADD TO YOUR DATA SECTION (after existing flashcardData)
+-----------------------------------------------------------------
+
+// LESSON DATA - Add lessons 2 and 3
+const lessons = {
+    'account-classification': {
+        title: 'Account Classification & DR/CR',
+        subtitle: 'Beginner • 20 minutes',
+        content: `[Your existing lesson 1 content]`
+    },
+    'journal-entries': {
+        title: 'Journal Entries & T-Accounts',
+        subtitle: 'Beginner • 25 minutes',
+        content: `
+            <div class="lesson-section">
+                <h3>🎯 What You'll Learn</h3>
+                <ul class="feature-list">
+                    <li>How to record transactions in the General Journal</li>
+                    <li>8 common transaction types</li>
+                    <li>Compound journal entries</li>
+                    <li>T-Account visualization</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>1️⃣ What is a Journal Entry?</h3>
+                <p>A journal entry is a record of a business transaction. Every entry affects at least 2 accounts (double-entry accounting).</p>
+                <p><strong>Format:</strong></p>
+                <div class="example-box">
+                    <strong>Date | Account Name | Debit | Credit</strong><br>
+                    Jan 5 | Cash in Bank | 500 |<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Owner, Capital | | 500
+                </div>
+                <p>💡 <strong>Rule:</strong> Debit account(s) listed first, Credit account(s) indented.</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>2️⃣ DEAD CORL Review</h3>
+                <p>Remember which accounts increase with debits vs credits:</p>
+                <div class="dead-corl-grid">
+                    <div class="dead-side">
+                        <h4>DEAD = Debits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>D</strong>rawing</li>
+                            <li><strong>E</strong>xpenses</li>
+                            <li><strong>A</strong>ssets</li>
+                        </ul>
+                    </div>
+                    <div class="corl-side">
+                        <h4>CORL = Credits ↑</h4>
+                        <ul class="feature-list">
+                            <li><strong>C</strong>redits</li>
+                            <li><strong>O</strong>wner's Equity</li>
+                            <li><strong>R</strong>evenue</li>
+                            <li><strong>L</strong>iabilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>3️⃣ Eight Common Transactions</h3>
+                
+                <div class="example-box">
+                    <h4>1. Paid cash for supplies</h4>
+                    <strong>DR</strong> Supplies<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Asset ↑, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>2. Owner invested cash</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Capital<br>
+                    <em>(Asset ↑, OE ↑)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>3. Received cash from customer</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Revenue<br>
+                    <em>(Asset ↑, Revenue ↑)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>4. Paid cash for expense</h4>
+                    <strong>DR</strong> Rent Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Expense ↑, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>5. Purchased on account (BOAP!)</h4>
+                    <strong>DR</strong> Supplies<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Accounts Payable<br>
+                    <em>Buy On Accounts Payable</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>6. Sold on account (SOAR!)</h4>
+                    <strong>DR</strong> Accounts Receivable<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Sales<br>
+                    <em>Sell On Accounts Receivable</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>7. Paid cash on account</h4>
+                    <strong>DR</strong> Accounts Payable<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank<br>
+                    <em>(Liability ↓, Asset ↓)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>8. Received cash on account</h4>
+                    <strong>DR</strong> Cash in Bank<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Accounts Receivable<br>
+                    <em>(Asset ↑, Asset ↓)</em>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>4️⃣ Compound Entries</h3>
+                <p>Some transactions affect more than 2 accounts:</p>
+                <div class="example-box">
+                    <h4>Example: Paid salary and rent</h4>
+                    <strong>DR</strong> Salary Expense &nbsp;&nbsp;&nbsp; 1,000<br>
+                    <strong>DR</strong> Rent Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 500<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Cash in Bank &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,500<br>
+                </div>
+                <p>💡 Total Debits ALWAYS = Total Credits!</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>📝 Summary</h3>
+                <ul class="feature-list">
+                    <li>Journal entries record transactions</li>
+                    <li>Use DEAD CORL to determine DR/CR</li>
+                    <li>Memorize BOAP and SOAR!</li>
+                    <li>Debits always = Credits</li>
+                    <li>Compound entries can have 3+ accounts</li>
+                </ul>
+            </div>
+        `
+    },
+    'closing-entries': {
+        title: 'Closing Entries (C-DID)',
+        subtitle: 'Intermediate • 20 minutes',
+        content: `
+            <div class="lesson-section">
+                <h3>🎯 What You'll Learn</h3>
+                <ul class="feature-list">
+                    <li>Why we close accounts at year-end</li>
+                    <li>C-DID closing order</li>
+                    <li>How to close temporary accounts</li>
+                    <li>Income Summary account</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>1️⃣ Why Close Accounts?</h3>
+                <p>At year-end, we close <strong>temporary accounts</strong> to zero them out for the new year.</p>
+                <p><strong>Temporary Accounts (RED-C):</strong></p>
+                <ul class="feature-list">
+                    <li><strong>R</strong>evenue</li>
+                    <li><strong>E</strong>xpenses</li>
+                    <li><strong>D</strong>rawing</li>
+                    <li><strong>C</strong>ost of Goods Sold</li>
+                </ul>
+                <p><strong>Permanent Accounts:</strong> Assets, Liabilities, Capital (never close!)</p>
+            </div>
+
+            <div class="lesson-section">
+                <h3>2️⃣ C-DID Closing Order</h3>
+                <p>Memorize this order!</p>
+                <div class="example-box">
+                    <h4>Step 1: Close CREDITS (Revenue)</h4>
+                    <strong>DR</strong> Sales<br>
+                    <strong>DR</strong> Fees Earned<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Income Summary<br>
+                    <em>(Close all revenue to Income Summary)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 2: Close DEBITS (Expenses)</h4>
+                    <strong>DR</strong> Income Summary<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Rent Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Salary Expense<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Supplies Expense<br>
+                    <em>(Close all expenses to Income Summary)</em>
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 3: Close INCOME Summary</h4>
+                    <strong>DR</strong> Income Summary<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Capital<br>
+                    <em>(Transfer net income to capital)</em><br>
+                    <strong>OR if net loss:</strong><br>
+                    <strong>DR</strong> Owner, Capital<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Income Summary
+                </div>
+
+                <div class="example-box">
+                    <h4>Step 4: Close DRAWING</h4>
+                    <strong>DR</strong> Owner, Capital<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>CR</strong> Owner, Drawing<br>
+                    <em>(Close drawing to capital)</em>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>3️⃣ Income Summary Explained</h3>
+                <p><strong>Income Summary</strong> is a temporary account used ONLY during closing.</p>
+                <p><strong>What it does:</strong></p>
+                <ul class="feature-list">
+                    <li>Collects all revenue (credits)</li>
+                    <li>Collects all expenses (debits)</li>
+                    <li>Balance = Net Income or Net Loss</li>
+                    <li>Then closes to Capital</li>
+                </ul>
+                <div class="example-box">
+                    <strong>Example T-Account:</strong><br>
+                    Income Summary<br>
+                    Left (DR): Expenses 100<br>
+                    Right (CR): Revenue 400<br>
+                    Balance: 300 CR = Net Income!
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>4️⃣ After Closing</h3>
+                <p><strong>All temporary accounts = ZERO</strong></p>
+                <ul class="feature-list">
+                    <li>Revenue accounts = $0</li>
+                    <li>Expense accounts = $0</li>
+                    <li>Drawing account = $0</li>
+                    <li>Income Summary = $0</li>
+                </ul>
+                <p><strong>Permanent accounts keep their balances</strong></p>
+                <ul class="feature-list">
+                    <li>Assets stay</li>
+                    <li>Liabilities stay</li>
+                    <li>Capital updated with net income/loss and drawing</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>📝 Summary</h3>
+                <ul class="feature-list">
+                    <li>C-DID = Closing order</li>
+                    <li>RED-C = Temporary accounts to close</li>
+                    <li>Income Summary collects revenue & expenses</li>
+                    <li>All temporary accounts → $0 after closing</li>
+                    <li>Permanent accounts remain open</li>
+                </ul>
+            </div>
+        `
+    }
+};
+
+// TRUE/FALSE QUIZ DATA (25 questions)
+const trueFalseQuestions = [
+    {id:1, question:'The standards and rules that accountants follow are called GAAP (Generally Accepted Accounting Principles).', answer:true, explanation:'TRUE! GAAP = Generally Accepted Accounting Principles (not GAP).', category:'Principles'},
+    {id:2, question:'An account\'s normal balance is always on the side used to record increases.', answer:true, explanation:'TRUE! Assets/Expenses increase with debits. Liabilities/OE/Revenue increase with credits.', category:'Normal Balances'},
+    {id:3, question:'Accounting is called the "language of business."', answer:true, explanation:'TRUE! Accounting communicates financial information.', category:'Basics'},
+    {id:4, question:'Financial accounting is for external users; managerial accounting is for internal users.', answer:true, explanation:'TRUE! Financial = external (investors, banks). Managerial = internal (managers).', category:'Types'},
+    {id:5, question:'Permanent accounts carry balances forward to the next period.', answer:true, explanation:'TRUE! Permanent accounts (A, L, OE) continue. Temporary close to zero.', category:'Account Types'},
+    {id:6, question:'Posting transfers information from the general ledger to the trial balance.', answer:false, explanation:'FALSE! Posting is from JOURNAL to LEDGER. Trial balance is prepared FROM ledger.', category:'Cycle'},
+    {id:7, question:'The balance sheet is sometimes called a statement of financial position.', answer:true, explanation:'TRUE! Both names refer to the same financial statement.', category:'Financial Statements'},
+    {id:8, question:'Going Concern assumes a business will operate indefinitely.', answer:true, explanation:'TRUE! Going Concern means business continues indefinitely (not to a fixed date).', category:'Concepts'},
+    {id:9, question:'Temporary accounts are also called nominal accounts.', answer:true, explanation:'TRUE! Temporary = Nominal = Revenue, Expenses, Drawing, COGS.', category:'Account Types'},
+    {id:10, question:'Report form balance sheet lists sections one under the other (vertical).', answer:true, explanation:'TRUE! Report form = vertical. Account form = horizontal.', category:'Financial Statements'},
+    {id:11, question:'After closing, only permanent accounts have balances.', answer:true, explanation:'TRUE! Permanent accounts remain. All temporary accounts close to zero.', category:'Closing'},
+    {id:12, question:'A contra account decreases its related account balance.', answer:true, explanation:'TRUE! Example: Accumulated Depreciation (contra) reduces Equipment.', category:'Contra Accounts'},
+    {id:13, question:'A slide error occurs when a decimal point is moved by mistake.', answer:true, explanation:'TRUE! Slide = decimal moved. Transposition = digits reversed.', category:'Errors'},
+    {id:14, question:'Double-entry accounting means each transaction affects at least two accounts.', answer:true, explanation:'TRUE! At least two accounts (could be more in compound entries).', category:'Double-Entry'},
+    {id:15, question:'In accounting, "ruling" means drawing a line in records.', answer:true, explanation:'TRUE! Ruling = drawing lines. (Not FASB interpretations!)', category:'Procedures'},
+    {id:16, question:'Accounts Receivable Ledger contains individual customer names.', answer:true, explanation:'TRUE! Subsidiary ledgers contain individual account details.', category:'Ledgers'},
+    {id:17, question:'DEAD = Drawing, Expenses, Assets (accounts increasing with debits).', answer:true, explanation:'TRUE! DEAD accounts increase with debits.', category:'DEAD CORL'},
+    {id:18, question:'CORL = Credits, Owner\'s Equity, Revenue, Liabilities (accounts increasing with credits).', answer:true, explanation:'TRUE! CORL accounts increase with credits.', category:'DEAD CORL'},
+    {id:19, question:'The accounting equation is: Assets = Liabilities + Owner\'s Equity.', answer:true, explanation:'TRUE! This equation must always balance.', category:'Equation'},
+    {id:20, question:'Revenue increases owner\'s equity; expenses decrease it.', answer:true, explanation:'TRUE! Revenue → OE ↑. Expenses → OE ↓.', category:'Owner\'s Equity'},
+    {id:21, question:'Insurance adjustment: DR Insurance Expense, CR Prepaid Insurance.', answer:true, explanation:'TRUE! Expired insurance moves from asset to expense.', category:'Adjustments'},
+    {id:22, question:'Supplies adjustment: DR Supplies Expense, CR Supplies.', answer:true, explanation:'TRUE! Used supplies move from asset to expense.', category:'Adjustments'},
+    {id:23, question:'RED-C = Revenue, Expenses, Drawing, COGS (temporary accounts).', answer:true, explanation:'TRUE! RED-C accounts close at year-end.', category:'Closing'},
+    {id:24, question:'C-DID = Closing order: Credits, Debits, Income, Drawing.', answer:true, explanation:'TRUE! Close revenue, then expenses, then Income Summary, then Drawing.', category:'Closing'},
+    {id:25, question:'PAUL = Prepaid = Asset, Unearned = Liability.', answer:true, explanation:'TRUE! Essential for remembering adjustment types.', category:'Adjustments'}
+];
+
+
+PART 2: UPDATE YOUR HTML - Find </section> after "about" section and ADD:
+--------------------------------------------------------------------------
+
+<!-- TRUE/FALSE QUIZ SECTION -->
+<section id="truefalse" class="section">
+    <div class="hero">
+        <h1>True/False Quiz</h1>
+        <p class="hero-subtitle">25 Questions from Real UIL Tests</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="stat-icon">✓</div>
+            <div>
+                <div class="stat-value" id="tfCompleted">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="stat-card secondary">
+            <div class="stat-icon">🎯</div>
+            <div>
+                <div class="stat-value" id="tfAccuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+        <button class="btn" onclick="startTrueFalse()">Start Quiz →</button>
+        <button class="btn btn-secondary" onclick="resetTrueFalse()">Reset Progress</button>
+    </div>
+</section>
+
+<section id="truefalse-viewer" class="section">
+    <button class="back-btn" onclick="showSection('truefalse')">← Back</button>
+    <div id="tfContent"></div>
+</section>
+
+
+PART 3: UPDATE NAVIGATION - Add to your nav menu:
+--------------------------------------------------
+
+<li><button class="nav-btn" onclick="showSection('truefalse')">True/False</button></li>
+
+
+PART 4: UPDATE HOME PAGE - Add these cards to your action-grid:
+----------------------------------------------------------------
+
+<div class="action-card" onclick="showSection('truefalse')">
+    <div class="action-icon">✓</div>
+    <div class="action-content">
+        <h3>True/False Quiz (25 Questions)</h3>
+        <p>Real UIL test questions with explanations</p>
+    </div>
+    <div class="action-arrow">→</div>
+</div>
+
+<div class="action-card" onclick="window.open('math-practice-standalone.html', '_blank')">
+    <div class="action-icon">🧮</div>
+    <div class="action-content">
+        <h3>Math Calculations (45 Problems)</h3>
+        <p>Bank reconciliation, payroll, depreciation</p>
+    </div>
+    <div class="action-arrow">→</div>
+</div>
+
+
+PART 5: UPDATE LESSONS SECTION - Add lesson 2 and 3 cards:
+-----------------------------------------------------------
+
+<div class="card" onclick="showLesson('journal-entries')">
+    <span class="badge badge-beginner">Beginner</span>
+    <span style="color: var(--text-muted);">⏱️ 25 min</span>
+    <h3>Lesson 2: Journal Entries</h3>
+    <p>Record transactions, BOAP, SOAR, compound entries</p>
+    <button class="btn" style="margin-top:1rem;">Start →</button>
+</div>
+
+<div class="card" onclick="showLesson('closing-entries')">
+    <span class="badge badge-intermediate">Intermediate</span>
+    <span style="color: var(--text-muted);">⏱️ 20 min</span>
+    <h3>Lesson 3: Closing Entries (C-DID)</h3>
+    <p>Close temporary accounts, Income Summary</p>
+    <button class="btn" style="margin-top:1rem;">Start →</button>
+</div>
+
+
+PART 6: UPDATE showLesson() FUNCTION - Replace with this:
+----------------------------------------------------------
+
+function showLesson(id){
+    const lesson = lessons[id];
+    if (!lesson) {
+        // Fallback to old lesson content
+        document.getElementById('lessonContent').innerHTML = `[your existing lesson 1 HTML]`;
+    } else {
+        document.getElementById('lessonContent').innerHTML = `
+            <div class="hero">
+                <h1>${lesson.title}</h1>
+                <p class="hero-subtitle"><span class="badge badge-beginner">Beginner</span> ${lesson.subtitle}</p>
+            </div>
+            ${lesson.content}
+            <button class="btn" onclick="completeLesson('${id}')">✓ Mark Complete</button>
+        `;
+    }
+    showSection('lesson-viewer');
+}
+
+function completeLesson(id){
+    Progress.completeLesson(id);
+    setTimeout(()=>showSection('lessons'),1500);
+}
+
+
+PART 7: ADD TRUE/FALSE FUNCTIONS - Before closing </script>:
+------------------------------------------------------------
+
+// TRUE/FALSE QUIZ
+let currentTFQuestion = 0;
+let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
+    completed: [], correct: [], answers: {}
+};
+
+function startTrueFalse() {
+    currentTFQuestion = 0;
+    renderTFQuestion();
+    showSection('truefalse-viewer');
+}
+
+function renderTFQuestion() {
+    const q = trueFalseQuestions[currentTFQuestion];
+    const userAnswer = tfProgress.answers[q.id];
+    const isAnswered = userAnswer !== undefined;
+    
+    let html = `
+        <div class="hero">
+            <h1>Question ${currentTFQuestion + 1} of ${trueFalseQuestions.length}</h1>
+            <p class="hero-subtitle">${q.category}</p>
+        </div>
+        <div class="quiz-question">
+            <div class="question-text">${q.question}</div>
+            <div class="answer-options">
+                <div class="answer-option ${isAnswered && userAnswer === true ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, true)">
+                    <div class="option-letter">T</div>
+                    <div>TRUE</div>
+                </div>
+                <div class="answer-option ${isAnswered && userAnswer === false ? 'selected' : ''}" 
+                     onclick="answerTF(${q.id}, false)">
+                    <div class="option-letter">F</div>
+                    <div>FALSE</div>
+                </div>
+            </div>
+            ${isAnswered ? `
+                <div class="quiz-explanation show">
+                    <strong>${userAnswer === q.answer ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
+                    ${q.explanation}
+                </div>
+            ` : ''}
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:2rem;">
+            ${currentTFQuestion > 0 ? '<button class="btn btn-secondary" onclick="prevTF()">← Previous</button>' : ''}
+            ${currentTFQuestion < trueFalseQuestions.length - 1 ? 
+                '<button class="btn" onclick="nextTF()">Next →</button>' : 
+                '<button class="btn" onclick="finishTF()">Finish Quiz</button>'}
+        </div>
+    `;
+    document.getElementById('tfContent').innerHTML = html;
+}
+
+function answerTF(id, answer) {
+    const q = trueFalseQuestions.find(q => q.id === id);
+    tfProgress.answers[id] = answer;
+    if (!tfProgress.completed.includes(id)) {
+        tfProgress.completed.push(id);
+    }
+    if (answer === q.answer && !tfProgress.correct.includes(id)) {
+        tfProgress.correct.push(id);
+        Progress.points += 5;
+        Progress.save(Progress.get());
+    }
+    localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+    updateTFStats();
+    renderTFQuestion();
+}
+
+function nextTF() {
+    if (currentTFQuestion < trueFalseQuestions.length - 1) {
+        currentTFQuestion++;
+        renderTFQuestion();
+    }
+}
+
+function prevTF() {
+    if (currentTFQuestion > 0) {
+        currentTFQuestion--;
+        renderTFQuestion();
+    }
+}
+
+function finishTF() {
+    const score = Math.round((tfProgress.correct.length / trueFalseQuestions.length) * 100);
+    alert(`Quiz Complete!\n\nScore: ${tfProgress.correct.length}/${trueFalseQuestions.length} (${score}%)`);
+    showSection('truefalse');
+}
+
+function resetTrueFalse() {
+    if (confirm('Reset all True/False progress?')) {
+        tfProgress = {completed: [], correct: [], answers: {}};
+        localStorage.setItem('tfProgress', JSON.stringify(tfProgress));
+        updateTFStats();
+        showSection('truefalse');
+    }
+}
+
+function updateTFStats() {
+    const elem = document.getElementById('tfCompleted');
+    if (elem) {
+        elem.textContent = tfProgress.completed.length;
+        const accuracy = tfProgress.completed.length > 0
+            ? Math.round((tfProgress.correct.length / tfProgress.completed.length) * 100)
+            : 0;
+        document.getElementById('tfAccuracy').textContent = accuracy + '%';
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', updateTFStats);
+
+
+PART 8: UPDATE lessonsCompleted STAT - Change /1 to /3:
+--------------------------------------------------------
+
+Find: document.getElementById('lessonsCompleted').textContent=p.lessonsCompleted.length+'/1';
+Replace with: document.getElementById('lessonsCompleted').textContent=p.lessonsCompleted.length+'/3';
+
+
+=================================================================
+DONE! You now have:
+- 3 Lessons (Account Classification, Journal Entries, Closing Entries)
+- 21 Flashcards (existing)
+- 2 Quizzes (10-question + 25-question True/False)
+- Link to Math Practice (45 problems)
+=================================================================
