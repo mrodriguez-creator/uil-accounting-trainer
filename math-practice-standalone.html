@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting - Math Practice</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #3b82f6; --secondary: #10b981; --accent: #f59e0b;
+            --danger: #ef4444; --bg-dark: #0f172a; --bg-dark-2: #1e293b;
+            --text-light: #e2e8f0; --text-muted: #94a3b8; --border: rgba(148, 163, 184, 0.2);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-2) 100%);
+            color: var(--text-light); line-height: 1.6; min-height: 100vh; padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 {
+            font-size: 3rem; font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .stats-bar {
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+            margin-bottom: 2rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.6);
+            border-radius: 1rem; border: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; padding: 0 1.5rem; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; }
+        .filters {
+            display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
+            padding: 1.5rem; background: rgba(30, 41, 59, 0.6);
+            border-radius: 1rem; border: 1px solid var(--border);
+        }
+        .filter-btn {
+            padding: 0.75rem 1.5rem; background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--border); border-radius: 0.5rem;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+            font-size: 0.95rem; font-weight: 600;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary); color: white; border-color: var(--primary);
+        }
+        .problems-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .problem-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid var(--border); border-radius: 1rem;
+            padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative;
+        }
+        .problem-card:hover {
+            transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        .problem-card.completed::after {
+            content: "✓"; position: absolute; top: 1rem; right: 1rem;
+            width: 32px; height: 32px; background: var(--secondary);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: white; font-weight: 700;
+        }
+        .badge {
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 0.5rem;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            margin-right: 0.5rem; margin-bottom: 0.5rem;
+        }
+        .badge-easy { background: rgba(34, 197, 94, 0.2); color: #34d399; }
+        .badge-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-hard { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .badge-category { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .problem-title { font-size: 1.125rem; font-weight: 600; margin: 0.5rem 0; }
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8); z-index: 1000;
+            align-items: center; justify-content: center; padding: 2rem;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: linear-gradient(135deg, var(--bg-dark-2), var(--bg-dark));
+            border: 2px solid var(--primary); border-radius: 1.5rem;
+            padding: 2.5rem; max-width: 800px; width: 100%;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 2rem; }
+        .modal-title { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .close-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 2rem; cursor: pointer; line-height: 1;
+        }
+        .close-btn:hover { color: var(--danger); }
+        .problem-content { margin-bottom: 2rem; }
+        .problem-content h3 { color: var(--secondary); margin: 1.5rem 0 1rem; }
+        .answer-section {
+            background: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--primary);
+            padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0;
+        }
+        .answer-input {
+            display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;
+        }
+        .answer-input input {
+            flex: 1; min-width: 200px; padding: 1rem; font-size: 1.25rem;
+            background: rgba(15, 23, 42, 0.8); border: 2px solid var(--border);
+            border-radius: 0.5rem; color: var(--text-light);
+        }
+        .answer-input input:focus {
+            outline: none; border-color: var(--primary);
+        }
+        .btn {
+            padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white; border: none; border-radius: 0.75rem;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3); }
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--primary); }
+        .feedback {
+            padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;
+            font-weight: 600; display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: rgba(16, 185, 129, 0.2); color: var(--secondary); }
+        .feedback.incorrect { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .solution {
+            background: rgba(15, 23, 42, 0.8); padding: 1.5rem;
+            border-radius: 0.5rem; border: 1px solid var(--border);
+            margin: 1rem 0; display: none;
+        }
+        .solution.show { display: block; }
+        .solution ol { margin-left: 1.5rem; margin-top: 1rem; }
+        .solution li { margin: 0.75rem 0; line-height: 1.8; }
+        .formula-box {
+            background: rgba(59, 130, 246, 0.1); padding: 1rem;
+            border-left: 4px solid var(--primary); border-radius: 0.5rem;
+            margin: 1rem 0; font-family: 'Courier New', monospace;
+        }
+        .hint-box {
+            background: rgba(245, 158, 11, 0.1); padding: 1rem;
+            border-left: 4px solid var(--accent); border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .problems-grid { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+            .modal-content { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Math Calculations Practice</h1>
+            <p style="color: var(--text-muted); font-size: 1.25rem;">45 Real UIL Problems</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalProblems">45</div>
+                <div class="stat-label">Total Problems</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="completed">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="points">0</div>
+                <div class="stat-label">Points</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div>
+                <strong style="margin-right: 1rem;">Category:</strong>
+                <button class="filter-btn active" onclick="filterBy('category', 'all')">All</button>
+                <button class="filter-btn" onclick="filterBy('category', 'bank')">Bank (10)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'payroll')">Payroll (8)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'depreciation')">Depreciation (5)</button>
+                <button class="filter-btn" onclick="filterBy('category', 'adjustments')">Adjustments (5)</button>
+            </div>
+            <div>
+                <strong style="margin-right: 1rem;">Difficulty:</strong>
+                <button class="filter-btn active" onclick="filterBy('difficulty', 'all')">All</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'easy')">Easy</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'medium')">Medium</button>
+                <button class="filter-btn" onclick="filterBy('difficulty', 'hard')">Hard</button>
+            </div>
+        </div>
+
+        <div class="problems-grid" id="problemsGrid"></div>
+    </div>
+
+    <div class="modal" id="problemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="problem-content" id="problemContent"></div>
+            <div class="answer-section">
+                <h3>Your Answer:</h3>
+                <div class="answer-input">
+                    <input type="number" step="0.01" id="answerInput" placeholder="Enter answer (numbers only)">
+                    <button class="btn" onclick="checkAnswer()">Check Answer</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+            <div style="margin: 2rem 0;">
+                <button class="btn btn-secondary" onclick="toggleSolution()">Show Solution</button>
+                <button class="btn btn-secondary" onclick="toggleHint()">Show Hint</button>
+            </div>
+            <div class="solution" id="solution"></div>
+            <div class="hint-box" id="hint" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="MATH-PRACTICE-MODULE.js"></script>
+    <script>
+        let currentProblem = null;
+        let filters = { category: 'all', difficulty: 'all' };
+        let progress = JSON.parse(localStorage.getItem('mathProgress')) || {
+            completed: [],
+            correct: [],
+            attempts: {},
+            points: 0
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProblems();
+            updateStats();
+        });
+
+        function renderProblems() {
+            const grid = document.getElementById('problemsGrid');
+            grid.innerHTML = '';
+            let count = 0;
+
+            // Flatten all problems
+            const allProblems = [
+                ...mathPracticeProblems.bankReconciliation.map(p => ({ ...p, category: 'bank', categoryName: 'Bank Reconciliation' })),
+                ...mathPracticeProblems.payroll.map(p => ({ ...p, category: 'payroll', categoryName: 'Payroll' })),
+                ...mathPracticeProblems.depreciation.map(p => ({ ...p, category: 'depreciation', categoryName: 'Depreciation' })),
+                ...mathPracticeProblems.adjustments.map(p => ({ ...p, category: 'adjustments', categoryName: 'Adjustments' }))
+            ];
+
+            allProblems.forEach(problem => {
+                // Apply filters
+                if (filters.category !== 'all' && problem.category !== filters.category) return;
+                if (filters.difficulty !== 'all' && problem.difficulty !== filters.difficulty) return;
+
+                count++;
+                const isCompleted = progress.completed.includes(problem.id);
+                const card = document.createElement('div');
+                card.className = 'problem-card' + (isCompleted ? ' completed' : '');
+                card.onclick = () => openProblem(problem);
+                card.innerHTML = `
+                    <span class="badge badge-${problem.difficulty}">${problem.difficulty}</span>
+                    <span class="badge badge-category">${problem.categoryName}</span>
+                    <div class="problem-title">${problem.id.toUpperCase()}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            if (count === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:3rem;">No problems match your filters</p>';
+            }
+        }
+
+        function filterBy(type, value) {
+            filters[type] = value;
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProblems();
+        }
+
+        function openProblem(problem) {
+            currentProblem = problem;
+            document.getElementById('modalTitle').textContent = problem.id.toUpperCase();
+            document.getElementById('problemContent').innerHTML = problem.problem;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('solution').className = 'solution';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('problemModal').classList.add('active');
+            
+            // Build solution HTML
+            const solutionHTML = `
+                <h3>Step-by-Step Solution:</h3>
+                <ol>${problem.steps.map(step => `<li>${step}</li>`).join('')}</ol>
+                <div class="formula-box">
+                    <strong>Formula:</strong> ${problem.formula}
+                </div>
+                <p style="margin-top: 1rem;"><strong>Correct Answer:</strong> $${problem.answer.toFixed(2)}</p>
+            `;
+            document.getElementById('solution').innerHTML = solutionHTML;
+            document.getElementById('hint').innerHTML = `<strong>💡 Hint:</strong> ${problem.hint}`;
+        }
+
+        function closeModal() {
+            document.getElementById('problemModal').classList.remove('active');
+        }
+
+        function checkAnswer() {
+            if (!currentProblem) return;
+            
+            const input = parseFloat(document.getElementById('answerInput').value);
+            const feedback = document.getElementById('feedback');
+            const isCorrect = Math.abs(input - currentProblem.answer) < 0.01;
+            
+            // Track attempt
+            if (!progress.attempts[currentProblem.id]) {
+                progress.attempts[currentProblem.id] = 0;
+            }
+            progress.attempts[currentProblem.id]++;
+            
+            if (isCorrect) {
+                feedback.className = 'feedback correct show';
+                feedback.textContent = `✓ Correct! The answer is $${currentProblem.answer.toFixed(2)}`;
+                
+                // Mark as completed
+                if (!progress.completed.includes(currentProblem.id)) {
+                    progress.completed.push(currentProblem.id);
+                }
+                if (!progress.correct.includes(currentProblem.id)) {
+                    progress.correct.push(currentProblem.id);
+                    progress.points += 10;
+                }
+                
+                saveProgress();
+                updateStats();
+                renderProblems();
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.textContent = `✗ Not quite. Try again or view the solution.`;
+            }
+        }
+
+        function toggleSolution() {
+            const solution = document.getElementById('solution');
+            solution.classList.toggle('show');
+            
+            // Mark as completed even if they viewed solution
+            if (!progress.completed.includes(currentProblem.id)) {
+                progress.completed.push(currentProblem.id);
+                saveProgress();
+                updateStats();
+                renderProblems();
+            }
+        }
+
+        function toggleHint() {
+            const hint = document.getElementById('hint');
+            hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveProgress() {
+            localStorage.setItem('mathProgress', JSON.stringify(progress));
+        }
+
+        function updateStats() {
+            document.getElementById('completed').textContent = progress.completed.length;
+            const accuracy = progress.completed.length > 0 
+                ? Math.round((progress.correct.length / progress.completed.length) * 100)
+                : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('points').textContent = progress.points;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Enter' && document.getElementById('problemModal').classList.contains('active')) {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>

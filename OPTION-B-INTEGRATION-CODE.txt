@@ -1,0 +1,225 @@
+═══════════════════════════════════════════════════════════════════
+OPTION B: ADD MATH PRACTICE TO YOUR EXISTING SITE
+Step-by-step integration code to paste into index.html
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Add the math practice data to your <script> section
+────────────────────────────────────────────────────────
+Paste this AFTER your existing quizQuestions array:
+
+// MATH PRACTICE PROBLEMS DATA
+const mathProblems = {
+    bank: [
+        {id:'bank-1',difficulty:'easy',title:'Find Adjusted Bank Balance',
+         problem:'Bank: $4,650 | DIT: $1,870 | O/S: $3,440',
+         answer:3080,solution:'$4,650 + $1,870 - $3,440 = $3,080'},
+        {id:'bank-2',difficulty:'medium',title:'Find Checkbook Balance',
+         problem:'Checkbook: $3,050 | SC: $15 | NSF: $200+$30 | Error: +$45',
+         answer:2850,solution:'$3,050 + $45 - $15 - $200 - $30 = $2,850'},
+        // ... (see MATH-PRACTICE-MODULE.js for all 45 problems)
+    ],
+    payroll: [
+        {id:'pay-1',difficulty:'easy',title:'Overtime Pay',
+         problem:'Rate: $18.40/hr | Hours: 45 | OT after 40 at 1.5×',
+         answer:874,solution:'40×$18.40 + 5×($18.40×1.5) = $874'},
+        // ... more payroll problems
+    ],
+    depreciation: [
+        {id:'depr-1',difficulty:'easy',title:'Straight-Line',
+         problem:'Cost: $50,000 | Salvage: $5,000 | Life: 10 years',
+         answer:4500,solution:'($50,000-$5,000)/10 = $4,500/year'},
+        // ... more depreciation problems
+    ]
+};
+
+STEP 2: Update your Practice section HTML
+────────────────────────────────────────────────────────
+Replace the current practice section content with:
+
+<section id="practice" class="section">
+    <div class="hero">
+        <h1>Math Calculations Practice</h1>
+        <p class="hero-subtitle">45 Real UIL Problems with Solutions</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🧮</div>
+            <div>
+                <div class="stat-value" id="mathCompleted">0</div>
+                <div class="stat-label">Problems Done</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div>
+                <div class="stat-value" id="mathAccuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Choose Category</h2>
+    <div class="grid-3">
+        <div class="card" onclick="showMathCategory('bank')">
+            <span class="badge badge-beginner">10 Problems</span>
+            <h3>🏦 Bank Reconciliation</h3>
+            <p>Adjusted balances, NSF checks, outstanding checks</p>
+            <button class="btn" style="margin-top:1rem;">Start →</button>
+        </div>
+        <div class="card" onclick="showMathCategory('payroll')">
+            <span class="badge badge-intermediate">8 Problems</span>
+            <h3>💰 Payroll Calculations</h3>
+            <p>Overtime, commissions, taxes, net pay</p>
+            <button class="btn" style="margin-top:1rem;">Start →</button>
+        </div>
+        <div class="card" onclick="showMathCategory('depreciation')">
+            <span class="badge badge-intermediate">5 Problems</span>
+            <h3>📉 Depreciation</h3>
+            <p>Straight-line, DDB, partial year</p>
+            <button class="btn" style="margin-top:1rem;">Start →</button>
+        </div>
+        <div class="card" onclick="showMathCategory('adjustments')">
+            <span class="badge badge-beginner">5 Problems</span>
+            <h3>📝 Adjusting Entries</h3>
+            <p>Supplies, insurance, inventory adjustments</p>
+            <button class="btn" style="margin-top:1rem;">Start →</button>
+        </div>
+    </div>
+</section>
+
+<!-- MATH PROBLEM VIEWER -->
+<section id="math-viewer" class="section">
+    <button class="back-btn" onclick="showSection('practice')">← Back</button>
+    <div id="mathContent"></div>
+</section>
+
+STEP 3: Add JavaScript functions (paste before closing </script>)
+────────────────────────────────────────────────────────
+
+let currentMathProblem = null;
+let mathProgress = JSON.parse(localStorage.getItem('mathProgress')) || {
+    completed: [], correct: [], points: 0
+};
+
+function showMathCategory(category) {
+    const problems = mathProblems[category] || [];
+    let html = `<div class="hero"><h1>Math Practice</h1></div>`;
+    
+    problems.forEach(p => {
+        const completed = mathProgress.completed.includes(p.id) ? '✓ ' : '';
+        html += `
+            <div class="problem-card" onclick="showMathProblem('${category}','${p.id}')">
+                <span class="badge badge-${p.difficulty}">${p.difficulty}</span>
+                <h3>${completed}${p.title}</h3>
+                <p>${p.problem}</p>
+            </div>
+        `;
+    });
+    
+    document.getElementById('mathContent').innerHTML = html;
+    showSection('math-viewer');
+}
+
+function showMathProblem(category, id) {
+    const problem = mathProblems[category].find(p => p.id === id);
+    currentMathProblem = problem;
+    
+    const html = `
+        <div class="hero"><h1>${problem.title}</h1></div>
+        <div class="lesson-section">
+            <h3>Problem:</h3>
+            <p style="font-size:1.125rem;">${problem.problem}</p>
+            
+            <div style="margin:2rem 0;">
+                <input type="number" id="mathAnswer" placeholder="Your answer" 
+                       style="padding:1rem;font-size:1.25rem;width:200px;
+                              background:rgba(15,23,42,0.8);border:2px solid var(--border);
+                              border-radius:0.5rem;color:var(--text-light);">
+                <button class="btn" onclick="checkMathAnswer()">Check Answer</button>
+            </div>
+            
+            <div id="mathFeedback" style="margin:1rem 0;"></div>
+            
+            <button class="btn btn-secondary" onclick="showMathSolution()">
+                Show Solution
+            </button>
+            
+            <div id="mathSolution" style="display:none;margin-top:2rem;
+                 background:rgba(59,130,246,0.1);padding:1.5rem;border-radius:0.5rem;">
+                <h3>Solution:</h3>
+                <p>${problem.solution}</p>
+                <p style="margin-top:1rem;"><strong>Answer: $${problem.answer.toFixed(2)}</strong></p>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('mathContent').innerHTML = html;
+}
+
+function checkMathAnswer() {
+    if (!currentMathProblem) return;
+    
+    const input = parseFloat(document.getElementById('mathAnswer').value);
+    const isCorrect = Math.abs(input - currentMathProblem.answer) < 0.01;
+    const feedback = document.getElementById('mathFeedback');
+    
+    if (isCorrect) {
+        feedback.innerHTML = '<div style="color:var(--secondary);font-weight:600;">✓ Correct!</div>';
+        if (!mathProgress.correct.includes(currentMathProblem.id)) {
+            mathProgress.correct.push(currentMathProblem.id);
+            mathProgress.points += 10;
+        }
+        if (!mathProgress.completed.includes(currentMathProblem.id)) {
+            mathProgress.completed.push(currentMathProblem.id);
+        }
+        localStorage.setItem('mathProgress', JSON.stringify(mathProgress));
+        updateMathStats();
+    } else {
+        feedback.innerHTML = '<div style="color:var(--danger);font-weight:600;">✗ Try again</div>';
+    }
+}
+
+function showMathSolution() {
+    document.getElementById('mathSolution').style.display = 'block';
+    if (!mathProgress.completed.includes(currentMathProblem.id)) {
+        mathProgress.completed.push(currentMathProblem.id);
+        localStorage.setItem('mathProgress', JSON.stringify(mathProgress));
+        updateMathStats();
+    }
+}
+
+function updateMathStats() {
+    document.getElementById('mathCompleted').textContent = mathProgress.completed.length;
+    const accuracy = mathProgress.completed.length > 0
+        ? Math.round((mathProgress.correct.length / mathProgress.completed.length) * 100)
+        : 0;
+    document.getElementById('mathAccuracy').textContent = accuracy + '%';
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', updateMathStats);
+
+STEP 4: Add CSS for problem cards (paste in <style> section)
+────────────────────────────────────────────────────────
+
+.problem-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+    border: 1px solid var(--border); border-radius: 1rem;
+    padding: 2rem; margin-bottom: 2rem; cursor: pointer;
+    transition: all 0.3s;
+}
+.problem-card:hover {
+    transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary);
+}
+
+═══════════════════════════════════════════════════════════════════
+THAT'S IT! Your math practice is integrated!
+═══════════════════════════════════════════════════════════════════
+
+NOTES:
+- This is simplified version with core problems
+- See MATH-PRACTICE-MODULE.js for ALL 45 problems with full solutions
+- Copy full problem data from that file for complete experience
+- Students can now practice real UIL calculations!
