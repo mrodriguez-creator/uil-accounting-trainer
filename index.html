@@ -347,6 +347,100 @@
             padding: 2rem; text-align: center; color: var(--text-muted); margin-top: 4rem;
         }
         
+        /* Debit/Credit Section */
+        .dc-buttons {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
+        }
+
+        .dc-btn {
+            padding: 1.5rem 2rem; border-radius: 1rem; font-size: 1.25rem; font-weight: 700;
+            cursor: pointer; transition: all 0.3s; border: 3px solid transparent; text-align: center;
+        }
+
+        .dc-btn-debit {
+            background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .dc-btn-debit:hover { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; transform: translateY(-2px); }
+
+        .dc-btn-credit {
+            background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .dc-btn-credit:hover { background: rgba(16, 185, 129, 0.25); border-color: #10b981; transform: translateY(-2px); }
+
+        .dc-btn.selected-correct {
+            border-color: var(--secondary); background: rgba(16, 185, 129, 0.3); box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .dc-btn.selected-incorrect {
+            border-color: var(--danger); background: rgba(239, 68, 68, 0.3); box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .dc-btn.show-correct {
+            border-color: var(--secondary); background: rgba(16, 185, 129, 0.2);
+        }
+
+        .dc-btn:disabled { cursor: not-allowed; opacity: 0.7; transform: none; }
+
+        .dc-account-name {
+            font-size: 2.5rem; font-weight: 900; text-align: center; margin: 2rem 0;
+            color: var(--text-light);
+        }
+
+        .dc-transaction-text {
+            font-size: 1.25rem; font-weight: 600; color: var(--text-light); margin-bottom: 2rem;
+            text-align: center; line-height: 1.6;
+        }
+
+        .dc-account-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem; margin-bottom: 0.75rem;
+            background: rgba(15, 23, 42, 0.6); border: 2px solid var(--border);
+            border-radius: 0.75rem; transition: all 0.2s;
+        }
+
+        .dc-account-row .account-label {
+            font-size: 1.1rem; font-weight: 600; color: var(--text-light);
+        }
+
+        .dc-account-row .dc-toggle-btns {
+            display: flex; gap: 0.5rem;
+        }
+
+        .dc-toggle-btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 700;
+            font-size: 0.9rem; cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
+        }
+
+        .dc-toggle-btn.dr-btn {
+            background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .dc-toggle-btn.cr-btn {
+            background: rgba(16, 185, 129, 0.1); color: #34d399; border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .dc-toggle-btn.dr-btn:hover { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; }
+        .dc-toggle-btn.cr-btn:hover { background: rgba(16, 185, 129, 0.25); border-color: #10b981; }
+
+        .dc-toggle-btn.active-dr { background: rgba(239, 68, 68, 0.4); border-color: #ef4444; }
+        .dc-toggle-btn.active-cr { background: rgba(16, 185, 129, 0.4); border-color: #10b981; }
+
+        .dc-toggle-btn.correct-answer { background: rgba(16, 185, 129, 0.4); border-color: var(--secondary); }
+        .dc-toggle-btn.wrong-answer { background: rgba(239, 68, 68, 0.4); border-color: var(--danger); }
+
+        .dc-toggle-btn:disabled { cursor: not-allowed; }
+
+        .dc-question-type {
+            display: inline-block; padding: 0.375rem 0.75rem; border-radius: 0.5rem;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 1rem;
+        }
+
+        .dc-type-account { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .dc-type-transaction { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none; position: absolute; top: 100%; left: 0; right: 0;
@@ -361,6 +455,9 @@
             .card-definition { font-size: 1.25rem; }
             .dead-corl-grid { grid-template-columns: 1fr; }
             h2 { font-size: 2rem; }
+            .dc-account-name { font-size: 1.75rem; }
+            .dc-buttons { grid-template-columns: 1fr; }
+            .dc-account-row { flex-direction: column; gap: 0.75rem; text-align: center; }
         }
     </style>
 </head>
@@ -375,6 +472,7 @@
             <li><button class="nav-btn" onclick="showSection('lessons')">Lessons</button></li>
             <li><button class="nav-btn" onclick="showSection('flashcards')">Flashcards</button></li>
             <li><button class="nav-btn" onclick="showSection('truefalse')">True/False</button></li>
+            <li><button class="nav-btn" onclick="showSection('debitcredit')">Debit/Credit</button></li>
             <li><button class="nav-btn" onclick="showSection('tests')">Tests</button></li>
             <li><button class="nav-btn" onclick="showSection('about')">About</button></li>
         </ul>
@@ -451,6 +549,14 @@
                     <div class="action-content">
                     <h3>True/False Quiz (25 Questions)</h3>
                     <p>Real UIL test questions with explanations</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+                <div class="action-card" onclick="showSection('debitcredit')">
+                    <div class="action-icon">⚖️</div>
+                    <div class="action-content">
+                        <h3>Debit/Credit Practice (20 Random)</h3>
+                        <p>Classify accounts & transactions as DR or CR</p>
                     </div>
                     <div class="action-arrow">→</div>
                 </div>
@@ -541,6 +647,14 @@
                     <p>Real UIL test questions with instant feedback</p>
                     <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
                 </div>
+
+                <div class="card" onclick="showSection('debitcredit')">
+                    <span class="badge badge-intermediate">Intermediate</span>
+                    <span style="color: var(--text-muted);">⚖️ 20 random from 50+</span>
+                    <h3>Debit/Credit Practice</h3>
+                    <p>Classify accounts & transactions as Debit or Credit</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
+                </div>
             </div>
         </section>
 <section id="truefalse" class="section">
@@ -577,6 +691,58 @@
     <div id="tfContent"></div>
 </section>
 
+        <!-- DEBIT/CREDIT SECTION -->
+        <section id="debitcredit" class="section">
+            <div class="hero">
+                <h1>Debit/Credit Practice</h1>
+                <p class="hero-subtitle">20 Random Questions from a Bank of 50+</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">⚖️</div>
+                    <div>
+                        <div class="stat-value" id="dcCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="dcAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="dcAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startDebitCredit()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetDebitCredit()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>How It Works</h3>
+                <ul class="feature-list">
+                    <li><strong>Account Questions:</strong> Given an account name, select Debit or Credit for its normal balance</li>
+                    <li><strong>Transaction Questions:</strong> Given a transaction, select DR or CR for each account involved</li>
+                    <li><strong>20 random questions</strong> drawn from 50+ each time you play</li>
+                    <li>Instant feedback with explanations after each answer</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="debitcredit-viewer" class="section">
+            <button class="back-btn" onclick="showSection('debitcredit')">← Back</button>
+            <div id="dcContent"></div>
+        </section>
+
         <!-- ABOUT SECTION -->
         <section id="about" class="section">
             <div class="hero">
@@ -587,9 +753,11 @@
             <div class="card">
                 <h3>✅ What's Working Now</h3>
                 <ul class="feature-list">
-                    <li><strong>1 Complete Lesson:</strong> Account Classification with DEAD CORL examples</li>
+                    <li><strong>3 Complete Lessons:</strong> Account Classification, Journal Entries, Closing Entries</li>
                     <li><strong>21 Interactive Flashcards:</strong> Click to flip and study acronyms</li>
                     <li><strong>10-Question Quiz:</strong> Instant grading with explanations</li>
+                    <li><strong>25-Question True/False:</strong> Real UIL test questions</li>
+                    <li><strong>Debit/Credit Practice:</strong> 20 random questions from 50+ (accounts & transactions)</li>
                     <li><strong>Progress Tracking:</strong> Points, accuracy, and stats that update!</li>
                 </ul>
             </div>
@@ -656,6 +824,377 @@
     </footer>
 
     <script>
+        // ==========================================
+        // DEBIT/CREDIT QUESTION BANK (50+ questions)
+        // ==========================================
+
+        // TYPE 1: Account Classification - "What is the normal balance?"
+        const dcAccountQuestions = [
+            {id:'a1', type:'account', account:'Cash in Bank', answer:'debit', explanation:'Cash is an Asset. Assets are in DEAD = Debit normal balance.', category:'Assets'},
+            {id:'a2', type:'account', account:'Accounts Receivable', answer:'debit', explanation:'A/R is an Asset (money owed TO us). DEAD = Debit.', category:'Assets'},
+            {id:'a3', type:'account', account:'Supplies', answer:'debit', explanation:'Supplies is an Asset. DEAD = Debit normal balance.', category:'Assets'},
+            {id:'a4', type:'account', account:'Prepaid Insurance', answer:'debit', explanation:'Prepaid Insurance is an Asset (paid in advance). DEAD = Debit.', category:'Assets'},
+            {id:'a5', type:'account', account:'Equipment', answer:'debit', explanation:'Equipment is an Asset. DEAD = Debit normal balance.', category:'Assets'},
+            {id:'a6', type:'account', account:'Office Furniture', answer:'debit', explanation:'Office Furniture is an Asset. DEAD = Debit.', category:'Assets'},
+            {id:'a7', type:'account', account:'Land', answer:'debit', explanation:'Land is an Asset. DEAD = Debit normal balance.', category:'Assets'},
+            {id:'a8', type:'account', account:'Building', answer:'debit', explanation:'Building is an Asset. DEAD = Debit normal balance.', category:'Assets'},
+            {id:'a9', type:'account', account:'Petty Cash', answer:'debit', explanation:'Petty Cash is an Asset. DEAD = Debit.', category:'Assets'},
+            {id:'a10', type:'account', account:'Merchandise Inventory', answer:'debit', explanation:'Merchandise Inventory is an Asset. DEAD = Debit.', category:'Assets'},
+            {id:'a11', type:'account', account:'Accounts Payable', answer:'credit', explanation:'A/P is a Liability (money WE owe). CORL = Credit.', category:'Liabilities'},
+            {id:'a12', type:'account', account:'Notes Payable', answer:'credit', explanation:'Notes Payable is a Liability. CORL = Credit normal balance.', category:'Liabilities'},
+            {id:'a13', type:'account', account:'Salaries Payable', answer:'credit', explanation:'Salaries Payable is a Liability (owed to employees). CORL = Credit.', category:'Liabilities'},
+            {id:'a14', type:'account', account:'Unearned Revenue', answer:'credit', explanation:'Unearned Revenue is a Liability (PAUL: Unearned = Liability). CORL = Credit.', category:'Liabilities'},
+            {id:'a15', type:'account', account:'Sales Tax Payable', answer:'credit', explanation:'Sales Tax Payable is a Liability. CORL = Credit.', category:'Liabilities'},
+            {id:'a16', type:'account', account:'Mortgage Payable', answer:'credit', explanation:'Mortgage Payable is a long-term Liability. CORL = Credit.', category:'Liabilities'},
+            {id:'a17', type:'account', account:'Owner, Capital', answer:'credit', explanation:'Capital is Owner\'s Equity. CORL = Credit normal balance.', category:'Owner\'s Equity'},
+            {id:'a18', type:'account', account:'Owner, Drawing', answer:'debit', explanation:'Drawing REDUCES equity. It\'s in DEAD = Debit normal balance.', category:'Drawing'},
+            {id:'a19', type:'account', account:'Sales Revenue', answer:'credit', explanation:'Sales is Revenue. CORL = Credit normal balance.', category:'Revenue'},
+            {id:'a20', type:'account', account:'Fees Earned', answer:'credit', explanation:'Fees Earned is Revenue. CORL = Credit.', category:'Revenue'},
+            {id:'a21', type:'account', account:'Service Revenue', answer:'credit', explanation:'Service Revenue is Revenue. CORL = Credit.', category:'Revenue'},
+            {id:'a22', type:'account', account:'Interest Income', answer:'credit', explanation:'Interest Income is Revenue. CORL = Credit.', category:'Revenue'},
+            {id:'a23', type:'account', account:'Rent Expense', answer:'debit', explanation:'Rent Expense is an Expense. DEAD = Debit normal balance.', category:'Expenses'},
+            {id:'a24', type:'account', account:'Salary Expense', answer:'debit', explanation:'Salary Expense is an Expense (SE-E = for employeE). DEAD = Debit.', category:'Expenses'},
+            {id:'a25', type:'account', account:'Utilities Expense', answer:'debit', explanation:'Utilities Expense is an Expense. DEAD = Debit.', category:'Expenses'},
+            {id:'a26', type:'account', account:'Supplies Expense', answer:'debit', explanation:'Supplies Expense is an Expense (used supplies). DEAD = Debit.', category:'Expenses'},
+            {id:'a27', type:'account', account:'Insurance Expense', answer:'debit', explanation:'Insurance Expense is an Expense (expired insurance). DEAD = Debit.', category:'Expenses'},
+            {id:'a28', type:'account', account:'Depreciation Expense', answer:'debit', explanation:'Depreciation Expense is an Expense. DEAD = Debit.', category:'Expenses'},
+            {id:'a29', type:'account', account:'Advertising Expense', answer:'debit', explanation:'Advertising Expense is an Expense. DEAD = Debit.', category:'Expenses'},
+            {id:'a30', type:'account', account:'Payroll Tax Expense', answer:'debit', explanation:'Payroll Tax Expense is an Expense (PTE-R = for employeR). DEAD = Debit.', category:'Expenses'},
+            {id:'a31', type:'account', account:'Cost of Goods Sold', answer:'debit', explanation:'COGS is an Expense-type account. DEAD = Debit.', category:'Expenses'},
+            {id:'a32', type:'account', account:'Accumulated Depreciation', answer:'credit', explanation:'Accum. Depreciation is a CONTRA-Asset. It has a Credit balance (opposite of Assets).', category:'Contra'},
+            {id:'a33', type:'account', account:'Allowance for Uncollectible Accounts', answer:'credit', explanation:'AUA is a contra-Asset (reduces A/R). Credit normal balance.', category:'Contra'},
+            {id:'a34', type:'account', account:'Income Summary', answer:'credit', explanation:'Income Summary normally ends with a Credit balance (net income). If net loss, it would be Debit.', category:'Closing'},
+        ];
+
+        // TYPE 2: Transaction-based - "For this transaction, classify each account"
+        const dcTransactionQuestions = [
+            {id:'t1', type:'transaction', description:'Paid cash for office supplies', accounts:[
+                {name:'Supplies', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Supplies (Asset) increases = Debit. Cash (Asset) decreases = Credit.', category:'Cash Payments'},
+            {id:'t2', type:'transaction', description:'Owner invested cash into the business', accounts:[
+                {name:'Cash in Bank', correct:'debit'},
+                {name:'Owner, Capital', correct:'credit'}
+            ], explanation:'Cash (Asset) increases = Debit. Capital (OE) increases = Credit.', category:'Investments'},
+            {id:'t3', type:'transaction', description:'Received cash from a customer for services', accounts:[
+                {name:'Cash in Bank', correct:'debit'},
+                {name:'Service Revenue', correct:'credit'}
+            ], explanation:'Cash (Asset) increases = Debit. Revenue increases = Credit.', category:'Revenue'},
+            {id:'t4', type:'transaction', description:'Paid monthly rent', accounts:[
+                {name:'Rent Expense', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Rent Expense increases = Debit. Cash (Asset) decreases = Credit.', category:'Cash Payments'},
+            {id:'t5', type:'transaction', description:'Purchased supplies on account (BOAP)', accounts:[
+                {name:'Supplies', correct:'debit'},
+                {name:'Accounts Payable', correct:'credit'}
+            ], explanation:'Buy On Accounts Payable! Supplies (Asset) ↑ = Debit. A/P (Liability) ↑ = Credit.', category:'On Account'},
+            {id:'t6', type:'transaction', description:'Sold services on account (SOAR)', accounts:[
+                {name:'Accounts Receivable', correct:'debit'},
+                {name:'Fees Earned', correct:'credit'}
+            ], explanation:'Sell On Accounts Receivable! A/R (Asset) ↑ = Debit. Revenue ↑ = Credit.', category:'On Account'},
+            {id:'t7', type:'transaction', description:'Paid cash on account to a creditor', accounts:[
+                {name:'Accounts Payable', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'A/P (Liability) decreases = Debit. Cash (Asset) decreases = Credit.', category:'Cash Payments'},
+            {id:'t8', type:'transaction', description:'Received cash on account from a customer', accounts:[
+                {name:'Cash in Bank', correct:'debit'},
+                {name:'Accounts Receivable', correct:'credit'}
+            ], explanation:'Cash (Asset) increases = Debit. A/R (Asset) decreases = Credit.', category:'Cash Receipts'},
+            {id:'t9', type:'transaction', description:'Owner withdrew cash for personal use', accounts:[
+                {name:'Owner, Drawing', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Drawing increases = Debit. Cash (Asset) decreases = Credit.', category:'Withdrawals'},
+            {id:'t10', type:'transaction', description:'Paid employee salaries', accounts:[
+                {name:'Salary Expense', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Salary Expense (SE-E) increases = Debit. Cash decreases = Credit.', category:'Payroll'},
+            {id:'t11', type:'transaction', description:'Purchased equipment with cash', accounts:[
+                {name:'Equipment', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Equipment (Asset) increases = Debit. Cash (Asset) decreases = Credit.', category:'Cash Payments'},
+            {id:'t12', type:'transaction', description:'Received a utility bill (not yet paid)', accounts:[
+                {name:'Utilities Expense', correct:'debit'},
+                {name:'Accounts Payable', correct:'credit'}
+            ], explanation:'Utilities Expense increases = Debit. A/P (Liability) increases = Credit.', category:'On Account'},
+            {id:'t13', type:'transaction', description:'Paid cash for one-year insurance policy', accounts:[
+                {name:'Prepaid Insurance', correct:'debit'},
+                {name:'Cash in Bank', correct:'credit'}
+            ], explanation:'Prepaid Insurance (Asset) increases = Debit. Cash decreases = Credit.', category:'Cash Payments'},
+            {id:'t14', type:'transaction', description:'Adjusting entry: Supplies used during the month', accounts:[
+                {name:'Supplies Expense', correct:'debit'},
+                {name:'Supplies', correct:'credit'}
+            ], explanation:'Supplies Expense increases = Debit. Supplies (Asset) decreases = Credit.', category:'Adjustments'},
+            {id:'t15', type:'transaction', description:'Adjusting entry: Insurance expired this month', accounts:[
+                {name:'Insurance Expense', correct:'debit'},
+                {name:'Prepaid Insurance', correct:'credit'}
+            ], explanation:'Insurance Expense increases = Debit. Prepaid Insurance (Asset) decreases = Credit.', category:'Adjustments'},
+            {id:'t16', type:'transaction', description:'Closing entry: Close revenue to Income Summary', accounts:[
+                {name:'Sales Revenue', correct:'debit'},
+                {name:'Income Summary', correct:'credit'}
+            ], explanation:'C-DID Step 1: Debit Revenue (to zero it out), Credit Income Summary.', category:'Closing'},
+            {id:'t17', type:'transaction', description:'Closing entry: Close expenses to Income Summary', accounts:[
+                {name:'Income Summary', correct:'debit'},
+                {name:'Rent Expense', correct:'credit'}
+            ], explanation:'C-DID Step 2: Debit Income Summary, Credit Expenses (to zero them out).', category:'Closing'},
+            {id:'t18', type:'transaction', description:'Closing entry: Close Income Summary (net income) to Capital', accounts:[
+                {name:'Income Summary', correct:'debit'},
+                {name:'Owner, Capital', correct:'credit'}
+            ], explanation:'C-DID Step 3: Debit Income Summary, Credit Capital (transfer net income).', category:'Closing'},
+            {id:'t19', type:'transaction', description:'Closing entry: Close Drawing to Capital', accounts:[
+                {name:'Owner, Capital', correct:'debit'},
+                {name:'Owner, Drawing', correct:'credit'}
+            ], explanation:'C-DID Step 4: Debit Capital, Credit Drawing (to zero Drawing out).', category:'Closing'},
+            {id:'t20', type:'transaction', description:'Recorded depreciation on equipment', accounts:[
+                {name:'Depreciation Expense', correct:'debit'},
+                {name:'Accumulated Depreciation', correct:'credit'}
+            ], explanation:'Depreciation Expense increases = Debit. Accum. Depreciation (contra-asset) increases = Credit.', category:'Adjustments'},
+        ];
+
+        // Combine into full bank
+        const dcQuestionBank = [...dcAccountQuestions, ...dcTransactionQuestions];
+
+        // DEBIT/CREDIT QUIZ STATE
+        let dcCurrentQuestion = 0;
+        let dcSelectedQuestions = [];
+        let dcAnswers = {};
+        let dcTotalAttempts = parseInt(localStorage.getItem('dcTotalAttempts')) || 0;
+        let dcTotalCorrect = parseInt(localStorage.getItem('dcTotalCorrect')) || 0;
+        let dcTotalCompleted = parseInt(localStorage.getItem('dcTotalCompleted')) || 0;
+        let dcSessionCorrect = 0;
+
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function startDebitCredit() {
+            dcSelectedQuestions = shuffleArray(dcQuestionBank).slice(0, 20);
+            dcCurrentQuestion = 0;
+            dcAnswers = {};
+            dcSessionCorrect = 0;
+            dcTotalAttempts++;
+            localStorage.setItem('dcTotalAttempts', dcTotalAttempts);
+            renderDCQuestion();
+            showSection('debitcredit-viewer');
+        }
+
+        function renderDCQuestion() {
+            const q = dcSelectedQuestions[dcCurrentQuestion];
+            const answered = dcAnswers[q.id] !== undefined;
+
+            let html = `
+                <div class="hero">
+                    <h1>Question ${dcCurrentQuestion + 1} of ${dcSelectedQuestions.length}</h1>
+                    <p class="hero-subtitle">Score: ${dcSessionCorrect}/${Object.keys(dcAnswers).length} correct</p>
+                </div>
+                <div class="quiz-question">
+            `;
+
+            if (q.type === 'account') {
+                // TYPE 1: Account classification
+                html += `
+                    <span class="dc-question-type dc-type-account">Account Classification</span>
+                    <div class="question-text">What is the normal balance for this account?</div>
+                    <div class="dc-account-name">${q.account}</div>
+                    <div class="dc-buttons">
+                        <button class="dc-btn dc-btn-debit ${answered ? (dcAnswers[q.id] === 'debit' ? (q.answer === 'debit' ? 'selected-correct' : 'selected-incorrect') : (q.answer === 'debit' ? 'show-correct' : '')) : ''}"
+                                onclick="answerDCAccount('${q.id}', 'debit')" ${answered ? 'disabled' : ''}>
+                            DEBIT
+                        </button>
+                        <button class="dc-btn dc-btn-credit ${answered ? (dcAnswers[q.id] === 'credit' ? (q.answer === 'credit' ? 'selected-correct' : 'selected-incorrect') : (q.answer === 'credit' ? 'show-correct' : '')) : ''}"
+                                onclick="answerDCAccount('${q.id}', 'credit')" ${answered ? 'disabled' : ''}>
+                            CREDIT
+                        </button>
+                    </div>
+                `;
+            } else {
+                // TYPE 2: Transaction-based
+                const txAnswers = dcAnswers[q.id];
+                const txSubmitted = txAnswers && txAnswers.submitted;
+
+                html += `
+                    <span class="dc-question-type dc-type-transaction">Transaction</span>
+                    <div class="dc-transaction-text">${q.description}</div>
+                    <div class="question-text" style="font-size:1rem; color:var(--text-muted);">Select Debit or Credit for each account:</div>
+                `;
+
+                q.accounts.forEach((acc, idx) => {
+                    const userChoice = txAnswers ? txAnswers['acc' + idx] : null;
+                    const isCorrect = txSubmitted && userChoice === acc.correct;
+                    const isWrong = txSubmitted && userChoice && userChoice !== acc.correct;
+
+                    html += `
+                        <div class="dc-account-row">
+                            <span class="account-label">${acc.name}</span>
+                            <div class="dc-toggle-btns">
+                                <button class="dc-toggle-btn dr-btn ${userChoice === 'debit' ? 'active-dr' : ''} ${txSubmitted && acc.correct === 'debit' ? 'correct-answer' : ''} ${isWrong && userChoice === 'debit' ? 'wrong-answer' : ''}"
+                                        onclick="selectDCTransaction('${q.id}', ${idx}, 'debit')" ${txSubmitted ? 'disabled' : ''}>DR</button>
+                                <button class="dc-toggle-btn cr-btn ${userChoice === 'credit' ? 'active-cr' : ''} ${txSubmitted && acc.correct === 'credit' ? 'correct-answer' : ''} ${isWrong && userChoice === 'credit' ? 'wrong-answer' : ''}"
+                                        onclick="selectDCTransaction('${q.id}', ${idx}, 'credit')" ${txSubmitted ? 'disabled' : ''}>CR</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (!txSubmitted) {
+                    html += `<button class="btn" style="margin-top:1.5rem;" onclick="submitDCTransaction('${q.id}')">Check Answer</button>`;
+                }
+            }
+
+            if (answered) {
+                const isCorrect = q.type === 'account' ? dcAnswers[q.id] === q.answer : dcAnswers[q.id].allCorrect;
+                html += `
+                    <div class="quiz-explanation show">
+                        <strong>${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</strong><br>
+                        ${q.explanation}
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            // Navigation buttons
+            html += `<div style="display:flex; gap:1rem; margin-top:2rem;">`;
+            if (dcCurrentQuestion > 0) {
+                html += `<button class="btn btn-secondary" onclick="prevDC()">← Previous</button>`;
+            }
+            if (dcCurrentQuestion < dcSelectedQuestions.length - 1) {
+                html += `<button class="btn" onclick="nextDC()">Next →</button>`;
+            } else {
+                html += `<button class="btn" onclick="finishDC()">Finish Quiz</button>`;
+            }
+            html += `</div>`;
+
+            document.getElementById('dcContent').innerHTML = html;
+        }
+
+        function answerDCAccount(id, answer) {
+            if (dcAnswers[id] !== undefined) return;
+            const q = dcSelectedQuestions.find(q => q.id === id);
+            dcAnswers[id] = answer;
+
+            if (answer === q.answer) {
+                dcSessionCorrect++;
+                dcTotalCorrect++;
+                Progress.points += 5;
+                Progress.save(Progress.get());
+            }
+            dcTotalCompleted++;
+            localStorage.setItem('dcTotalCorrect', dcTotalCorrect);
+            localStorage.setItem('dcTotalCompleted', dcTotalCompleted);
+            updateDCStats();
+            renderDCQuestion();
+        }
+
+        function selectDCTransaction(id, accIdx, value) {
+            if (!dcAnswers[id]) dcAnswers[id] = {};
+            if (dcAnswers[id].submitted) return;
+            dcAnswers[id]['acc' + accIdx] = value;
+            renderDCQuestion();
+        }
+
+        function submitDCTransaction(id) {
+            const q = dcSelectedQuestions.find(q => q.id === id);
+            const ans = dcAnswers[id] || {};
+
+            // Check all accounts are selected
+            for (let i = 0; i < q.accounts.length; i++) {
+                if (!ans['acc' + i]) {
+                    showNotification('Select DR or CR for all accounts!', true);
+                    return;
+                }
+            }
+
+            // Check correctness
+            let allCorrect = true;
+            q.accounts.forEach((acc, idx) => {
+                if (ans['acc' + idx] !== acc.correct) allCorrect = false;
+            });
+
+            dcAnswers[id].submitted = true;
+            dcAnswers[id].allCorrect = allCorrect;
+
+            if (allCorrect) {
+                dcSessionCorrect++;
+                dcTotalCorrect++;
+                Progress.points += 5;
+                Progress.save(Progress.get());
+            }
+            dcTotalCompleted++;
+            localStorage.setItem('dcTotalCorrect', dcTotalCorrect);
+            localStorage.setItem('dcTotalCompleted', dcTotalCompleted);
+            updateDCStats();
+            renderDCQuestion();
+        }
+
+        function nextDC() {
+            if (dcCurrentQuestion < dcSelectedQuestions.length - 1) {
+                dcCurrentQuestion++;
+                renderDCQuestion();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevDC() {
+            if (dcCurrentQuestion > 0) {
+                dcCurrentQuestion--;
+                renderDCQuestion();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function finishDC() {
+            const total = dcSelectedQuestions.length;
+            const pct = Math.round((dcSessionCorrect / total) * 100);
+
+            let html = `
+                <div class="quiz-results">
+                    <h2>Quiz Complete!</h2>
+                    <div class="result-score">${pct}%</div>
+                    <p>${dcSessionCorrect} of ${total} correct!</p>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">+${dcSessionCorrect * 5} points earned</p>
+                    <div style="display:flex; gap:1rem; justify-content:center; margin-top:2rem;">
+                        <button class="btn" onclick="startDebitCredit()">Try Again (New Questions)</button>
+                        <button class="btn btn-secondary" onclick="showSection('debitcredit')">Back to Menu</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('dcContent').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        function resetDebitCredit() {
+            if (confirm('Reset all Debit/Credit progress?')) {
+                dcTotalAttempts = 0;
+                dcTotalCorrect = 0;
+                dcTotalCompleted = 0;
+                localStorage.setItem('dcTotalAttempts', 0);
+                localStorage.setItem('dcTotalCorrect', 0);
+                localStorage.setItem('dcTotalCompleted', 0);
+                updateDCStats();
+            }
+        }
+
+        function updateDCStats() {
+            const el = document.getElementById('dcCompleted');
+            if (el) {
+                el.textContent = dcTotalCompleted;
+                const accuracy = dcTotalCompleted > 0
+                    ? Math.round((dcTotalCorrect / dcTotalCompleted) * 100) : 0;
+                document.getElementById('dcAccuracy').textContent = accuracy + '%';
+                document.getElementById('dcAttempts').textContent = dcTotalAttempts;
+            }
+        }
+
+        // Initialize DC stats on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDCStats();
+        });
+
         // TRUE/FALSE QUIZ
 let currentTFQuestion = 0;
 let tfProgress = JSON.parse(localStorage.getItem('tfProgress')) || {
