@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Worksheet Columns</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="worksheet" class="section active">
+            <div class="hero">
+                <h1>Worksheet Column Quiz</h1>
+                <p class="hero-subtitle">20 Random from 40+ Accounts — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📋</div>
+                    <div>
+                        <div class="stat-value" id="wsCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="wsAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="wsAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startWorksheet()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetWorksheet()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>UIL Worksheet Columns</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">Given an account with a normal balance, select the worksheet column it extends to:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="example-box" style="border-left-color:#ef4444;">
+                        <strong style="color:#f87171;">A. Income Statement DEBIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Expenses, COGS accounts, contra-Revenue (Sales Discounts, Sales R&A), Transportation In</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#10b981;">
+                        <strong style="color:#34d399;">B. Income Statement CREDIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Revenue (Sales, Fees Earned), contra-COGS (Purchases Discounts, Purchases R&A)</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#60a5fa;">
+                        <strong style="color:#60a5fa;">C. Balance Sheet DEBIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Assets (Cash, Supplies, Equipment), Drawing</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#c084fc;">
+                        <strong style="color:#c084fc;">D. Balance Sheet CREDIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Liabilities, Owner's Capital, contra-Assets (Accum. Depr., AUA)</p>
+                    </div>
+                </div>
+                <div class="example-box" style="border-left-color:var(--accent); margin-top:1rem;">
+                    <strong style="color:#fbbf24;">E. Not Extended</strong>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Income Summary (adjustments only), Beginning Merchandise Inventory (adjusted via Income Summary)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="worksheet-viewer" class="section">
+            <button class="back-btn" onclick="showSection('worksheet')">← Back</button>
+            <div id="wsContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/worksheet.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Gross Profit</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="grossprofit" class="section active">
+            <div class="hero">
+                <h1>Gross Profit Calculator</h1>
+                <p class="hero-subtitle">Practice the Income Statement Chain — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">💰</div>
+                    <div>
+                        <div class="stat-value" id="gpCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="gpAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="gpAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startGrossProfit()">Start Practice →</button>
+                <button class="btn btn-secondary" onclick="resetGrossProfit()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Income Statement Formula Chain</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">UIL tests require you to calculate these step-by-step:</p>
+                <div style="font-family:monospace; font-size:0.95rem; line-height:2; color:var(--text-light); background:rgba(15,23,42,0.5); padding:1.5rem; border-radius:0.75rem; border:1px solid var(--border);">
+                    <span style="color:#60a5fa;">Sales</span> − Sales Discounts − Sales R&A = <strong style="color:#34d399;">Net Sales</strong><br>
+                    <span style="color:#60a5fa;">Purchases</span> + Transportation In − Purchases Discounts − Purchases R&A = <strong style="color:#34d399;">Net Purchases</strong><br>
+                    Net Purchases = <strong style="color:#34d399;">Cost of Delivered Merchandise</strong> (same thing)<br>
+                    Beginning Inventory + Cost of Delivered Merch = <strong style="color:#34d399;">Cost of Merch Available for Sale</strong><br>
+                    Cost of Merch Available − Ending Inventory = <strong style="color:#34d399;">Cost of Merchandise Sold</strong><br>
+                    Net Sales − Cost of Merch Sold = <strong style="color:#fbbf24;">GROSS PROFIT</strong>
+                </div>
+            </div>
+        </section>
+
+        <section id="grossprofit-viewer" class="section">
+            <button class="back-btn" onclick="showSection('grossprofit')">← Back</button>
+            <div id="gpContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/grossprofit.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Debit/Credit</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="debitcredit" class="section active">
+            <div class="hero">
+                <h1>Debit/Credit Practice</h1>
+                <p class="hero-subtitle">20 Random Questions from a Bank of 99</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">⚖️</div>
+                    <div>
+                        <div class="stat-value" id="dcCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="dcAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="dcAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startDebitCredit()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetDebitCredit()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>How It Works</h3>
+                <ul class="feature-list">
+                    <li><strong>Normal Balance:</strong> Given an account name, select Debit or Credit for its normal balance</li>
+                    <li><strong>Increase/Decrease:</strong> Given a change (e.g., "Decrease in A/R"), select how it's recorded — just like UIL Group 1!</li>
+                    <li><strong>Transactions:</strong> Given a transaction, select DR or CR for each account involved</li>
+                    <li><strong>20 random questions</strong> drawn from 99 each time — covers assets, liabilities, OE, revenue, expenses, COGS, contra accounts, adjusting & closing entries</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="debitcredit-viewer" class="section">
+            <button class="back-btn" onclick="showSection('debitcredit')">← Back</button>
+            <div id="dcContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/debitcredit.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - GAAP Concepts</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="gaap" class="section active">
+            <div class="hero">
+                <h1>GAAP Concepts Matching</h1>
+                <p class="hero-subtitle">15 Random from 40+ Questions — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📜</div>
+                    <div>
+                        <div class="stat-value" id="gaapCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="gaapAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="gaapAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startGAAP()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetGAAP()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Accounting CPAs — Concepts, Principles & Assumptions</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">UIL tests ask you to match a description to the correct GAAP concept. Know these:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="example-box" style="border-left-color:#3b82f6;">
+                        <strong style="color:#60a5fa;">Concepts</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Accounting Period Cycle, Business Entity, Going Concern, Unit of Measure</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#10b981;">
+                        <strong style="color:#34d399;">Principles</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Historical Cost, Matching, Full Disclosure, Realization of Revenue</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#f59e0b;">
+                        <strong style="color:#fbbf24;">Constraints</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Conservatism, Materiality, Objective Evidence</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#c084fc;">
+                        <strong style="color:#c084fc;">Qualities</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Consistent Reporting, Relevance, Reliability</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gaap-viewer" class="section">
+            <button class="back-btn" onclick="showSection('gaap')">← Back</button>
+            <div id="gaapContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/gaap.js"></script>
+</body>
+</html>

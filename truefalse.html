@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - True/False Quiz</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <section id="truefalse" class="section active">
+            <div class="hero">
+                <h1>True/False Quiz</h1>
+                <p class="hero-subtitle">25 Questions from Real UIL Tests</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">✓</div>
+                    <div>
+                        <div class="stat-value" id="tfCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="tfAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startTrueFalse()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetTrueFalse()">Reset Progress</button>
+            </div>
+        </section>
+
+        <section id="truefalse-viewer" class="section">
+            <button class="back-btn" onclick="showSection('truefalse')">← Back</button>
+            <div id="tfContent"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/truefalse.js"></script>
+</body>
+</html>

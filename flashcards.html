@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Flashcards</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <section id="flashcards" class="section active">
+            <div class="hero">
+                <h1>Study Flashcards</h1>
+                <p class="hero-subtitle">Click to flip and memorize!</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card" onclick="showFlashcards('acronyms')">
+                    <span class="badge badge-beginner">Beginner</span>
+                    <span style="color: var(--text-muted);">🧠 21 cards</span>
+                    <h3>Accounting Acronyms</h3>
+                    <p>DEAD CORL, C-DID, CARPET-W-FACTR, and all essential mnemonics</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Studying →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="flashcard-viewer" class="section">
+            <button class="back-btn" onclick="showSection('flashcards')">← Back</button>
+            <div class="flashcard-viewer">
+                <div class="flashcard-header">
+                    <h2>Accounting Acronyms</h2>
+                    <div class="flashcard-progress">
+                        Card <span id="currentCard">1</span> of <span id="totalCards">21</span>
+                    </div>
+                </div>
+
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-category" id="frontCategory"></div>
+                            <div class="card-term" id="term"></div>
+                            <div class="flip-hint">Click to reveal answer</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-category" id="backCategory"></div>
+                            <div class="card-definition" id="definition"></div>
+                            <div class="flip-hint">Click to see question</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-controls">
+                    <button class="flashcard-nav-btn" id="prevBtn" onclick="previousCard()">← Previous</button>
+                    <button class="btn" onclick="flipCard()">🔄 Flip</button>
+                    <button class="flashcard-nav-btn" id="nextBtn" onclick="nextCard()">Next →</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/flashcards.js"></script>
+</body>
+</html>

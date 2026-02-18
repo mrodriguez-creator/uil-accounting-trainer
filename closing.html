@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Closing Codes</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="closing" class="section active">
+            <div class="hero">
+                <h1>Closing Codes Quiz</h1>
+                <p class="hero-subtitle">15 Random from 40+ Questions — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">🔒</div>
+                    <div>
+                        <div class="stat-value" id="clCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="clAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="clAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startClosing()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetClosing()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>C-DID — Order of Closing Entries</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">UIL tests use this exact coding system. Know which accounts close and where:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="example-box" style="border-left-color:#10b981;">
+                        <strong style="color:#34d399;">A DR — Closed into Income Summary (Debit)</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Expenses, COGS, Transportation In, contra-Revenue (Sales Discounts, Sales R&A)</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#60a5fa;">
+                        <strong style="color:#60a5fa;">A CR — Closed into Income Summary (Credit)</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Revenue (Sales, Fees), contra-COGS (Purchases Discounts, Purchases R&A)</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#c084fc;">
+                        <strong style="color:#c084fc;">B DR — Closed into Capital (Debit)</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Income Summary with Net Loss (debit balance)</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#f59e0b;">
+                        <strong style="color:#fbbf24;">B CR — Closed into Capital (Credit)</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Income Summary with Net Income, Owner's Drawing</p>
+                    </div>
+                </div>
+                <div class="example-box" style="border-left-color:var(--danger); margin-top:1rem;">
+                    <strong style="color:#f87171;">C — Not Closed (Permanent Accounts)</strong>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Assets, Liabilities, Owner's Capital — A=L+OE accounts carry forward</p>
+                </div>
+                <div style="margin-top:1rem; padding:1rem; background:rgba(59,130,246,0.1); border-radius:0.5rem;">
+                    <strong style="color:var(--primary);">C-DID Closing Order:</strong>
+                    <span style="color:var(--text-muted);"> 1) <strong>C</strong>redits → IS, 2) <strong>D</strong>ebits → IS, 3) <strong>I</strong>ncome Summary → Capital, 4) <strong>D</strong>rawing → Capital</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="closing-viewer" class="section">
+            <button class="back-btn" onclick="showSection('closing')">← Back</button>
+            <div id="clContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/closing.js"></script>
+</body>
+</html>

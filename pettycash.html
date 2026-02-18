@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Petty Cash</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+    <main class="container">
+        <section id="pettycash" class="section active">
+            <div class="hero">
+                <h1>Petty Cash Practice</h1>
+                <p class="hero-subtitle">Petty Cash Fund & Change Fund Problems — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">🪙</div>
+                    <div>
+                        <div class="stat-value" id="pcCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="pcAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="pcAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startPettyCash()">Start Practice →</button>
+                <button class="btn btn-secondary" onclick="resetPettyCash()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Petty Cash Fund Formulas</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">UIL tests use two main petty cash problem types:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                    <div style="font-family:monospace; font-size:0.95rem; line-height:2; color:var(--text-light); background:rgba(15,23,42,0.5); padding:1.25rem; border-radius:0.75rem; border:1px solid rgba(245,158,11,0.3);">
+                        <strong style="color:#fbbf24;">PETTY CASH FUND</strong><br>
+                        Opening Balance<br>
+                        <span style="color:#34d399;">+ Increase in Fund (if any)</span><br>
+                        Fund Total<br>
+                        <span style="color:#f87171;">− Vouchers Totaling</span><br>
+                        = <strong style="color:#60a5fa;">Expected Cash</strong><br>
+                        Actual Cash Before Replenishment<br>
+                        Actual − Expected = <strong style="color:#fbbf24;">Cash Over/&lt;Short&gt;</strong><br>
+                        Fund Total − Actual Cash = <strong style="color:#34d399;">Replenishment Amount</strong>
+                    </div>
+                    <div style="font-family:monospace; font-size:0.95rem; line-height:2; color:var(--text-light); background:rgba(15,23,42,0.5); padding:1.25rem; border-radius:0.75rem; border:1px solid rgba(139,92,246,0.3);">
+                        <strong style="color:#a78bfa;">CHANGE FUND / CASH DRAWER</strong><br>
+                        Cash Sales<br>
+                        <span style="color:#34d399;">+ Sales Tax Collected</span><br>
+                        <span style="color:#34d399;">+ Collected on Account</span><br>
+                        <span style="color:#34d399;">+ Change Fund</span><br>
+                        = <strong style="color:#60a5fa;">Expected Cash in Drawer</strong><br>
+                        Actual Cash in Drawer<br>
+                        Actual − Expected = <strong style="color:#fbbf24;">Cash Over/&lt;Short&gt;</strong>
+                    </div>
+                </div>
+                <p style="color:var(--accent); margin-top:1rem; font-weight:600; text-align:center;">Shortages are shown in angle brackets: &lt;$2.15&gt;</p>
+            </div>
+        </section>
+
+        <section id="pettycash-viewer" class="section">
+            <button class="back-btn" onclick="showSection('pettycash')">← Back</button>
+            <div id="pcContent"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/pettycash.js"></script>
+</body>
+</html>
