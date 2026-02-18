@@ -25,17 +25,48 @@ body {
     font-size: 1.5rem; font-weight: 700; color: var(--primary);
 }
 
-.nav-links { display: flex; list-style: none; gap: 1rem; }
+.nav-links { display: flex; list-style: none; gap: 0.25rem; align-items: center; }
 
 .nav-links .nav-btn {
     background: none; border: none; color: var(--text-muted);
-    font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem;
-    cursor: pointer; transition: all 0.3s; font-size: 1rem;
-    text-decoration: none; display: inline-block;
+    font-weight: 500; padding: 0.5rem 0.75rem; border-radius: 0.5rem;
+    cursor: pointer; transition: all 0.3s; font-size: 0.9rem;
+    text-decoration: none; display: inline-block; white-space: nowrap;
 }
 
 .nav-links .nav-btn:hover, .nav-links .nav-btn.active {
     color: var(--primary); background: rgba(59, 130, 246, 0.1);
+}
+
+/* Dropdown menus */
+.nav-dropdown { position: relative; }
+
+.nav-dropdown-toggle {
+    background: none; border: none; color: var(--text-muted);
+    font-weight: 500; padding: 0.5rem 0.75rem; border-radius: 0.5rem;
+    cursor: pointer; transition: all 0.3s; font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.nav-dropdown-toggle:hover, .nav-dropdown.has-active > .nav-dropdown-toggle {
+    color: var(--primary); background: rgba(59, 130, 246, 0.1);
+}
+
+.nav-dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 0.25rem); left: 0;
+    background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 0.75rem;
+    padding: 0.5rem; min-width: 200px; z-index: 200;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    list-style: none;
+}
+
+.nav-dropdown:hover > .nav-dropdown-menu { display: block; }
+
+.nav-dropdown-menu .nav-btn {
+    display: block; width: 100%; text-align: left;
+    padding: 0.5rem 0.75rem; border-radius: 0.5rem;
+    font-size: 0.9rem;
 }
 
 .mobile-toggle {
@@ -579,6 +610,15 @@ ul.feature-list li:before {
     }
     .nav-links.active { display: flex; }
     .mobile-toggle { display: block; }
+    .nav-dropdown-menu {
+        position: static; border: none; box-shadow: none;
+        padding: 0 0 0 1rem; background: transparent;
+        display: none; min-width: auto;
+    }
+    .nav-dropdown.open > .nav-dropdown-menu { display: block; }
+    .nav-dropdown:hover > .nav-dropdown-menu { display: none; }
+    .nav-dropdown.open:hover > .nav-dropdown-menu { display: block; }
+    .nav-dropdown-toggle { width: 100%; text-align: left; }
     .hero h1 { font-size: 2.5rem; }
     .stats-grid, .action-grid, .grid-3 { grid-template-columns: 1fr; }
     .flashcard { height: 350px; }
