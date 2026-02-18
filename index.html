@@ -442,6 +442,35 @@
         .dc-type-change { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
         .dc-type-transaction { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
 
+        /* Worksheet Column Quiz */
+        .ws-options {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.5rem 0;
+        }
+
+        .ws-option {
+            padding: 1rem 1.25rem; border-radius: 0.75rem; font-weight: 600;
+            font-size: 0.95rem; cursor: pointer; transition: all 0.3s;
+            border: 2px solid var(--border); background: rgba(15, 23, 42, 0.6);
+            color: var(--text-light); text-align: center;
+        }
+
+        .ws-option:hover { transform: translateY(-2px); }
+        .ws-option.opt-a { border-color: rgba(239,68,68,0.3); }
+        .ws-option.opt-a:hover { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+        .ws-option.opt-b { border-color: rgba(16,185,129,0.3); }
+        .ws-option.opt-b:hover { background: rgba(16,185,129,0.15); border-color: #10b981; }
+        .ws-option.opt-c { border-color: rgba(96,165,250,0.3); }
+        .ws-option.opt-c:hover { background: rgba(96,165,250,0.15); border-color: #60a5fa; }
+        .ws-option.opt-d { border-color: rgba(192,132,252,0.3); }
+        .ws-option.opt-d:hover { background: rgba(192,132,252,0.15); border-color: #c084fc; }
+        .ws-option.opt-e { border-color: rgba(251,191,36,0.3); grid-column: 1 / -1; }
+        .ws-option.opt-e:hover { background: rgba(251,191,36,0.15); border-color: #fbbf24; }
+
+        .ws-option.selected-correct { border-color: var(--secondary); background: rgba(16,185,129,0.3); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+        .ws-option.selected-incorrect { border-color: var(--danger); background: rgba(239,68,68,0.3); box-shadow: 0 0 15px rgba(239,68,68,0.2); }
+        .ws-option.show-correct { border-color: var(--secondary); background: rgba(16,185,129,0.15); }
+        .ws-option:disabled { cursor: not-allowed; opacity: 0.7; transform: none; }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none; position: absolute; top: 100%; left: 0; right: 0;
@@ -459,6 +488,8 @@
             .dc-account-name { font-size: 1.75rem; }
             .dc-buttons { grid-template-columns: 1fr; }
             .dc-account-row { flex-direction: column; gap: 0.75rem; text-align: center; }
+            .ws-options { grid-template-columns: 1fr; }
+            .ws-option.opt-e { grid-column: auto; }
         }
     </style>
 </head>
@@ -474,6 +505,7 @@
             <li><button class="nav-btn" onclick="showSection('flashcards')">Flashcards</button></li>
             <li><button class="nav-btn" onclick="showSection('truefalse')">True/False</button></li>
             <li><button class="nav-btn" onclick="showSection('debitcredit')">Debit/Credit</button></li>
+            <li><button class="nav-btn" onclick="showSection('worksheet')">Worksheet</button></li>
             <li><button class="nav-btn" onclick="showSection('tests')">Tests</button></li>
             <li><button class="nav-btn" onclick="showSection('about')">About</button></li>
         </ul>
@@ -558,6 +590,14 @@
                     <div class="action-content">
                         <h3>Debit/Credit Practice (20 from 99)</h3>
                         <p>Normal balances, increase/decrease, & transactions</p>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </div>
+                <div class="action-card" onclick="showSection('worksheet')">
+                    <div class="action-icon">📋</div>
+                    <div class="action-content">
+                        <h3>Worksheet Columns (20 from 40+)</h3>
+                        <p>Extend accounts to correct worksheet columns</p>
                     </div>
                     <div class="action-arrow">→</div>
                 </div>
@@ -656,6 +696,14 @@
                     <p>Normal balances, increase/decrease, transactions — UIL format</p>
                     <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
                 </div>
+
+                <div class="card" onclick="showSection('worksheet')">
+                    <span class="badge badge-intermediate">Intermediate</span>
+                    <span style="color: var(--text-muted);">📋 20 random from 40+</span>
+                    <h3>Worksheet Column Quiz</h3>
+                    <p>Extend accounts to IS Debit/Credit or BS Debit/Credit columns</p>
+                    <button class="btn" style="margin-top: 1rem;">Start Quiz →</button>
+                </div>
             </div>
         </section>
 <section id="truefalse" class="section">
@@ -744,6 +792,75 @@
             <div id="dcContent"></div>
         </section>
 
+        <!-- WORKSHEET COLUMN SECTION -->
+        <section id="worksheet" class="section">
+            <div class="hero">
+                <h1>Worksheet Column Quiz</h1>
+                <p class="hero-subtitle">20 Random from 40+ Accounts — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📋</div>
+                    <div>
+                        <div class="stat-value" id="wsCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="wsAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="wsAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startWorksheet()">Start Quiz →</button>
+                <button class="btn btn-secondary" onclick="resetWorksheet()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>UIL Worksheet Columns</h3>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">Given an account with a normal balance, select the worksheet column it extends to:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="example-box" style="border-left-color:#ef4444;">
+                        <strong style="color:#f87171;">A. Income Statement DEBIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Expenses, COGS accounts, contra-Revenue (Sales Discounts, Sales R&A), Transportation In</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#10b981;">
+                        <strong style="color:#34d399;">B. Income Statement CREDIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Revenue (Sales, Fees Earned), contra-COGS (Purchases Discounts, Purchases R&A)</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#60a5fa;">
+                        <strong style="color:#60a5fa;">C. Balance Sheet DEBIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Assets (Cash, Supplies, Equipment), Drawing</p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#c084fc;">
+                        <strong style="color:#c084fc;">D. Balance Sheet CREDIT</strong>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Liabilities, Owner's Capital, contra-Assets (Accum. Depr., AUA)</p>
+                    </div>
+                </div>
+                <div class="example-box" style="border-left-color:var(--accent); margin-top:1rem;">
+                    <strong style="color:#fbbf24;">E. Not Extended</strong>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Income Summary (adjustments only), Beginning Merchandise Inventory (adjusted via Income Summary)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="worksheet-viewer" class="section">
+            <button class="back-btn" onclick="showSection('worksheet')">← Back</button>
+            <div id="wsContent"></div>
+        </section>
+
         <!-- ABOUT SECTION -->
         <section id="about" class="section">
             <div class="hero">
@@ -759,6 +876,7 @@
                     <li><strong>10-Question Quiz:</strong> Instant grading with explanations</li>
                     <li><strong>25-Question True/False:</strong> Real UIL test questions</li>
                     <li><strong>Debit/Credit Practice:</strong> 20 random from 99 questions (normal balances, increase/decrease, transactions)</li>
+                    <li><strong>Worksheet Columns:</strong> 20 random from 42 accounts — extend to IS/BS columns like real UIL tests</li>
                     <li><strong>Progress Tracking:</strong> Points, accuracy, and stats that update!</li>
                 </ul>
             </div>
@@ -825,6 +943,206 @@
     </footer>
 
     <script>
+        // =====================================================
+        // WORKSHEET COLUMN QUESTION BANK (40+ questions)
+        // Based on real UIL tests: "To which column is the
+        // normal balance extended on the work sheet?"
+        // A=IS Debit, B=IS Credit, C=BS Debit, D=BS Credit, E=Not Extended
+        // =====================================================
+
+        const wsQuestionBank = [
+            // --- ASSETS → Balance Sheet Debit (C) ---
+            {id:'w1', account:'Cash in Bank', answer:'C', explanation:'Cash is an Asset with a Debit balance → Balance Sheet Debit.', category:'Assets'},
+            {id:'w2', account:'Accounts Receivable', answer:'C', explanation:'A/R is an Asset with a Debit balance → Balance Sheet Debit.', category:'Assets'},
+            {id:'w3', account:'Supplies', answer:'C', explanation:'Supplies is an Asset with a Debit balance → Balance Sheet Debit.', category:'Assets'},
+            {id:'w4', account:'Prepaid Insurance', answer:'C', explanation:'Prepaid Insurance is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w5', account:'Equipment', answer:'C', explanation:'Equipment is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w6', account:'Office Furniture', answer:'C', explanation:'Office Furniture is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w7', account:'Petty Cash', answer:'C', explanation:'Petty Cash is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w8', account:'Change Fund', answer:'C', explanation:'Change Fund is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w9', account:'Office Supplies', answer:'C', explanation:'Office Supplies is an Asset → Balance Sheet Debit.', category:'Assets'},
+            // --- LIABILITIES → Balance Sheet Credit (D) ---
+            {id:'w10', account:'Accounts Payable', answer:'D', explanation:'A/P is a Liability with a Credit balance → Balance Sheet Credit.', category:'Liabilities'},
+            {id:'w11', account:'Sales Tax Payable', answer:'D', explanation:'Sales Tax Payable is a Liability → Balance Sheet Credit.', category:'Liabilities'},
+            {id:'w12', account:'Notes Payable', answer:'D', explanation:'Notes Payable is a Liability → Balance Sheet Credit.', category:'Liabilities'},
+            {id:'w13', account:'Salaries Payable', answer:'D', explanation:'Salaries Payable is a Liability → Balance Sheet Credit.', category:'Liabilities'},
+            // --- OWNER\'S EQUITY → Balance Sheet Credit (D) ---
+            {id:'w14', account:'Owner, Capital', answer:'D', explanation:'Capital is OE with a Credit balance → Balance Sheet Credit. (COW = Capital On Worksheet goes to BS Credit)', category:'Owner\'s Equity'},
+            // --- DRAWING → Balance Sheet Debit (C) ---
+            {id:'w15', account:'Owner, Drawing', answer:'C', explanation:'Drawing has a Debit balance and goes to Balance Sheet Debit (it\'s a temporary account but extends to BS).', category:'Drawing'},
+            // --- CONTRA-ASSETS → Balance Sheet Credit (D) ---
+            {id:'w16', account:'Accumulated Depreciation', answer:'D', explanation:'Contra-Asset with Credit balance → Balance Sheet Credit.', category:'Contra-Asset'},
+            {id:'w17', account:'Allowance for Uncollectible Accounts', answer:'D', explanation:'AUA is a contra-Asset with Credit balance → Balance Sheet Credit.', category:'Contra-Asset'},
+            // --- REVENUE → Income Statement Credit (B) ---
+            {id:'w18', account:'Sales', answer:'B', explanation:'Sales is Revenue with a Credit balance → Income Statement Credit.', category:'Revenue'},
+            {id:'w19', account:'Fees Earned', answer:'B', explanation:'Fees Earned is Revenue → Income Statement Credit.', category:'Revenue'},
+            {id:'w20', account:'Service Revenue', answer:'B', explanation:'Service Revenue → Income Statement Credit.', category:'Revenue'},
+            // --- EXPENSES → Income Statement Debit (A) ---
+            {id:'w21', account:'Rent Expense', answer:'A', explanation:'Rent Expense has a Debit balance → Income Statement Debit.', category:'Expenses'},
+            {id:'w22', account:'Salary Expense', answer:'A', explanation:'Salary Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w23', account:'Supplies Expense', answer:'A', explanation:'Supplies Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w24', account:'Insurance Expense', answer:'A', explanation:'Insurance Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w25', account:'Utilities Expense', answer:'A', explanation:'Utilities Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w26', account:'Depreciation Expense', answer:'A', explanation:'Depreciation Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w27', account:'Advertising Expense', answer:'A', explanation:'Advertising Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w28', account:'Bank Card Fees Expense', answer:'A', explanation:'Bank Card Fees Expense → Income Statement Debit.', category:'Expenses'},
+            {id:'w29', account:'Federal Income Tax Expense', answer:'A', explanation:'Federal Income Tax Expense → Income Statement Debit.', category:'Expenses'},
+            // --- COGS ACCOUNTS → Income Statement Debit (A) ---
+            {id:'w30', account:'Purchases', answer:'A', explanation:'Purchases is a COGS account with Debit balance → Income Statement Debit.', category:'COGS'},
+            {id:'w31', account:'Transportation In', answer:'A', explanation:'Transportation In (freight on purchases) is a COGS account → Income Statement Debit.', category:'COGS'},
+            // --- CONTRA-COGS → Income Statement Credit (B) ---
+            {id:'w32', account:'Purchases Discounts', answer:'B', explanation:'Purchases Discounts is contra-COGS with Credit balance → Income Statement Credit.', category:'Contra-COGS'},
+            {id:'w33', account:'Purchases Returns & Allowances', answer:'B', explanation:'Purchases R&A is contra-COGS → Income Statement Credit.', category:'Contra-COGS'},
+            // --- CONTRA-REVENUE → Income Statement Debit (A) ---
+            {id:'w34', account:'Sales Discounts', answer:'A', explanation:'Sales Discounts is contra-Revenue with Debit balance → Income Statement Debit.', category:'Contra-Revenue'},
+            {id:'w35', account:'Sales Returns & Allowances', answer:'A', explanation:'Sales R&A is contra-Revenue → Income Statement Debit.', category:'Contra-Revenue'},
+            // --- SPECIAL: Income Summary → Not Extended (E) ---
+            {id:'w36', account:'Income Summary', answer:'E', explanation:'Income Summary is used in the Adjustments columns only. Its total is NOT extended to IS or BS columns.', category:'Special'},
+            {id:'w37', account:'Beginning Merchandise Inventory', answer:'E', explanation:'Beginning Inventory is adjusted through Income Summary. The beginning amount is NOT extended — the ending inventory goes to BS Debit.', category:'Special'},
+            // --- ENDING INVENTORY → Balance Sheet Debit (C) ---
+            {id:'w38', account:'Merchandise Inventory (ending)', answer:'C', explanation:'Ending Merchandise Inventory is an Asset → Balance Sheet Debit.', category:'Assets'},
+            // --- MORE ASSETS ---
+            {id:'w39', account:'Prepaid Rent', answer:'C', explanation:'Prepaid Rent is an Asset → Balance Sheet Debit.', category:'Assets'},
+            {id:'w40', account:'Computer Equipment', answer:'C', explanation:'Computer Equipment is an Asset → Balance Sheet Debit.', category:'Assets'},
+            // --- NET INCOME/LOSS placement ---
+            {id:'w41', account:'Net Income (on worksheet)', answer:'A', explanation:'Net Income is written on the Income Statement DEBIT side (to balance IS columns) and Balance Sheet CREDIT side.', category:'Special'},
+            {id:'w42', account:'Net Loss (on worksheet)', answer:'B', explanation:'Net Loss is written on the Income Statement CREDIT side (to balance IS columns) and Balance Sheet DEBIT side.', category:'Special'},
+        ];
+
+        // WORKSHEET QUIZ STATE
+        let wsCurrentQuestion = 0;
+        let wsSelectedQuestions = [];
+        let wsAnswers = {};
+        let wsTotalAttempts = parseInt(localStorage.getItem('wsTotalAttempts')) || 0;
+        let wsTotalCorrect = parseInt(localStorage.getItem('wsTotalCorrect')) || 0;
+        let wsTotalCompleted = parseInt(localStorage.getItem('wsTotalCompleted')) || 0;
+        let wsSessionCorrect = 0;
+
+        const wsLabels = {
+            'A': 'A. Income Statement Debit',
+            'B': 'B. Income Statement Credit',
+            'C': 'C. Balance Sheet Debit',
+            'D': 'D. Balance Sheet Credit',
+            'E': 'E. Not Extended'
+        };
+
+        function startWorksheet() {
+            wsSelectedQuestions = shuffleArray(wsQuestionBank).slice(0, 20);
+            wsCurrentQuestion = 0;
+            wsAnswers = {};
+            wsSessionCorrect = 0;
+            wsTotalAttempts++;
+            localStorage.setItem('wsTotalAttempts', wsTotalAttempts);
+            renderWSQuestion();
+            showSection('worksheet-viewer');
+        }
+
+        function renderWSQuestion() {
+            const q = wsSelectedQuestions[wsCurrentQuestion];
+            const answered = wsAnswers[q.id] !== undefined;
+
+            let html = `
+                <div class="hero">
+                    <h1>Question ${wsCurrentQuestion + 1} of ${wsSelectedQuestions.length}</h1>
+                    <p class="hero-subtitle">Score: ${wsSessionCorrect}/${Object.keys(wsAnswers).length} correct</p>
+                </div>
+                <div class="quiz-question">
+                    <div class="question-text">To which worksheet column is this account's normal balance extended?</div>
+                    <div class="dc-account-name">${q.account}</div>
+                    <div class="ws-options">
+            `;
+
+            ['A','B','C','D','E'].forEach(letter => {
+                let cls = 'ws-option opt-' + letter.toLowerCase();
+                if (answered) {
+                    if (wsAnswers[q.id] === letter && letter === q.answer) cls += ' selected-correct';
+                    else if (wsAnswers[q.id] === letter && letter !== q.answer) cls += ' selected-incorrect';
+                    else if (letter === q.answer) cls += ' show-correct';
+                }
+                html += `<button class="${cls}" onclick="answerWS('${q.id}','${letter}')" ${answered ? 'disabled' : ''}>${wsLabels[letter]}</button>`;
+            });
+
+            html += `</div>`;
+
+            if (answered) {
+                const isCorrect = wsAnswers[q.id] === q.answer;
+                html += `
+                    <div class="quiz-explanation show">
+                        <strong>${isCorrect ? '✓ Correct!' : '✗ Incorrect — Answer: ' + wsLabels[q.answer]}</strong><br>
+                        ${q.explanation}
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            html += `<div style="display:flex; gap:1rem; margin-top:2rem;">`;
+            if (wsCurrentQuestion > 0) html += `<button class="btn btn-secondary" onclick="prevWS()">← Previous</button>`;
+            if (wsCurrentQuestion < wsSelectedQuestions.length - 1) html += `<button class="btn" onclick="nextWS()">Next →</button>`;
+            else html += `<button class="btn" onclick="finishWS()">Finish Quiz</button>`;
+            html += `</div>`;
+
+            document.getElementById('wsContent').innerHTML = html;
+        }
+
+        function answerWS(id, answer) {
+            if (wsAnswers[id] !== undefined) return;
+            const q = wsSelectedQuestions.find(q => q.id === id);
+            wsAnswers[id] = answer;
+            if (answer === q.answer) {
+                wsSessionCorrect++;
+                wsTotalCorrect++;
+                Progress.points += 5;
+                Progress.save(Progress.get());
+            }
+            wsTotalCompleted++;
+            localStorage.setItem('wsTotalCorrect', wsTotalCorrect);
+            localStorage.setItem('wsTotalCompleted', wsTotalCompleted);
+            updateWSStats();
+            renderWSQuestion();
+        }
+
+        function nextWS() { if (wsCurrentQuestion < wsSelectedQuestions.length - 1) { wsCurrentQuestion++; renderWSQuestion(); window.scrollTo(0,0); } }
+        function prevWS() { if (wsCurrentQuestion > 0) { wsCurrentQuestion--; renderWSQuestion(); window.scrollTo(0,0); } }
+
+        function finishWS() {
+            const pct = Math.round((wsSessionCorrect / wsSelectedQuestions.length) * 100);
+            document.getElementById('wsContent').innerHTML = `
+                <div class="quiz-results">
+                    <h2>Quiz Complete!</h2>
+                    <div class="result-score">${pct}%</div>
+                    <p>${wsSessionCorrect} of ${wsSelectedQuestions.length} correct!</p>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">+${wsSessionCorrect * 5} points earned</p>
+                    <div style="display:flex; gap:1rem; justify-content:center; margin-top:2rem;">
+                        <button class="btn" onclick="startWorksheet()">Try Again (New Questions)</button>
+                        <button class="btn btn-secondary" onclick="showSection('worksheet')">Back to Menu</button>
+                    </div>
+                </div>`;
+            window.scrollTo(0,0);
+        }
+
+        function resetWorksheet() {
+            if (confirm('Reset all Worksheet Column progress?')) {
+                wsTotalAttempts = 0; wsTotalCorrect = 0; wsTotalCompleted = 0;
+                localStorage.setItem('wsTotalAttempts', 0);
+                localStorage.setItem('wsTotalCorrect', 0);
+                localStorage.setItem('wsTotalCompleted', 0);
+                updateWSStats();
+            }
+        }
+
+        function updateWSStats() {
+            const el = document.getElementById('wsCompleted');
+            if (el) {
+                el.textContent = wsTotalCompleted;
+                const acc = wsTotalCompleted > 0 ? Math.round((wsTotalCorrect / wsTotalCompleted) * 100) : 0;
+                document.getElementById('wsAccuracy').textContent = acc + '%';
+                document.getElementById('wsAttempts').textContent = wsTotalAttempts;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { updateWSStats(); });
+
         // =====================================================
         // DEBIT/CREDIT QUESTION BANK (80+ questions, 3 types)
         // Based on real UIL Invitational tests & study materials
