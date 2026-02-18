@@ -7,7 +7,7 @@ function updateHomeStats() {
     // Main progress (from shared.js Progress object)
     const p = Progress.get();
     document.getElementById('userPoints').textContent = p.points;
-    document.getElementById('lessonsCompleted').textContent = p.lessonsCompleted.length + '/3';
+    document.getElementById('lessonsCompleted').textContent = p.lessonsCompleted.length + '/8';
     document.getElementById('cardsStudied').textContent = p.cardsStudied;
 
     const a = p.quizStats.total > 0
