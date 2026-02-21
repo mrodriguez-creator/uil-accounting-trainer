@@ -3,35 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UIL Accounting - Math Practice</title>
+    <title>UIL Accounting Trainer - Math Practice</title>
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #3b82f6; --secondary: #10b981; --accent: #f59e0b;
-            --danger: #ef4444; --bg-dark: #0f172a; --bg-dark-2: #1e293b;
-            --text-light: #e2e8f0; --text-muted: #94a3b8; --border: rgba(148, 163, 184, 0.2);
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-2) 100%);
-            color: var(--text-light); line-height: 1.6; min-height: 100vh; padding: 2rem;
-        }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 3rem; }
-        .header h1 {
-            font-size: 3rem; font-weight: 900;
-            background: linear-gradient(135deg, #60a5fa, #3b82f6);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
         .stats-bar {
             display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
             margin-bottom: 2rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.6);
             border-radius: 1rem; border: 1px solid var(--border);
         }
         .stat-item { text-align: center; padding: 0 1.5rem; }
-        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-item .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-item .stat-label { font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; }
         .filters {
             display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
             padding: 1.5rem; background: rgba(30, 41, 59, 0.6);
@@ -65,11 +47,6 @@
             border-radius: 50%; display: flex; align-items: center;
             justify-content: center; color: white; font-weight: 700;
         }
-        .badge {
-            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 0.5rem;
-            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-            margin-right: 0.5rem; margin-bottom: 0.5rem;
-        }
         .badge-easy { background: rgba(34, 197, 94, 0.2); color: #34d399; }
         .badge-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
         .badge-hard { background: rgba(239, 68, 68, 0.2); color: #f87171; }
@@ -100,28 +77,13 @@
             background: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--primary);
             padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0;
         }
-        .answer-input {
-            display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;
-        }
+        .answer-input { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
         .answer-input input {
             flex: 1; min-width: 200px; padding: 1rem; font-size: 1.25rem;
             background: rgba(15, 23, 42, 0.8); border: 2px solid var(--border);
             border-radius: 0.5rem; color: var(--text-light);
         }
-        .answer-input input:focus {
-            outline: none; border-color: var(--primary);
-        }
-        .btn {
-            padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary), #2563eb);
-            color: white; border: none; border-radius: 0.75rem;
-            font-size: 1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3); }
-        .btn-secondary {
-            background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border);
-        }
-        .btn-secondary:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--primary); }
+        .answer-input input:focus { outline: none; border-color: var(--primary); }
         .feedback {
             padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;
             font-weight: 600; display: none;
@@ -148,7 +110,6 @@
             margin: 1rem 0;
         }
         @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
             .problems-grid { grid-template-columns: 1fr; }
             .filters { flex-direction: column; }
             .modal-content { padding: 1.5rem; }
@@ -156,10 +117,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🧮 Math Calculations Practice</h1>
-            <p style="color: var(--text-muted); font-size: 1.25rem;">45 Real UIL Problems</p>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Math Calculations Practice</h1>
+            <p class="hero-subtitle">45 Real UIL Problems</p>
         </div>
 
         <div class="stats-bar">
@@ -200,7 +163,7 @@
         </div>
 
         <div class="problems-grid" id="problemsGrid"></div>
-    </div>
+    </main>
 
     <div class="modal" id="problemModal">
         <div class="modal-content">
@@ -226,18 +189,21 @@
         </div>
     </div>
 
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
     <script src="MATH-PRACTICE-MODULE.js"></script>
     <script>
         let currentProblem = null;
         let filters = { category: 'all', difficulty: 'all' };
         let progress = JSON.parse(localStorage.getItem('mathProgress')) || {
-            completed: [],
-            correct: [],
-            attempts: {},
-            points: 0
+            completed: [], correct: [], attempts: {}, points: 0
         };
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderProblems();
             updateStats();
@@ -248,7 +214,6 @@
             grid.innerHTML = '';
             let count = 0;
 
-            // Flatten all problems
             const allProblems = [
                 ...mathPracticeProblems.bankReconciliation.map(p => ({ ...p, category: 'bank', categoryName: 'Bank Reconciliation' })),
                 ...mathPracticeProblems.payroll.map(p => ({ ...p, category: 'payroll', categoryName: 'Payroll' })),
@@ -257,7 +222,6 @@
             ];
 
             allProblems.forEach(problem => {
-                // Apply filters
                 if (filters.category !== 'all' && problem.category !== filters.category) return;
                 if (filters.difficulty !== 'all' && problem.difficulty !== filters.difficulty) return;
 
@@ -281,7 +245,6 @@
 
         function filterBy(type, value) {
             filters[type] = value;
-            // Update button states
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             renderProblems();
@@ -297,18 +260,14 @@
             document.getElementById('solution').className = 'solution';
             document.getElementById('hint').style.display = 'none';
             document.getElementById('problemModal').classList.add('active');
-            
-            // Build solution HTML
-            const solutionHTML = `
+
+            document.getElementById('solution').innerHTML = `
                 <h3>Step-by-Step Solution:</h3>
                 <ol>${problem.steps.map(step => `<li>${step}</li>`).join('')}</ol>
-                <div class="formula-box">
-                    <strong>Formula:</strong> ${problem.formula}
-                </div>
+                <div class="formula-box"><strong>Formula:</strong> ${problem.formula}</div>
                 <p style="margin-top: 1rem;"><strong>Correct Answer:</strong> $${problem.answer.toFixed(2)}</p>
             `;
-            document.getElementById('solution').innerHTML = solutionHTML;
-            document.getElementById('hint').innerHTML = `<strong>💡 Hint:</strong> ${problem.hint}`;
+            document.getElementById('hint').innerHTML = `<strong>Hint:</strong> ${problem.hint}`;
         }
 
         function closeModal() {
@@ -317,49 +276,33 @@
 
         function checkAnswer() {
             if (!currentProblem) return;
-            
             const input = parseFloat(document.getElementById('answerInput').value);
             const feedback = document.getElementById('feedback');
             const isCorrect = Math.abs(input - currentProblem.answer) < 0.01;
-            
-            // Track attempt
-            if (!progress.attempts[currentProblem.id]) {
-                progress.attempts[currentProblem.id] = 0;
-            }
+
+            if (!progress.attempts[currentProblem.id]) progress.attempts[currentProblem.id] = 0;
             progress.attempts[currentProblem.id]++;
-            
+
             if (isCorrect) {
                 feedback.className = 'feedback correct show';
                 feedback.textContent = `✓ Correct! The answer is $${currentProblem.answer.toFixed(2)}`;
-                
-                // Mark as completed
-                if (!progress.completed.includes(currentProblem.id)) {
-                    progress.completed.push(currentProblem.id);
-                }
+                if (!progress.completed.includes(currentProblem.id)) progress.completed.push(currentProblem.id);
                 if (!progress.correct.includes(currentProblem.id)) {
                     progress.correct.push(currentProblem.id);
                     progress.points += 10;
                 }
-                
-                saveProgress();
-                updateStats();
-                renderProblems();
+                saveProgress(); updateStats(); renderProblems();
             } else {
                 feedback.className = 'feedback incorrect show';
-                feedback.textContent = `✗ Not quite. Try again or view the solution.`;
+                feedback.textContent = '✗ Not quite. Try again or view the solution.';
             }
         }
 
         function toggleSolution() {
-            const solution = document.getElementById('solution');
-            solution.classList.toggle('show');
-            
-            // Mark as completed even if they viewed solution
+            document.getElementById('solution').classList.toggle('show');
             if (!progress.completed.includes(currentProblem.id)) {
                 progress.completed.push(currentProblem.id);
-                saveProgress();
-                updateStats();
-                renderProblems();
+                saveProgress(); updateStats(); renderProblems();
             }
         }
 
@@ -374,19 +317,15 @@
 
         function updateStats() {
             document.getElementById('completed').textContent = progress.completed.length;
-            const accuracy = progress.completed.length > 0 
-                ? Math.round((progress.correct.length / progress.completed.length) * 100)
-                : 0;
+            const accuracy = progress.completed.length > 0
+                ? Math.round((progress.correct.length / progress.completed.length) * 100) : 0;
             document.getElementById('accuracy').textContent = accuracy + '%';
             document.getElementById('points').textContent = progress.points;
         }
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
-            if (e.key === 'Enter' && document.getElementById('problemModal').classList.contains('active')) {
-                checkAnswer();
-            }
+            if (e.key === 'Enter' && document.getElementById('problemModal').classList.contains('active')) checkAnswer();
         });
     </script>
 </body>

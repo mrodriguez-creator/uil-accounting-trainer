@@ -22,6 +22,7 @@ const NAV_STRUCTURE = [
         { label: 'Bank Rec', href: 'bankrec.html' },
         { label: 'Petty Cash', href: 'pettycash.html' },
         { label: 'Payroll', href: 'payroll.html' },
+        { label: 'Math (45 Problems)', href: 'math-practice-standalone.html' },
     ]},
     { label: 'Quiz', href: 'quiz.html' },
     { label: 'Tests', href: 'tests.html' },
