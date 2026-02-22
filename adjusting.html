@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Adjusting Entries</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <section id="adjusting" class="section active">
+            <div class="hero">
+                <h1>Adjusting Entries Practice</h1>
+                <p class="hero-subtitle">Insurance, Supplies, Inventory &amp; Accrued Revenue — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📝</div>
+                    <div>
+                        <div class="stat-value" id="adjCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="adjAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="adjAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startAdjusting()">Start Practice →</button>
+                <button class="btn btn-secondary" onclick="resetAdjusting()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Four Adjustment Types</h3>
+                <ul class="feature-list">
+                    <li><strong>Prepaid Insurance:</strong> Debit Insurance Expense, Credit Prepaid Insurance (for months expired)</li>
+                    <li><strong>Supplies:</strong> Debit Supplies Expense, Credit Supplies (amount used = TB balance − physical count)</li>
+                    <li><strong>Merchandise Inventory:</strong> Adjusted through Income Summary. Increase: Debit Merch Inv, Credit I/S. Decrease: Debit I/S, Credit Merch Inv.</li>
+                    <li><strong>Accrued Revenue:</strong> Debit Accounts Receivable, Credit Revenue (for services performed but not yet billed)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="adjusting-viewer" class="section">
+            <button class="back-btn" onclick="showSection('adjusting')">← Back</button>
+            <div id="adjContent"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/adjusting.js"></script>
+</body>
+</html>

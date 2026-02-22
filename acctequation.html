@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Accounting Equation</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <section id="acctequation" class="section active">
+            <div class="hero">
+                <h1>Accounting Equation & Capital Account</h1>
+                <p class="hero-subtitle">Multi-year capital calculations & transaction analysis — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">⚖️</div>
+                    <div>
+                        <div class="stat-value" id="aeCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="aeAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="aeAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startAcctEquation()">Start Practice →</button>
+                <button class="btn btn-secondary" onclick="resetAcctEquation()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Key Formulas</h3>
+                <div style="font-family:monospace; font-size:0.95rem; line-height:2; color:var(--text-light); background:rgba(15,23,42,0.5); padding:1.5rem; border-radius:0.75rem; border:1px solid var(--border);">
+                    <strong style="color:#60a5fa;">Assets = Liabilities + Owner's Equity</strong><br>
+                    <strong style="color:#34d399;">Beginning Capital + Investments + Net Income − Withdrawals = Ending Capital</strong><br>
+                    <strong style="color:#fbbf24;">Net Income = Total Revenue − Total Expenses</strong>
+                </div>
+                <ul class="feature-list" style="margin-top:1rem;">
+                    <li><strong>Type 1 — Capital Word Problems:</strong> Multi-year scenarios. Calculate net income, ending capital, and solve for missing amounts (like total withdrawals).</li>
+                    <li><strong>Type 2 — Transaction Analysis:</strong> Identify transactions from accounting equation changes using UIL letter codes (A–K).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="acctequation-viewer" class="section">
+            <button class="back-btn" onclick="showSection('acctequation')">← Back</button>
+            <div id="aeContent"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/acctequation.js"></script>
+</body>
+</html>

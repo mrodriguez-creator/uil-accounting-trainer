@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIL Accounting Trainer - Financial Statement Classification</title>
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+    <nav class="navbar" id="main-navbar"></nav>
+
+    <main class="container">
+        <section id="finstatements" class="section active">
+            <div class="hero">
+                <h1>Financial Statement Classification</h1>
+                <p class="hero-subtitle">Which statement(s) does each item appear on? — UIL Format</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">📊</div>
+                    <div>
+                        <div class="stat-value" id="fsCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-value" id="fsAccuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-card tertiary">
+                    <div class="stat-icon">🔄</div>
+                    <div>
+                        <div class="stat-value" id="fsAttempts">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn" onclick="startFinStatements()">Start Practice →</button>
+                <button class="btn btn-secondary" onclick="resetFinStatements()">Reset Progress</button>
+            </div>
+
+            <div class="card" style="cursor:default;">
+                <h3>Classification Codes</h3>
+                <div style="font-family:monospace; font-size:0.95rem; line-height:2.2; color:var(--text-light); background:rgba(15,23,42,0.5); padding:1.5rem; border-radius:0.75rem; border:1px solid var(--border);">
+                    <strong style="color:#60a5fa;">A.</strong> Balance Sheet only<br>
+                    <strong style="color:#34d399;">B.</strong> Income Statement only<br>
+                    <strong style="color:#fbbf24;">C.</strong> Statement of Changes in Owner's Equity only<br>
+                    <strong style="color:#f472b6;">D.</strong> Balance Sheet AND Statement of Changes in OE<br>
+                    <strong style="color:#a78bfa;">E.</strong> Income Statement AND Statement of Changes in OE<br>
+                    <strong style="color:#fb923c;">F.</strong> Income Statement AND Balance Sheet
+                </div>
+                <p style="margin-top:1rem; color:var(--text-muted);"><strong>Key insight:</strong> Net Income appears on IS (where calculated) AND SCOE (where it flows). Ending Capital appears on SCOE (where calculated) AND BS (in OE section).</p>
+            </div>
+        </section>
+
+        <section id="finstatements-viewer" class="section">
+            <button class="back-btn" onclick="showSection('finstatements')">← Back</button>
+            <div id="fsContent"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p><strong>UIL Accounting Trainer</strong> &copy; 2024 Alpine ISD</p>
+        <p>Content from official UIL materials | Built for student success</p>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/finstatements.js"></script>
+</body>
+</html>
