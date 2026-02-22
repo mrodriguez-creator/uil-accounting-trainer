@@ -6,6 +6,7 @@
 
 const NAV_STRUCTURE = [
     { label: 'Home', href: 'index.html' },
+    { label: 'Training Path', href: 'training-path.html' },
     { label: 'Lessons', href: 'lessons.html' },
     { label: 'Study', children: [
         { label: 'Flashcards', href: 'flashcards.html' },
